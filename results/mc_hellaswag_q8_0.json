@@ -1,0 +1,10 @@
+{
+  "bench": "hellaswag",
+  "mode": "q8_0",
+  "tag": null,
+  "acc": 0.6965,
+  "correct": 6994,
+  "total": 10042,
+  "seconds": 17059.1,
+  "partial": false
+}

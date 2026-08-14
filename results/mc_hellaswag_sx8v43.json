@@ -1,0 +1,10 @@
+{
+  "bench": "hellaswag",
+  "mode": "sx8v43",
+  "tag": null,
+  "acc": 0.6964,
+  "correct": 6993,
+  "total": 10042,
+  "seconds": 7776.2,
+  "partial": false
+}

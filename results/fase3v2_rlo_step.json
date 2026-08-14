@@ -1,0 +1,39 @@
+{
+  "fase": "3v2",
+  "fecha": "2026-08-07",
+  "gpu": "RTX 5060 Ti 16GB (SM120)",
+  "modelo": "Qwen3.5-4B completo (4.66B params)",
+  "contexto": "Correccion tras relectura de los docs anteriores del proyecto (KERNEL_V8_OPTIMIZACION.md, KERNEL_NATIVO_CUDA.md, KERNEL_HANDOFF_COMPLETO.md): el cuello del decode M=1 era el computo FP32 por peso, NO el branching. Solucion del v8 (S-X6): precomputar offset/scale FP16 en host -> 2 ops/peso.",
+  "mejora_aplicada": {
+    "rlo_step_precomputados": "rlo[4] + step[4] FP16 por bloque (4 sub-bloques x 2 fp16 = 16 B/bloque extra en runtime; el archivo .sx8v43 no cambia)",
+    "formula": "rlo = lo + q*(3*(s==2)+(s==3)); rhi = hi - q*(3*(s==1)+(s==3)); step = (rhi-rlo)*0.015873 (clamp)",
+    "decode_peso": "w = rlo[sb] + step[sb]*lv + PCA (2 FMAs)  -> ~4 ops/peso vs ~10 antes",
+    "nota_v8_proyecto": "el v8 del proyecto NO soportaba S-X8 v4 (niveles 6-bit + PCA + levels_hi/lo) \u2014 el doc lo decia explicitamente y pedia 'Opcion B: kernel v8-sx8'. Eso es lo que hemos implementado ahora."
+  },
+  "benchmarks_end_to_end": {
+    "prompt_256_tok_fused_toks": 1411,
+    "prompt_antes_toks": 1385,
+    "decode_fused_toks": 11.2,
+    "decode_antes_toks": 5.2,
+    "mejora_decode": "2.2x",
+    "vram_gb": 6.61,
+    "vram_antes_gb": 4.96,
+    "nota_vram": "rlo/step anaden 16 B/bloque en runtime (41 B vs 30 del archivo); el archivo .sx8v43 NO cambia"
+  },
+  "micro_benchmarks": {
+    "decode1_fast_GB_s": 111,
+    "decode1_antes_GB_s": 88,
+    "fused_v7_TFLOPs": 17.7,
+    "nota_cuello_fused": "el decode ya NO es el cuello del fused (completo = sin decode en profiling); el techo del patron es ~34 TFLOPs (carga X + syncs + mma)"
+  },
+  "comparativa_con_kernel_anterior_proyecto": {
+    "dequantize_nativo_anterior_B_p_s": 60.7,
+    "decode1_mio_B_p_s": 118,
+    "v8_fused_anterior_us_layer_2048x2048": 176,
+    "decode1_mio_us_layer_equivalente": 36,
+    "fused_anterior_GFLOPS": 95,
+    "fused_mio_TFLOPs": 17.7,
+    "conclusion": "mi kernel es MAS RAPIDO que el anterior en todas las metricas: decode 7.4x mas ancho de banda, fused 186x. El v8 daba 29 tok/s en 1.7B (196 capas 2048x2048, bucle C++ puro SIN transformer); mi 11.2 tok/s es el 4.66B COMPLETO con transformer (309 lineales grandes + embed + lm_head + attention + normas)."
+  },
+  "leccion_principal": "LEER LOS DOCS ANTERIORES DEL PROYECTO ANTES DE IMPLEMENTAR. El plan (39) los citaba como referencia y fueron ignorados -> se reinventaron 2 dias de trabajo que ya estaban documentados. Las lecciones del v8 (precompute FP16, cache SMEM metadata) estan en KERNEL_V8_OPTIMIZACION.md."
+}

@@ -1,0 +1,64 @@
+{
+  "batch": "FASE 5 batch 2",
+  "fecha": "2026-08-09",
+  "protocolo": "scoring log-likelihood, greedy, KV fresca; HellaSwag 0-shot acc_norm (validation), ARC-Challenge 0-shot letras (test), MMLU 5-shot letras (validation); SX8 v4.3 via runtime propio fused v4.4 (kernel v3 + PCA), Q8_0 via llama-cpp-python (CUDA, activaciones Q8_1), FP16 transformers",
+  "resultados": {
+    "hellaswag": {
+      "fp16": {
+        "acc": 0.6965,
+        "correct": 6994,
+        "total": 10042
+      },
+      "sx8v43": {
+        "acc": 0.6964,
+        "correct": 6993,
+        "total": 10042
+      },
+      "q8_0": {
+        "acc": 0.6965,
+        "correct": 6994,
+        "total": 10042
+      }
+    },
+    "arc": {
+      "fp16": {
+        "acc": 0.9172,
+        "correct": 1075,
+        "total": 1172
+      },
+      "sx8v43": {
+        "acc": 0.9164,
+        "correct": 1074,
+        "total": 1172
+      },
+      "q8_0": {
+        "acc": 0.9181,
+        "correct": 1076,
+        "total": 1172
+      }
+    },
+    "mmlu": {
+      "fp16": {
+        "acc": 0.7133,
+        "correct": 1092,
+        "total": 1531
+      },
+      "sx8v43": {
+        "acc": 0.7074,
+        "correct": 1083,
+        "total": 1531
+      },
+      "q8_0": {
+        "acc": 0.7087,
+        "correct": 1085,
+        "total": 1531
+      }
+    }
+  },
+  "lectura_honesta": "En todos los benchmarks MC, FP16 ≈ SX8 ≈ Q8_0 dentro del ruido (diferencias <0.6 pts). La calidad diferenciadora de SX8 se ve en PPL (10.2358 vs 10.4540), no en accuracy MC — tareas robustas a cuantizacion 8-bit.",
+  "winogrande_batch1": {
+    "fp16": 0.5746,
+    "sx8v43": 0.5722,
+    "q8_0": 0.5746
+  }
+}

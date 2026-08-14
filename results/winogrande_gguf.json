@@ -1,0 +1,5 @@
+{
+  "mode": "gguf",
+  "label": "Q8_0",
+  "winogrande_s_acc": 0.574585635359116
+}

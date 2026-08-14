@@ -1,0 +1,54 @@
+{
+  "bench": "ARC-Challenge test",
+  "n": 300,
+  "mode": "fp16",
+  "fecha": "2026-08-09",
+  "distribucion_respuestas": {
+    "C": 84,
+    "B": 86,
+    "D": 54,
+    "A": 73,
+    "2": 2,
+    "4": 1
+  },
+  "metodos": {
+    "M1_letras_batch2_lmeval": 0.9067,
+    "M2_texto_sin_opciones": 0.4633,
+    "M3_texto_con_opciones": 0.8,
+    "M3_texto_normalizado_longitud": 0.6767
+  },
+  "concordancia_M1_M2": 140,
+  "precision_por_letra_M1": {
+    "2": {
+      "correct": 2,
+      "total": 2,
+      "acc": 1.0
+    },
+    "4": {
+      "correct": 1,
+      "total": 1,
+      "acc": 1.0
+    },
+    "A": {
+      "correct": 60,
+      "total": 73,
+      "acc": 0.8219
+    },
+    "B": {
+      "correct": 82,
+      "total": 86,
+      "acc": 0.9535
+    },
+    "C": {
+      "correct": 77,
+      "total": 84,
+      "acc": 0.9167
+    },
+    "D": {
+      "correct": 50,
+      "total": 54,
+      "acc": 0.9259
+    }
+  },
+  "conclusion": "M1 (letras) es el método estándar lm-eval (1 token por opción, sin artefactos de longitud/fluidez). La distribución balanceada + 82-95% en las 4 letras descartan el sesgo posicional. M2/M3 sufren artefactos de longitud (opciones de hasta 46 tokens) y fluidez — no se usan. El accuracy de letras del batch 2 (0.9172 FP16) es fiable."
+}

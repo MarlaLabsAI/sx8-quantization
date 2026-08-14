@@ -1,0 +1,10 @@
+{
+  "bench": "mmlu",
+  "mode": "fp16",
+  "tag": null,
+  "acc": 0.7133,
+  "correct": 1092,
+  "total": 1531,
+  "seconds": 269.3,
+  "partial": false
+}

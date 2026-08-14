@@ -1,0 +1,90 @@
+{
+  "fase": "4",
+  "fecha": "2026-08-07",
+  "gpu": "RTX 5060 Ti 16GB (SM120, GB206)",
+  "modelo": "Qwen3.5-4B completo (4.66B params; texto 4.21B)",
+  "formato": "S-X8 v4.3 (30 B/bloque = 7.50 bpp) + layout VRAM v4.4 (30 B/bloque EXACTO, kb-major)",
+  "archivo_sx8v43": "NO cambia (7.50 bpp, claim del paper intacto)",
+  "reformulacion_pca": {
+    "descripcion": "Z0/Z1 precomputados por capa (bases por bloque de K, compartidas entre columnas)",
+    "coste_pca": "2 FMA por BLOQUE (antes 2 FMA + 2 loads fp32 POR PESO)",
+    "validacion": "maxdiff 1e-8 (exacto en fp32) — validate_pca_reform.py PASS"
+  },
+  "layout_v44": {
+    "hdr": "6 B (dmin fp16 + dmax fp16 + config u8 + coeff u8)",
+    "levels": "24 B (por sub-bloque: hi[4] + lo[2], 8 pesos c/u)",
+    "total": "30 B/bloque EXACTO (4.373 GB modelo completo; 3.955 GB texto)",
+    "orden": "kb-major (bid = kb*N + n) — columnas consecutivas contiguas en DRAM",
+    "verificacion": "niveles byte-exactos biyectivos vs v4.3; decode maxdiff 1e-6"
+  },
+  "kernel_decode1_v3": {
+    "diseno": "warp = 8 columnas consecutivas x 4 sub-bloques, kb fijo (coalescente) + split-K (atomicAdd)",
+    "rlo_step": "computados en vuelo (0 bytes extra de VRAM)",
+    "evolucion": "v1 140 GB/s (no coalescente) -> v2 260 GB/s -> v3 split-K 246-317 GB/s",
+    "ncu": "grid 0.2 waves, ocupacion 18.3%, stall L1TEX 72% -> split-K fix",
+    "microbench": "techo patrón READ 417 GB/s (93% BW); gap READ vs REAL = computo ALU",
+    "variantes_hdr": "hdr6 (4.373 GB) GANA: 80.4 vs 63.1 tok/s puro (hdr8 4.63 GB)"
+  },
+  "resultados": {
+    "decode_puro_tok_s": 80.4,
+    "decode_puro_ms_token": 12.4,
+    "decode_puro_GB_s": 317.0,
+    "decode_puro_G_pesos_s": 338.0,
+    "vram_pesos_texto_GB": 3.955,
+    "vram_pesos_modelo_completo_GB": 4.373,
+    "vram_referencia_gguf_q8_0_GB": 4.48,
+    "mejora_vs_fase3_decode": "7.2x (11.2 -> 80.4 tok/s)",
+    "test_igualdad_M16_rel": 0.01891,
+    "test_igualdad_M1_rel": 0.01779,
+    "test_igualdad_M1_status": "PASS (32 capas, decode v3 en todo)"
+  },
+  "cuello_end_to_end": {
+    "end_to_end_tok_s": 9.4,
+    "end_to_end_ms_token": 125.8,
+    "gpu_real_ms_token": 15.0,
+    "cpu_overhead_ms_token": 110.0,
+    "cudaLaunchKernel_por_token": 2497,
+    "cpu_breakdown": {
+      "cudaLaunchKernel_ms": 25.1,
+      "gla_python_ms": 23.4,
+      "slices_ms": 9.8,
+      "empties_ms": 13.5,
+      "copies_ms": 6.6,
+      "otros_ms": 30.0
+    },
+    "diagnostico": "CPU-bound: Python orquesta 2497 kernels/token -> GPU ociosa ~85% del tiempo",
+    "solucion_prioritaria": "CUDA Graphs sobre nuestro pipeline (vía A) y/o fork llama.cpp (vía B)"
+  },
+  "experimento_texturas": {
+    "hipotesis": "sampler cudaFilterModeLinear hace el lerp del decode V6 en hardware (TMUs)",
+    "E0_baseline_GB_s": 264.7,
+    "E1_tex1Dfetch_GB_s": 284.9,
+    "E2_sampler_lerp_GB_s": 120.4,
+    "veredicto": "el sampler es 2.4x mas lento (1 fetch de textura por peso, carril TMU); TMUs no hacen matmul; texture path empata con loads en datos lineales. NO es una via."
+  },
+  "pendientes": [
+    "Prompt largo en llama.cpp (kernel MMQ) - 3 opciones, recomendada la 2: ver docs 42 §1b / 43 §7",
+    "D: experimento FP4/FP6 vía PTX (tabla paper)",
+    "E: docs finales"
+  ],
+  "cudagraphs": {
+    "decode_M1_puro_tok_s": 58.7,
+    "decode_M1_normal_tok_s": 10.4,
+    "speedup": 5.6,
+    "exactitud": "maxdiff 0.000 (grafo vs normal, protocolo correcto)",
+    "hallazgo_atomicAdd": "split-K con atomicAdd era NO determinista (maxdiff 1.5e-2 entre llamadas) -> reescrito con reduce determinista (sin atomics): determinista 0.0",
+    "hallazgo_stream": "kernels C++ lanzados sin at::cuda::getCurrentCUDAStream() quedaban FUERA de la captura -> fix aplicado",
+    "hallazgo_embed_numba": "SX8Embedding numba rompia la captura (asigna buffers + sync) -> SX8EmbeddingV44 CUDA C con buffer preasignado",
+    "hallazgo_gla": "generacion real con KV creciente + GLA: conv_state.copy_() in-place rompe el grafo -> requiere llama.cpp (kernels GLA nativos) para el end-to-end completo",
+    "rotary_emb": "capturable OK (el fallo previo era aliasing de buffers en el test, no del grafo)",
+    "resultado_final": "58.7 tok/s decode M=1 exacto (use_cache=True 59.0, maxdiff 0.000)"
+  },
+  "verificacion_calidad": {
+    "ppl_wikitext2_fused_v44": 10.2267,
+    "ppl_ref_numba_v43": 10.2358,
+    "delta": -0.0091,
+    "winogrande_s_fused_v44": 0.5722,
+    "winogrande_s_ref_numba": 0.5722,
+    "status": "PASS (calidad del paper intacta)"
+  }
+}

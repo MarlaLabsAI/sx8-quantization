@@ -1,0 +1,47 @@
+{
+  "fase": "2",
+  "fecha": "2026-08-06",
+  "gpu": "RTX 5060 Ti 16GB (SM120)",
+  "modelo": "Qwen3.5-4B completo (4.66B params)",
+  "formato": "S-X8 v4.3 (30 B/bloque = 7.50 bpp)",
+  "test_igualdad_logits": {
+    "rel": 0.01985,
+    "maxdiff": 0.3169,
+    "resultado": "PASS",
+    "nota": "tolerancia fp16 a traves de 32 capas, 348 modulos SX8"
+  },
+  "vram": {
+    "fp16_torch": 9.08,
+    "fused_torch": 1.28,
+    "fused_numba_metadatos": 4.26,
+    "fused_total": 5.54,
+    "reduccion_pct": 39.0,
+    "nota": "pesos SX8 en VRAM: 4.26 GB (objetivo 4.4); resto 1.28GB = convs/normas/embed no-lineales en FP16"
+  },
+  "velocidad_end_to_end": {
+    "prompt_256_tok_fused_toks": 114,
+    "prompt_256_tok_fp16_toks": 309,
+    "prompt_gguf_q8_0_ref_toks": 3056,
+    "decode_fused_toks": 1.4,
+    "decode_fp16_toks": null,
+    "nota": "sin tensor cores (numba FMA escalar): prompt 3x mas lento que FP16 cuBLAS; decode limitado por ALU del decode (~7 G pesos/s); FASE 3 (mma fp16) es el igualador"
+  },
+  "kernels": {
+    "v1_naive": "PASS (validacion, 29 GF/s)",
+    "v2_tiles": "PASS (fix race syncthreads, 55 GF/s)",
+    "v3_coop_decode": "PASS (decode cooperativo + shared, ~950 GF/s prompt)",
+    "decode_M1": "PASS (unroll2 + kb-major, ~7 G pesos/s)",
+    "layout": "kb-major (bid=kb*N+n) \u2014 acceso secuencial/coalescente"
+  },
+  "bugs_resueltos": [
+    "v2: race en sX/sB/sS (warp rapido pisaba shared del kb siguiente) -> syncthreads al final de cada kb",
+    "v2: warp-reduce repetido por kb contaba cada fila 32 veces -> reduce unico al final",
+    "decode M=1: guard n>=n_blocks//n_cb con n_blocks=N pasado por error -> columnas n>=102 vacias (0)",
+    "as_tensor sobre device arrays numba = vista sin refcount -> memoria reasignada (rel=1.0) -> torch.empty due\u00f1o + as_cuda_array",
+    "OOM: _BUFFER_POOL de numba retenia 7.6GB entre cargas -> clear entre modelos",
+    "OOM: metadatos SX8 copiados ANTES de liberar peso FP16 del Linear -> liberar primero",
+    "OOM: deepcopy del modelo FP16 duplicaba 9.3GB -> sustitucion in situ",
+    "Embedding no es Linear -> SX8Embedding propio (gather+decode por fila)",
+    "reshape y[:, :in_f] truncaba out_f a in_f (resto del decode del formato) -> quitar"
+  ]
+}

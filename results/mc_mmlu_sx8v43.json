@@ -1,0 +1,10 @@
+{
+  "bench": "mmlu",
+  "mode": "sx8v43",
+  "tag": null,
+  "acc": 0.7074,
+  "correct": 1083,
+  "total": 1531,
+  "seconds": 938.5,
+  "partial": false
+}

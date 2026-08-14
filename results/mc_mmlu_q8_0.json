@@ -1,0 +1,10 @@
+{
+  "bench": "mmlu",
+  "mode": "q8_0",
+  "tag": null,
+  "acc": 0.7087,
+  "correct": 1085,
+  "total": 1531,
+  "seconds": 1964.5,
+  "partial": false
+}

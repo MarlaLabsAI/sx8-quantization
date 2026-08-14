@@ -1,0 +1,10 @@
+{
+  "bench": "arc",
+  "mode": "fp16",
+  "tag": null,
+  "acc": 0.9172,
+  "correct": 1075,
+  "total": 1172,
+  "seconds": 102.3,
+  "partial": false
+}

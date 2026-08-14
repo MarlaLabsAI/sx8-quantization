@@ -1,0 +1,84 @@
+{
+  "fecha": "2026-08-07",
+  "gpu": "RTX 5060 Ti",
+  "motor": "llama.cpp fork local (commit 7c203670f + tipo SX8)",
+  "modelo": "Qwen3.5-4B-SX8v43.gguf (3.83 GiB, 145 tensores SX8 + resto Q8_0)",
+  "archivos_tocados": [
+    "ggml/include/ggml.h (GGML_TYPE_SX8=41, COUNT=42)",
+    "ggml/src/ggml-common.h (block_sx8 30B, QKSX8/QRSX8/QISX8)",
+    "ggml/src/ggml-quants.h/.c (quantize/dequantize/vec_dot CPU)",
+    "ggml/src/ggml.c (type_traits: blck 32, size 30)",
+    "ggml/src/ggml-cpu/quants.c + quants.h (vec_dot_sx8_q8_1 CPU)",
+    "ggml/src/ggml-cpu/arch-fallback.h (macro x86)",
+    "ggml/src/ggml-cpu/ggml-cpu.c (tabla vec_dot)",
+    "ggml/src/ggml-cpu/ops.cpp (7 switches get_rows etc.)",
+    "ggml/src/ggml-cuda/vecdotq.cuh (vec_dot_sx8_q8_1 CUDA)",
+    "ggml/src/ggml-cuda/common.cuh (ggml_cuda_type_traits<SX8>)",
+    "ggml/src/ggml-cuda/mmvq.cu (dispatch MMVQ SX8)",
+    "ggml/src/ggml-cuda/ggml-cuda.cu (switch tipos)",
+    "gguf-py/gguf/constants.py (SX8=41, GGML_QUANT_SIZES)",
+    "convert_pkl_to_gguf_sx8.py + gguf_binary_replace.py (pkl->GGUF SX8)"
+  ],
+  "resultados": {
+    "decode_gpu_tok_s": 63.79,
+    "prompt_1tok_tok_s": 66.99,
+    "decode_q8_0_ref_tok_s": 68.32,
+    "archivo_gib": 3.83,
+    "archivo_q8_0_gib": 4.16,
+    "prompt_largo": "CRASHEA - falta kernel MMQ (GEMM tensor cores) para SX8",
+    "validacion": "carga OK, decode OK, pp1 OK, pp128 FALLA (MMQ)",
+    "nota_decode": "63.79 tok/s HONESTO tras corregir MMVQ (el 74.21 anterior estaba ROTO: computaba 25% del dot)"
+  },
+  "pendientes": [
+    "MMQ SX8 (kernel GEMM prompt) o usar path F16 para el prompt",
+    "Verificar texto generado (tokenizer/chat template)",
+    "PPL de llama.cpp SX8 para validar calidad end-to-end",
+    "Comparativa final vs Q8_0 (tabla paper)",
+    "Si el decode basta: documentar y seguir"
+  ],
+  "kernel_mmq": {
+    "estado": "IMPLEMENTADO y CORREGIDO (8 Ago)",
+    "pp128_tok_s": 1877.85,
+    "pp128_antes": "CRASH (sin kernel MMQ)",
+    "tg64_tok_s": 63.79,
+    "tg64_antes": "74.21 (PERO con MMVQ roto: solo computaba 8/32 pesos = 25% del dot)",
+    "ppl_wikitext2_llamacpp": 10.5043,
+    "ppl_q8_0_mismo_motor": 10.454,
+    "nota_ppl": "llama.cpp usa activacion Q8_1 (+0.24 PPL para TODOS los tipos) y SX8 sin PCA en este motor (+0.05); la ventaja real del PCA se valida con el runtime propio (10.2267)",
+    "bugs_encontrados": [
+      "MMVQ: QISX8=8 (semantica int8-por-int de Q8_0) hacia que el kernel procesara solo 8 de 32 pesos por bloque -> decode = 25% del dot product. FIX: QISX8=32 + VDR_SX8_Q8_1_MMVQ=8. EL DECODE ANTERIOR (74 tok/s) JAMAS FUE VALIDADO NUMERICAMENTE (solo velocidad).",
+      "MMQ: el fragmento B de m16n8k16.f16 empaqueta 2 K consecutivas a la misma N (no 2 N). K=2*get_j(l), N=get_i(l). Estaba invertido."
+    ],
+    "validacion_aislada": {
+      "test_CMQ_vs_MMVQ_vs_CPU": "PASS",
+      "MMVQ_vs_CPU_RMS": 233.6,
+      "MMQ_vs_CPU_RMS": 8.4,
+      "CPU_error_esperado": "233.8 (ruido activacion Q8_1)",
+      "referencia": "dequantize_row_sx8 + FP32 matmul (error 0.0)"
+    },
+    "archivos_tocados_mmq": [
+      "ggml/src/ggml-common.h (QISX8 = 32)",
+      "ggml/src/ggml-cuda/vecdotq.cuh (VDR_SX8_Q8_1_MMVQ = 8, rlo/step precomputados - leccion v8)",
+      "ggml/src/ggml-cuda/mmq.cuh (load_tiles_sx8 + vec_dot_sx8_q8_1_mma + MMQ_MMA_TILE_X_K_SX8=132 + mmq_type_traits SX8)",
+      "ggml/src/ggml-cuda/mmq.cu (case SX8 + mmq_supported)",
+      "ggml/src/ggml-cuda/template-instances/mmq-instance-sx8.cu (NUEVO)"
+    ],
+    "test_aislado": "/tmp/opencode/test_mmq_vs_mmvq.cpp (build del fork)"
+  },
+  "velocidades_q8_0_referencia": {
+    "referencia_oficial": "Qwen3.5-4B Q8_0 en RTX 5060 Ti: 40-54 tok/s uso real (max 54) - dato del usuario / comunidad (consultor365.es)",
+    "medicion_local_banco": {
+      "tg64": 72.06,
+      "nota": "llama-bench contexto corto, sin overhead - NO es uso real; documentada como banco"
+    },
+    "conclusion_decode": "SX8 (63.79) SUPERA a Q8_0 uso real (40-54) en decode",
+    "comunidad_5060ti": [
+      "Qwen3.5-9B-Q4_K_XL ~85 tok/s (njannasch.dev)",
+      "Qwen3.5-35B-A3B ~47-51 tok/s 160K ctx (njannasch.dev)",
+      "Qwen3.5-30B-A3B ~50 tok/s (Reddit)",
+      "Qwen3.5-4B Q4_K_M ~76 tok/s, Q8_0 40-54 tok/s (consultor365, estimado)"
+    ],
+    "escala_gpus_mayores": "Qwen3.5-9B Q8_0: 4090 ~60, 5090 ~80 tok/s; Q4_K_M 4090 ~92 (willitrunai)",
+    "recomendacion_paper": "usar 40-54 tok/s como referencia oficial de Q8_0 en 5060 Ti; la medicion local 72.06 solo como banco"
+  }
+}

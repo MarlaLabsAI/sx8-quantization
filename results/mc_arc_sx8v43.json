@@ -1,0 +1,10 @@
+{
+  "bench": "arc",
+  "mode": "sx8v43",
+  "tag": null,
+  "acc": 0.9164,
+  "correct": 1074,
+  "total": 1172,
+  "seconds": 248.9,
+  "partial": false
+}

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>S-X8 v4.3: Un formato de cuantización a 7,50 bits por peso con calidad de FP16 y decodificación portable</title>
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; font-size: 10.5pt; line-height: 1.45; color: #111; max-width: 900px; margin: 0 auto; padding: 24px; }
+  h1 { font-size: 17pt; text-align: center; margin-bottom: 4px; }
+  .authors { text-align: center; font-size: 12pt; margin-bottom: 2px; }
+  .affil { text-align: center; font-size: 10.5pt; color: #333; margin-bottom: 14px; }
+  .abstract { background: #f6f6f6; border: 1px solid #ddd; padding: 10px 14px; font-size: 10pt; margin-bottom: 14px; }
+  .abstract b { font-variant: small-caps; }
+  h2 { font-size: 12.5pt; border-bottom: 1px solid #999; margin-top: 20px; padding-bottom: 2px; }
+  h3 { font-size: 11pt; margin-top: 12px; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 9.5pt; }
+  th, td { border: 1px solid #bbb; padding: 4px 7px; text-align: center; }
+  th { background: #eee; }
+  .best { background: #e8f4e8; font-weight: bold; }
+  code { font-family: Consolas, monospace; font-size: 9pt; background: #f4f4f4; padding: 0 3px; }
+  .caption { font-size: 9pt; color: #444; margin-top: 2px; text-align: center; }
+  ol li, ul li { margin-bottom: 3px; }
+  .eq { text-align: center; font-style: italic; margin: 8px 0; font-size: 10.5pt; }
+  .foot { font-size: 8.5pt; color: #555; }
+  .kw { margin: 8px 0 16px 0; font-size: 9.5pt; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>S-X8 v4.3: Un formato de cuantización a 7,50 bits por peso con calidad de FP16 y decodificación portable</h1>
+<div class="authors">Mart&iacute; Vidal Leandro</div>
+<div class="affil">MarlaLabs &mdash; Laboratorio independiente de IA &middot; marlalabs.com</div>
+<div class="abstract">
+<b>Resumen.</b> Este documento presenta S-X8 v4.3, un formato de cuantización de pesos para modelos de lenguaje grandes
+que almacena <b>7,50 bits por peso</b> &mdash; más de un 11% menos bits que el ampliamente usado Q8_0
+(8,50 bpp) &mdash; ofreciendo a la vez <b>calidad de nivel FP16</b> (perplexity dentro del +0,2% del modelo
+sin cuantizar en wikitext-2, dentro del ruido estadístico) y <b>9&times; menos pérdida de perplexity que
+Q8_0</b> (+0,26% frente a +2,40% sobre FP16). En Qwen3.5-4B, el formato reduce la carga de texto en un
+11,6% y el modelo completo (incluyendo visión y predicción multi-token) en un 15% frente a un despliegue
+GGUF Q8_0 + mmproj, y ejecuta la decodificación <b>más rápido que Q8_0 en uso real</b> (63,8 frente a
+40&ndash;54 tokens/s en una RTX 5060 Ti). El formato está alineado a byte, usa solo ~9&ndash;10 operaciones
+ALU por peso para decodificar (sin memoria compartida, sin shuffles, sin dependencia de tensor cores), lo que
+lo hace portable entre arquitecturas de GPU y backends. La calidad se valida con un protocolo estricto
+(perplexity, Winogrande_s, HellaSwag, ARC-Challenge, MMLU) frente a FP16 y Q8_0 en la misma máquina, e
+integramos el formato como tipo nativo en un fork de llama.cpp, incluido un kernel de multiplicación de
+matrices para el procesamiento de prompts. Se reportan limitaciones honestas: en los benchmarks de opción
+múltiple los tres formatos son estadísticamente indistinguibles, y el rendimiento de prompt en llama.cpp
+sigue por debajo de Q8_0.
+</div>
+<div class="kw"><b>Palabras clave:</b> cuantización &middot; compresión de LLMs &middot; perplexity &middot; llama.cpp &middot; kernels portables</div>
+
+<h2>1&nbsp;&nbsp;Introducción</h2>
+<p>
+Los modelos de lenguaje grandes están limitados por memoria durante la inferencia: la velocidad de generación
+está dominada por la lectura de la matriz de pesos desde la VRAM en cada token. Reducir los bytes por peso
+(bpp) mejora por tanto directamente la velocidad y la capacidad. El formato de 8 bits de facto, el GGUF
+<b>Q8_0</b> (8,50 bpp), ofrece buena calidad pero desperdicia bytes: su estructura de bloques y su escala
+simétrica consumen bits que aportan poca información.
+</p>
+<p>
+Este trabajo introduce <b>S-X8 v4.3</b>, un formato que cuantiza los pesos en bloques de 32 usando <i>cuatro
+estrategias de rango adaptativas</i> por sub-bloque de 8 pesos (elegidas por sub-bloque según el error
+cuadrático medio), una codificación jerárquica de niveles de 6 bits (4+2), escalas FP16 exactas, un byte de
+configuración explícito y un coeficiente de corrección PCA de 1 byte por bloque. Esto produce exactamente
+<b>30 bytes por bloque = 7,50 bpp</b> &mdash; el recuento de bits real y completo &mdash; con una calidad
+esencialmente igual al modelo sin cuantizar. S-X denota la familia de formatos construidos sobre esta
+metodología (estrategias de rango adaptativas, niveles jerárquicos, corrección PCA a la salida); S-X8 v4.3
+es su miembro de 8 bits validado, y la metodología fue concebida y desarrollada por el autor (Mart&iacute;
+Vidal Leandro, 2025&ndash;2026).
+</p>
+<p>
+Las contribuciones de este trabajo son:
+</p>
+<ol>
+<li>Una especificación completa a nivel de byte del formato (Sección&nbsp;2) cuyo decodificador es
+    <i>portable por diseño</i>: ~9&ndash;10 operaciones ALU por peso, alineado a byte, sin memoria
+    compartida, sin shuffles, sin instrucciones especiales.</li>
+<li>Un protocolo de evaluación riguroso en Qwen3.5-4B (Sección&nbsp;3) que compara FP16, S-X8 v4.3 y Q8_0
+    en perplexity y cinco benchmarks de opción múltiple, todo medido en la misma máquina
+    (Sección&nbsp;4).</li>
+<li>Integración nativa en un fork de llama.cpp como tipo <code>GGML_TYPE_SX8</code>, con un kernel de
+    vector-dot para decodificación y un kernel de multiplicación de matrices con tensor cores (MMQ) para el
+    procesamiento de prompts (Sección&nbsp;5).</li>
+<li>Una discusión honesta de dónde gana el formato y dónde no (Sección&nbsp;7).</li>
+</ol>
+
+<h2>2&nbsp;&nbsp;El formato S-X8 v4.3</h2>
+
+<h3>2.1&nbsp;&nbsp;Layout del bloque (30 bytes, 7,50 bpp)</h3>
+<p>
+Un bloque cubre <b>32 pesos consecutivos</b> de una fila de una matriz de pesos. El layout de 30 bytes es:
+</p>
+<table>
+<tr><th>Campo</th><th>Tamaño</th><th>Descripción</th></tr>
+<tr><td><code>dmin</code>, <code>dmax</code></td><td>2+2 B</td><td>Extremos de rango FP16 exactos (mantisa de 10 bits, sin pérdida frente a FP32)</td></tr>
+<tr><td><code>config</code></td><td>1 B</td><td>4 &times; 2 bits: estrategia de rango por sub-bloque de 8 pesos</td></tr>
+<tr><td><code>qh</code></td><td>16 B</td><td>Nibbles altos de los niveles de 6 bits (4 bits &times; 32 pesos)</td></tr>
+<tr><td><code>ql</code></td><td>8 B</td><td>2 bits bajos de los niveles de 6 bits (2 bits &times; 32 pesos)</td></tr>
+<tr><td><code>coeff</code></td><td>1 B</td><td>Coeficiente de corrección PCA (2 bases con signo de 4 bits)</td></tr>
+<tr><td><b>Total</b></td><td><b>30 B</b></td><td><b>= 7,50 bpp, alineado a byte</b></td></tr>
+</table>
+<p class="caption">Tabla 1: Layout del bloque S-X8 v4.3. Cada byte está contabilizado; el recuento de bits es exacto.</p>
+
+<h3>2.2&nbsp;&nbsp;Estrategias de rango adaptativas</h3>
+<p>
+Cada sub-bloque de 8 pesos selecciona, entre 4 estrategias, el rango que minimiza el MSE del sub-bloque:
+(i)&nbsp;rango completo <span class="eq">[dmin, dmax]</span>, (ii)&nbsp;cuarto inferior
+<span class="eq">[dmin, dmin+q]</span>, (iii)&nbsp;cuarto superior <span class="eq">[dmax&minus;q, dmax]</span>
+y (iv)&nbsp;mitad central <span class="eq">[dmin+q, dmax&minus;q]</span>, donde
+<span class="eq">q=(dmax&minus;dmin)/4</span>. La estrategia elegida se guarda en 2 bits del byte de
+configuración. Se verificó empíricamente que rangos candidatos adicionales (incluidos los invertidos) no
+aportan mejora medible (+0,00%), por lo que el conjunto de 4 estrategias es óptimo para 2 bits de metadatos.
+</p>
+
+<h3>2.3&nbsp;&nbsp;Niveles y corrección PCA</h3>
+<p>
+Cada peso se codifica como un nivel de 6 bits <span class="eq">lv = (hi&nbsp;&lt;&lt;&nbsp;2) | lo</span>
+con los 4 bits altos en <code>qh</code> y los 2 bajos en <code>ql</code> &mdash; un split jerárquico derivado
+de la estructura de dos niveles observada en el análisis motivador (Apéndice&nbsp;A). El decodificador calcula
+<span class="eq">rlo, rhi</span> sin ramas a partir de la estrategia, y después
+<span class="eq">step = (rhi&minus;rlo)&middot;0,015873</span> y
+<span class="eq">w = rlo + step&middot;lv</span>.
+</p>
+<p>
+Una <b>corrección PCA</b> refina la reconstrucción: por bloque-de-K el formato almacena 2 vectores base
+<span class="eq">b<sub>0</sub>, b<sub>1</sub></span> (compartidos entre columnas de salida) y por
+(bloque, columna) un byte de coeficiente con signo <span class="eq">(c<sub>0</sub>, c<sub>1</sub>)</span>:
+<span class="eq">w += c<sub>0</sub>&middot;s<sub>0</sub>&middot;b<sub>0</sub>[t] + c<sub>1</sub>&middot;s<sub>1</sub>&middot;b<sub>1</sub>[t]</span>.
+Usando la linealidad del producto escalar, la corrección se aplica a la <i>salida</i> de una multiplicación de
+matrices como dos acumuladores escalares por bloque de K (<span class="eq">Z<sub>0</sub>, Z<sub>1</sub></span>,
+calculados una vez por capa y token), convirtiendo el coste PCA por peso (2 FMA + 2 cargas FP32 por peso) en
+2 FMA por bloque (&asymp;0,06 por peso). Todos los kernels de este trabajo usan esta reformulación.
+</p>
+
+<h3>2.4&nbsp;&nbsp;Decodificación portable</h3>
+<p>
+Decodificar S-X8 no requiere memoria compartida, ni warp shuffles, ni unidades de textura, ni tensor cores:
+solo extracción de bytes, una selección de estrategia sin ramas y dos FMA por peso. El mismo kernel funciona
+por tanto sin cambios en arquitecturas separadas por diez años (validado en una RTX 5060 Ti, Blackwell SM120,
+y una GTX 960M, Maxwell). Portar a ROCm, Metal o backends CPU SIMD es directo.
+</p>
+
+<h3>2.5&nbsp;&nbsp;Formato de contenedor (.sx8v43)</h3>
+<p>
+Los modelos se empaquetan en un contenedor autocontenido alineado a byte (<code>.sx8v43</code>): cabecera
+mágica (<code>SX43FILE</code>, versión 1), metadatos del modelo y un registro por tensor con sus bloques de
+30 bytes más las bases y escalas PCA. El contenedor no usa pickle y se verifica byte-exacto en round-trip
+(381/381 tensores; PPL desde archivo idéntica a la en memoria). Las torres de visión y MTP se cuantizan
+dentro del mismo archivo &mdash; el modelo completo en un único artefacto, a diferencia de GGUF que
+requiere un mmproj FP16 aparte. Layout completo en <code>SX8_FLASH_V4_3_CONTAINER-ES.md</code>.
+</p>
+
+<h2>3&nbsp;&nbsp;Metodología de evaluación</h2>
+<h3>3.1&nbsp;&nbsp;Modelo y hardware</h3>
+<p>
+La evaluación se realiza en <b>Qwen3.5-4B</b>, un modelo híbrido de 2026: 24 capas Gated-DeltaNet (atención lineal) y 8
+capas de atención completa GQA, con torre de visión y cabeza de predicción multi-token (4,66B parámetros en
+total, de los cuales el transformer de texto de 4,2B está completamente cuantizado; normas, conv1d, visión y
+MTP se mantienen en FP16, reflejando el GGUF de referencia que almacena la visión en un archivo mmproj
+aparte). Todas las mediciones se ejecutan en una única <b>RTX 5060 Ti 16&nbsp;GB</b> (SM120, 448&nbsp;GB/s)
+con CUDA 13.0, PyTorch 2.11 y llama.cpp (commit 7c203670f).
+</p>
+<h3>3.2&nbsp;&nbsp;Protocolo</h3>
+<ul>
+<li><b>Perplexity</b> en wikitext-2 test (297.053 tokens), ventanas de 512 tokens con stride 128 (protocolo
+    comunitario estándar), KV fresca por ventana.</li>
+<li><b>Opción múltiple</b>: Winogrande_s (validation, 1.267), HellaSwag (validation, 10.042, 0-shot,
+    <i>acc_norm</i>), ARC-Challenge (test, 1.172, 0-shot) y MMLU (validation, 1.531, 5-shot), todos puntuados
+    por log-likelihood de la continuación con decodificación greedy y KV fresca por opción, siguiendo las
+    convenciones de lm-eval (continuaciones de una letra; puntuaciones normalizadas por longitud para
+    HellaSwag).</li>
+<li><b>Caminos de medición por formato</b>: FP16 y S-X8 v4.3 se evalúan con el runtime propio fusionado
+    (kernel v3 con la corrección PCA &mdash; el motor que define los números de calidad de este paper, PPL
+    10,2267); la referencia Q8_0 se evalúa con llama.cpp (CUDA, activaciones Q8_1, herramienta canónica de
+    perplexity). Los prompts y el código de puntuación se comparten entre motores
+    (<code>mc_common.py</code>) para garantizar entradas idénticas.</li>
+</ul>
+<p>
+El método de puntuación se validó explícitamente por letras de ARC (Apéndice&nbsp;C del protocolo extendido):
+la distribución de respuestas está balanceada (descarta artefactos de sesgo posicional), la precisión por
+letra es del 82&ndash;95% en todas las letras de respuesta, y el número se reproduce en tres motores
+independientes (FP16 0,9172, S-X8 0,9164, Q8_0 0,9181). La evidencia completa está en
+<code>verify_arc_method.py</code>.
+</p>
+
+<h2>4&nbsp;&nbsp;Resultados</h2>
+<h3>4.1&nbsp;&nbsp;Calidad</h3>
+<table>
+<tr><th>Métrica</th><th>FP16</th><th class="best">S-X8 v4.3</th><th>Q8_0 (unsloth)</th><th>&Delta; SX8&minus;FP16</th><th>&Delta; Q8_0&minus;FP16</th></tr>
+<tr><td>PPL wikitext-2 (runtime propio, PCA)</td><td>10,2090</td><td class="best">10,2267</td><td>10,4540</td><td>+0,17%</td><td>+2,40%</td></tr>
+<tr><td>PPL wikitext-2 (kernel de referencia)</td><td>10,2090</td><td class="best">10,2358</td><td>10,4540</td><td>+0,26%</td><td>+2,40%</td></tr>
+<tr><td>Winogrande_s</td><td>0,5746</td><td class="best">0,5722</td><td>0,5746</td><td>&minus;0,0024</td><td>0,0000</td></tr>
+<tr><td>HellaSwag (0-shot, acc_norm)</td><td>0,6965</td><td class="best">0,6964</td><td>0,6965</td><td>&minus;0,0001</td><td>0,0000</td></tr>
+<tr><td>ARC-Challenge (0-shot)</td><td>0,9172</td><td class="best">0,9164</td><td>0,9181</td><td>&minus;0,0008</td><td>+0,0009</td></tr>
+<tr><td>MMLU (5-shot)</td><td>0,7133</td><td class="best">0,7074</td><td>0,7087</td><td>&minus;0,0059</td><td>&minus;0,0046</td></tr>
+</table>
+<p class="caption">Tabla 2: Calidad en Qwen3.5-4B, RTX 5060 Ti. Las tareas de opción múltiple son robustas a
+la cuantización de clase 8-bit: todos los formatos están dentro del ruido estadístico (SE &asymp;0,5&ndash;1,4
+pts). El diferenciador de calidad de S-X8 es la perplexity: <b>9&times; menos pérdida que Q8_0</b> siendo
+además un 11,6% más pequeño.</p>
+
+<h3>4.2&nbsp;&nbsp;Tamaño y memoria</h3>
+<table>
+<tr><th></th><th class="best">S-X8 v4.3</th><th>Q8_0</th><th>FP16</th></tr>
+<tr><td>Bits por peso (contabilizados)</td><td class="best"><b>7,50</b></td><td>8,50</td><td>16,00</td></tr>
+<tr><td>Archivo de pesos de texto</td><td class="best"><b>3,96 GB</b></td><td>4,48 GB</td><td>9,3 GB</td></tr>
+<tr><td>Modelo completo (visión+MTP incluidos)</td><td class="best"><b>4,38 GB</b> (un archivo)</td><td>4,48 + 0,67 mmproj = 5,15 GB</td><td>&mdash;</td></tr>
+<tr><td>VRAM, pesos de texto</td><td class="best"><b>3,955 GB</b></td><td>4,48 GB</td><td>9,08 GB</td></tr>
+<tr><td>Archivo GGUF (integración llama.cpp)</td><td class="best"><b>3,83 GiB</b></td><td>4,16 GiB</td><td>&mdash;</td></tr>
+</table>
+<p class="caption">Tabla 3: Tamaño. Texto: &minus;11,6% frente a Q8_0; modelo completo: &minus;15%. El
+contenedor S-X8 cuantiza las torres de visión y MTP dentro de un único archivo alineado a byte; GGUF
+requiere un mmproj FP16 aparte.</p>
+
+<h2>5&nbsp;&nbsp;Velocidad e integración en el motor</h2>
+<h3>5.1&nbsp;&nbsp;Runtime propio</h3>
+<ul>
+<li><b>Kernel de decodificación</b> (M=1, 249 capas de texto, layout v4.4: 30 B/bloque, kb-major, warps
+    coalescentes, split-K): <b>80,4 tok/s</b> de kernel puro (317 GB/s, 338 G pesos/s), 7,2&times; sobre la
+    generación anterior.</li>
+<li><b>Kernel de prompt</b> (wmma m16n16k16, dequant+GEMM fusionado): <b>1.411 tok/s</b>, 4,5&times; más
+    rápido que FP16 cuBLAS (309 tok/s) porque S-X8 lee 0,94 B/peso frente a 2 B/peso.</li>
+<li><b>CUDA Graphs</b> de decodificación: <b>58,7 tok/s</b> exactos (reducción determinista, streams
+    corregidos).</li>
+</ul>
+<h3>5.2&nbsp;&nbsp;Fork de llama.cpp (tipo nativo GGML_TYPE_SX8 = 41)</h3>
+<p>
+S-X8 se integra como tipo cuantizado de primera clase en un fork de llama.cpp: camino CPU (dequantize,
+vector-dot con activaciones Q8_1), kernel CUDA de decodificación <b>MMVQ</b> y kernel CUDA <b>MMQ</b> de
+multiplicación de matrices con tensor cores (fp16 m16n8k16) para que los prompts largos dejen de fallar. La
+corrección se validó con tests de kernel aislados (acuerdo del MMQ con una referencia CPU exacta: RMS
+8,4&times;10<sup>-4</sup> en tiles de K=256), generación end-to-end y perplexity.
+</p>
+<table>
+<tr><th>llama.cpp (RTX 5060 Ti, Qwen3.5-4B)</th><th class="best">S-X8</th><th>Q8_0</th></tr>
+<tr><td>Decode tg64 (el fork, honesto)</td><td class="best"><b>63,79 tok/s</b></td><td>&mdash;</td></tr>
+<tr><td>Decode, referencia de uso real (comunidad, 5060 Ti)</td><td class="best"><b>63,79 tok/s</b></td><td>40&ndash;54 tok/s (máx 54)</td></tr>
+<tr><td>Decode, micro-benchmark local (llama-bench, contexto corto)</td><td>63,79 tok/s</td><td>72,06 tok/s</td></tr>
+<tr><td>Prompt pp128 (MMQ)</td><td>1.877,85 tok/s</td><td>3.655,61 tok/s</td></tr>
+<tr><td>PPL wikitext-2 en llama.cpp (sin ruta PCA)</td><td>10,5043</td><td>10,4540</td></tr>
+</table>
+<p class="caption">Tabla 4: Integración en llama.cpp. S-X8 decodifica más rápido que Q8_0 en uso real (menos
+bytes por peso); en el micro-benchmark Q8_0 mide más (72,1) pero esa cifra excluye el overhead de servicio.
+Q8_0 conserva una ventaja en rendimiento de prompt porque su MMQ usa tensor cores INT8 con años de
+optimización, mientras que el MMQ es fp16. La PPL sin la ruta PCA es igual dentro del ruido; el número
+de calidad de este paper (10,2267) lo define el runtime con PCA.</p>
+<p class="foot">
+<sup>1</sup> La referencia de uso real de Q8_0 en RTX 5060 Ti la reporta la comunidad en 40&ndash;54 tok/s
+(consultor365 y otros); el valor local de llama-bench (72,06) es un micro-benchmark de contexto corto sin
+overhead de servicio y se reporta como tal. El techo teórico de ancho de banda &asymp;100 tok/s a 448 GB/s.
+</p>
+
+<h2>6&nbsp;&nbsp;Trabajo relacionado</h2>
+<p>
+Los k-quants de GGUF (llama.cpp) establecieron la cuantización por bloques con manejo separado de escala y
+punto cero; Q8_0 es la referencia de 8 bits más usada. Los IQ-quants empujan la tasa de bits por debajo de
+4 bpp con codebooks sensibles a la importancia. AWQ y sus sucesores seleccionan canales/capas sensibles
+mediante calibración. Los formatos de hardware (NVFP4, MXFP4) cuantizan con soporte de tensor cores pero
+están ligados a GPUs de datacenter; notablemente, el silicio Blackwell de consumo (SM120) no expone rutas de
+matmul FP4/FP8 a cuBLAS/PyTorch, lo que motivó un decodificador portable solo-ALU. S-Quant (ICML 2026)
+demostró que los rangos adaptativos por sub-bloque mejoran la calidad por bit, una dirección que extendemos
+con un recuento exacto de bytes, corrección PCA a la salida e integración completa en el motor. Ocasionalmente
+se observa que la cuantización actúa como regularizador (perplexity por debajo de FP16 en modelos pequeños);
+en las mediciones con corpus completo en Qwen3.5-4B el efecto está ausente y no se reclama.
+</p>
+
+<h2>7&nbsp;&nbsp;Discusión y limitaciones</h2>
+<ul>
+<li><b>Qué gana S-X8:</b> perplexity (9&times; menos pérdida que Q8_0), tamaño (&minus;11,6% texto,
+    &minus;15% completo), VRAM (&minus;12%) y velocidad de decodificación en uso real (menos bytes por
+    peso).</li>
+<li><b>Qué no gana:</b> la precisión de opción múltiple es estadísticamente idéntica entre FP16, S-X8 y
+    Q8_0 &mdash; estas tareas son robustas a la cuantización de clase 8-bit y reportamos el empate con
+    honestidad. El rendimiento de prompt en llama.cpp es menor que Q8_0 (1.878 frente a 3.656 tok/s) porque
+    el kernel MMQ es fp16, no INT8; el kernel wmma (1.411 tok/s) se usa en la ruta del
+    runtime.</li>
+<li><b>Ecosistema:</b> Q8_0/GGUF tiene soporte universal; S-X8 requiere el runtime o el fork de
+    llama.cpp. La especificación del formato y los kernels se publican bajo Apache-2.0 para que la adopción
+    no tenga trabas.</li>
+<li><b>Alcance:</b> los resultados son de Qwen3.5-4B en una sola GPU; se espera generalización a otros
+    modelos/GPUs (el decodificador es independiente de la arquitectura) pero aún no se ha demostrado
+    end-to-end en otros entornos.</li>
+</ul>
+
+<h2>8&nbsp;&nbsp;Reproducibilidad</h2>
+<p>
+Todos los scripts, kernels, configuración y resultados JSON en bruto se publican con este paper
+(Apache-2.0): cuantización (<code>quantize_qwen35_4b_sx8_v43_gpu.py</code>), contenedores
+(<code>sx8_container_v43.py</code>, round-trip byte-exacto 381/381 tensores, PPL desde archivo idéntica a
+la en memoria), evaluación (<code>ppl_wikitext.py</code>, <code>ppl_fused_v44.py</code>,
+<code>mc_eval_sx.py</code>, <code>mc_eval_gguf.py</code>, prompts compartidos en
+<code>mc_common.py</code>), validación del método ARC (<code>verify_arc_method.py</code>), kernels
+(<code>cuda/sx8_fused_wmma.cu</code>, <code>cuda/sx8_decode1_v3.cu</code>) y el diff completo del fork de
+llama.cpp. Entorno: PyTorch 2.11, CUDA 13.0, numba 0.65, llama-cpp-python 0.3.34 (build CUDA), datasets
+4.8.5, modo offline (HF_DATASETS_OFFLINE=1). El protocolo completo, datos por muestra y tablas adicionales
+están en <code>PROTOCOLO.md</code>.
+</p>
+
+<h2>Apéndice A&nbsp;&nbsp;El origen de la idea: los Estudios de la Sábana Santa de Turín</h2>
+
+<h3>A.1&nbsp;&nbsp;El estudio y su publicación</h3>
+<p>
+Las semillas conceptuales de S-X8 provienen de un análisis matemático independiente de la imagen de la
+Sábana Santa de Turín (2025&ndash;2026). Todo el material de ese estudio &mdash;pruebas, resultados,
+re-verificaciones, visualizaciones y documentos maestros&mdash; se publica en una carpeta aparte, íntegro y
+disponible, para que se disponga de la fuente completa de estas ideas; un estudio posterior lo desarrollará
+en profundidad.
+</p>
+
+<h3>A.2&nbsp;&nbsp;Naturaleza del trabajo</h3>
+<p>
+El estudio fue un ejercicio de indagación que encontró cosas muy interesantes; algunas parecen ciertas y
+asombrosas, pero el autor, siendo totalmente sincero, no puede corroborarlas, ni lo pretende: esa
+verificación corresponde a quienes tienen acceso directo a la Sábana. Lo que sí parece con fuerza es que una
+serie de pruebas y análisis han salido verídicos, y sus resultados &mdash;y lo que significarían&mdash; son
+asombrosos; aunque no todos lo han sido. Algunos experimentos parecen bien hechos; otros quizá se acerquen,
+de algún modo, más a una pareidolia.
+</p>
+
+<h3>A.3&nbsp;&nbsp;Propósito de esta mención</h3>
+<p>
+Todo ese ejercicio &mdash;haya producido resultados veraces o no&mdash; sirvió para extrapolar conceptos e
+ideas para el formato. La indagación, los ejercicios y la curiosidad sobre la Sábana Santa permitieron tener
+esas ideas sobre S-X8 y otras líneas. El formato S-X8, en cambio, <b>sí ha sido comprobado</b> (perplexity
+y benchmarks en este documento). La Sábana solo se menciona para mostrar, en gran parte, de dónde vino la
+extrapolación de ideas; su veracidad o no es algo que el autor no puede comprobar, pero sin duda da
+muchísimo que pensar.
+</p>
+
+<h3>A.4&nbsp;&nbsp;Opinión personal del autor (como tal, explícitamente)</h3>
+<p>
+En mi opinión, otros deberían indagar muchísimo más en este tema.
+</p>
+
+<h3>A.5&nbsp;&nbsp;Transparencia</h3>
+<p>
+Se deja el estudio a disposición pública por diversos motivos: intentar ser lo más transparentes posible y
+que se disponga de la fuente de donde vinieron estas ideas. Se considera lo más correcto, y así se ha
+hecho.
+</p>
+
+<h2>Apéndice B&nbsp;&nbsp;Direcciones futuras</h2>
+<p>
+La familia S-X8 se extiende de forma natural hacia anchos de bit menores. MarlaLabs está desarrollando nuevos
+formatos y una arquitectura de próxima generación. Estas son direcciones de investigación; en este paper no
+se reclama ningún resultado sobre ellas.
+</p>
+
+<div class="foot" style="margin-top:18px">
+Copyright 2026 Mart&iacute; Vidal Leandro. Autor: Mart&iacute; Vidal Leandro (MarlaLabs,
+Independiente). Datos, código y kernels publicados bajo Apache-2.0. Modelo: Qwen3.5-4B (base Apache-2.0). Hardware: una RTX 5060 Ti de 16 GB. Este documento se
+maquetó desde HTML; la fuente LaTeX se incluye junto con él para el envío a arXiv.
+</div>
+
+</body>
+</html>

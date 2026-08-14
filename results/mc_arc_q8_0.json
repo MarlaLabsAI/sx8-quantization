@@ -1,0 +1,10 @@
+{
+  "bench": "arc",
+  "mode": "q8_0",
+  "tag": null,
+  "acc": 0.9181,
+  "correct": 1076,
+  "total": 1172,
+  "seconds": 161.8,
+  "partial": false
+}

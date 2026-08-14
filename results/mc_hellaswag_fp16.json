@@ -1,0 +1,9 @@
+{
+  "bench": "hellaswag",
+  "mode": "fp16",
+  "tag": null,
+  "acc": 0.6965,
+  "correct": 6994,
+  "total": 10042,
+  "seconds": 3335.5
+}

@@ -1,0 +1,58 @@
+{
+  "fase": "3",
+  "fecha": "2026-08-07",
+  "gpu": "RTX 5060 Ti 16GB (SM120)",
+  "modelo": "Qwen3.5-4B completo (4.66B params)",
+  "formato": "S-X8 v4.3 (30 B/bloque = 7.50 bpp)",
+  "kernel": "CUDA C + wmma m16n16k16 (tensor cores) \u2014 decode SX8 en vuelo a shared",
+  "archivos": {
+    "cuda/sx8_fused_wmma.cu": "GEMM fused prompt (TM=8, decode sin branches)",
+    "cuda/sx8_decode1.cu": "decode M=1 dedicado (unroll 2 bloques, ~88 GB/s)",
+    "scripts/sx8_fused_wmma.py": "wrappers Python con cach\u00e9 de tensores GPU"
+  },
+  "test_igualdad_logits": {
+    "rel": 0.01891,
+    "resultado": "PASS",
+    "nota": "348 modulos SX8 (wmma prompt + decode1 CUDA)"
+  },
+  "vram": {
+    "fused_torch": 4.96,
+    "nota": "pesos SX8 en VRAM comprimidos; no existe la matriz FP16"
+  },
+  "velocidad_end_to_end": {
+    "prompt_256_tok_fused_toks": 1385,
+    "prompt_256_fp16_cublas_toks": 309,
+    "prompt_gguf_q8_0_toks": 3056,
+    "decode_fused_toks": 5.2,
+    "decode_fase2_toks": 1.4,
+    "nota": "prompt 4.5x MAS RAPIDO que FP16 cuBLAS (menos trafico de memoria: 0.94 vs 2 B/peso); decode limitado por memoria global (~88 GB/s)"
+  },
+  "micro_benchmarks": {
+    "wmma_puro_sin_decode_TFLOPs": 42.9,
+    "fused_completo_TFLOPs": 17.7,
+    "decode1_GB_s": 88,
+    "fase2_numba_GF_s": 950,
+    "nota": "el decode SX8 cuesta ~50% del tiempo del GEMM fused (mma puro: 43 TFLOPs ~ cuBLAS 44)"
+  },
+  "bugs_resueltos": [
+    "wmma m16n8k16 asm directo: layout de fragmentos A=4 regs, B=2 regs \u2014 probado 4 variantes, todas FAIL -> usar API wmma de alto nivel",
+    "wmma 16x16x16 con B row_major sobre W (K,N) directo (no transpuesta) \u2014 el layout correcto",
+    "tiles de salida wmma son 16x16 (no 16x8): grid y n_tiles con /16",
+    "v3: doble conteo de warp_id en n_base (nw = n0 + warp_id*16 con n0 ya incluyendo warp_id) -> tile desplazado 16 cols",
+    "v3: warps con filas M distintas escribian sX compartida (race) -> warps comparten filas M, solo N repartida",
+    "v4 doble buffer: init sB con stride 256 con 128 threads dejaba mitades sin inicializar -> 256 threads",
+    "v4: macro con #pragma unroll dentro -> error de preprocesador (# en macro)",
+    "v5 k32: 2 tiles B (uno por mitad) + sX doble [half][tmn]",
+    "v5: macro DECODE_HALF sin loop j (solo columna ca) -> faltaban 4 columnas",
+    "v6 'sin branches': formula estrategia INCORRECTA (rlo=lo+a*q con a=(s==1|3) no cubre s=2: rlo=hi-q) -> rlo = lo + q*(3*(s==2)+(s==3)), rhi = hi - q*(3*(s==1)+(s==3))",
+    "decode1 M=1: cada thread procesaba t=ltid y t=ltid+16 -> posiciones 0-15 DUPLICADAS (thread ltid half1 = thread ltid+16 half0) -> unroll sobre 2 BLOQUES de K",
+    "decode1 benchmark: primera llamada incluia compilacion JIT (79s) -> warmup antes de medir"
+  ],
+  "lecciones_fase3": [
+    "El mma puro (sin decode) da 43 TFLOPs ~ cuBLAS: el decode SX8 (~50%) es el cuello restante",
+    "TM=8 (amortizar decode sobre 8 tiles de M) fue optimo; TM>8 satura registros de acc",
+    "numba NO expone mma -> CUDA C via torch.utils.cpp_extension.load_inline (nvcc 13.0)",
+    "load_inline: limpiar ~/.cache/torch_extensions si la firma de la funcion cambia",
+    "EL CLAIM DEL DOC 39 SE CUMPLIO: prompt fused > FP16 cuBLAS por menos trafico de memoria (0.94 vs 2 B/peso)"
+  ]
+}

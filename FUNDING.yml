@@ -1,0 +1,8 @@
+# FUNDING.yml — raíz de cada repo open source (Apache-2.0 / MIT)
+github: [MarlaLabs]
+ko_fi: marlalabs
+custom:
+  - https://marlalabs.com/donate
+  - https://www.buymeacoffee.com/marlalabs
+  - https://payments.muun.com/btc-lightning   # sustituir por la dirección BTC/Lightning real
+  - https://etherscan.io/address/0x...         # sustituir por la dirección ETH/USDC real
