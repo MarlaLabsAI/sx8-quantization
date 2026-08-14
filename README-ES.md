@@ -67,7 +67,9 @@ fuente de inspiración, con total honestidad sobre lo que el autor puede y no pu
 
 ## Licencia
 
-Apache-2.0. Modelo base: Qwen3.5-4B (Apache-2.0). Ver [LICENSE](LICENSE).
+Apache-2.0. Este trabajo es un derivado de **Qwen3.5-4B** de Qwen Team (Alibaba Group), Apache-2.0
+([model card](https://huggingface.co/Qwen/Qwen3.5-4B)); solo se cuantizaron los pesos al formato
+S-X8 v4.3, sin otras modificaciones. Ver [LICENSE](LICENSE) y [NOTICE](NOTICE).
 
 ## Cómo citar este trabajo
 

@@ -156,6 +156,9 @@ La evaluación se realiza en <b>Qwen3.5-4B</b>, un modelo híbrido de 2026: 24 c
 capas de atención completa GQA, con torre de visión y cabeza de predicción multi-token (4,66B parámetros en
 total, de los cuales el transformer de texto de 4,2B está completamente cuantizado; normas, conv1d, visión y
 MTP se mantienen en FP16, reflejando el GGUF de referencia que almacena la visión en un archivo mmproj
+aparte). El modelo base es <b>Qwen3.5-4B</b> de Qwen Team (Alibaba Group), publicado bajo Apache-2.0
+[1]; los pesos cuantizados de este trabajo son un derivado en el formato S-X8 v4.3, sin otras
+modificaciones. Todas las mediciones se ejecutan en
 aparte). Todas las mediciones se ejecutan en una única <b>RTX 5060 Ti 16&nbsp;GB</b> (SM120, 448&nbsp;GB/s)
 con CUDA 13.0, PyTorch 2.11 y llama.cpp (commit 7c203670f).
 </p>
@@ -293,6 +296,13 @@ la en memoria), evaluación (<code>ppl_wikitext.py</code>, <code>ppl_fused_v44.p
 llama.cpp. Entorno: PyTorch 2.11, CUDA 13.0, numba 0.65, llama-cpp-python 0.3.34 (build CUDA), datasets
 4.8.5, modo offline (HF_DATASETS_OFFLINE=1). El protocolo completo, datos por muestra y tablas adicionales
 están en <code>PROTOCOLO.md</code>. Versión publicada del registro: Zenodo, DOI 10.5281/zenodo.21922640.
+</p>
+
+<h2>9&nbsp;&nbsp;Referencias</h2>
+<p>
+[1] Qwen Team (Alibaba Group). <i>Qwen3.5-4B</i>. Hugging Face, 2026.
+<a href="https://huggingface.co/Qwen/Qwen3.5-4B">https://huggingface.co/Qwen/Qwen3.5-4B</a>
+(Apache-2.0).
 </p>
 
 <h2>Apéndice A&nbsp;&nbsp;El origen de la idea: los Estudios de la Sábana Santa de Turín</h2>

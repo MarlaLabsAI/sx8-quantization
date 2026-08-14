@@ -66,7 +66,9 @@ inspiration, with full honesty about what the author can and cannot corroborate.
 
 ## License
 
-Apache-2.0. Base model: Qwen3.5-4B (Apache-2.0). See [LICENSE](LICENSE).
+Apache-2.0. This work is a derivative of **Qwen3.5-4B** by the Qwen Team (Alibaba Group), Apache-2.0
+([model card](https://huggingface.co/Qwen/Qwen3.5-4B)); only the weights were quantized to the S-X8 v4.3
+format, no other modifications. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
 ## Cite this work
 

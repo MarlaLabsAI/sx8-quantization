@@ -148,7 +148,9 @@ mmproj. Full layout in <code>SX8_FLASH_V4_3_CONTAINER.md</code>.
 Evaluation is performed on <b>Qwen3.5-4B</b>, a hybrid 2026 model: 24 Gated-DeltaNet layers (linear attention) and 8 full
 GQA attention layers, with a vision tower and a multi-token-prediction head (4.66B parameters in total, of
 which the 4.2B text transformer is fully quantized; norms, conv1d, vision and MTP are kept in FP16, mirroring
-the reference GGUF which stores vision in a separate mmproj file). All measurements run on a single
+the reference GGUF which stores vision in a separate mmproj file). The base model is <b>Qwen3.5-4B</b>
+by the Qwen Team (Alibaba Group), released under Apache-2.0 [1]; the quantized weights in this work are
+a derivative in the S-X8 v4.3 format, with no other modifications. All measurements run on a single
 <b>RTX 5060 Ti 16&nbsp;GB</b> (SM120, 448&nbsp;GB/s) with CUDA 13.0, PyTorch 2.11 and llama.cpp (commit
 7c203670f).
 </p>
@@ -273,6 +275,13 @@ byte-exact round-trip 381/381 tensors, PPL from file identical to in-memory), ev
 <code>cuda/sx8_decode1_v3.cu</code>) and the full llama.cpp fork diff. Environment: PyTorch 2.11, CUDA 13.0,
 numba 0.65, llama-cpp-python 0.3.34 (CUDA build), datasets 4.8.5, offline mode (HF_DATASETS_OFFLINE=1).
 The complete protocol, per-sample data and additional tables are in <code>PROTOCOLO.md</code>. Published version of record: Zenodo, DOI 10.5281/zenodo.21922640.
+</p>
+
+<h2>9&nbsp;&nbsp;References</h2>
+<p>
+[1] Qwen Team (Alibaba Group). <i>Qwen3.5-4B</i>. Hugging Face, 2026.
+<a href="https://huggingface.co/Qwen/Qwen3.5-4B">https://huggingface.co/Qwen/Qwen3.5-4B</a>
+(Apache-2.0).
 </p>
 
 <h2>Appendix A&nbsp;&nbsp;The Origin of the Idea: The Shroud of Turin Studies</h2>
