@@ -1,0 +1,53 @@
+{
+  "D12_reproducido": {
+    "D_center": 1.7369655941662079,
+    "D_peripheral": 0.0,
+    "delta_alpha_center": 5.2041864066426555,
+    "delta_alpha_peripheral": 0.964002346728481,
+    "ratio_da": 5.398520474876454,
+    "densidad_centro": 0.9220370370370372,
+    "densidad_periferia": 0.002083333333333334
+  },
+  "D12_reproducido_ok": true,
+  "cruz_real": {
+    "D_center": 1.6447533085974932,
+    "D_peripheral": 1.6281698766298929,
+    "delta_alpha_center": 5.057833400555309,
+    "delta_alpha_peripheral": 5.021090020413223,
+    "ratio_da": 1.0073178094781623,
+    "densidad_centro": 0.8450000286102295,
+    "densidad_periferia": 0.8100000023841858,
+    "cruz": [
+      416,
+      416
+    ],
+    "n": 1080
+  },
+  "controles": {
+    "D_center": {
+      "mean": 1.1944388383168516,
+      "std": 0.10893086162500315
+    },
+    "D_peripheral": {
+      "mean": 1.2241248204876671,
+      "std": 0.12528667366368504
+    },
+    "da_center": {
+      "mean": 3.645837929422496,
+      "std": 0.10845029125202903
+    },
+    "da_peripheral": {
+      "mean": 3.691205881501272,
+      "std": 0.14422058706941016
+    }
+  },
+  "z_scores": {
+    "z_D_center": 4.133947566033756,
+    "z_da_center": 13.019748078421097
+  },
+  "patron_global": {
+    "simulacion": true,
+    "cruz_real": true,
+    "coincide": true
+  }
+}

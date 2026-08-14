@@ -1,0 +1,25 @@
+{
+  "C1_posicion": {
+    "simetria_bilateral": 0.23949475706596102
+  },
+  "C3_contorno": {
+    "n_contornos": 5
+  },
+  "E1_fourier": {
+    "n_picos": 5,
+    "energia_picos_pct": 24.768694225806552
+  },
+  "E2_autocorr": {
+    "longitud_correlacion": 40,
+    "h": 1080
+  },
+  "C2_sangre": {
+    "n_pixeles": 244766,
+    "n_manchas": 191
+  },
+  "conclusion": {
+    "simetria_cuerpo": 0.23949475706596102,
+    "picos_frecuenciales": 5,
+    "longitud_correlacion": 40
+  }
+}

@@ -1,0 +1,44 @@
+ANÁLISIS PROFUNDO: ESTRUCTURA TIPO CHIP/ASIC
+================================================================================
+
+
+IMAGEN1
+----------------------------------------
+  imagen1_simetria: {'H': np.float64(0.2706494738178759), 'V': np.float64(0.2706494738178759), 'diag': np.float64(0.0)}
+  imagen1_periodicidad: {'H_mean': np.float64(0.0), 'V_mean': np.float64(0.0)}
+  imagen1_espectral: {'peaks_H': 137, 'peaks_V': 137}
+  imagen1_grid: {'rows': [362, 415, 512, 565, 613, 654, 764, 809, 907], 'cols': [362, 415, 512, 565, 613, 654, 764, 809, 907]}
+  imagen1_celdas: {'n_cells': 25, 'mean_similarity': np.float64(0.43432480666270074)}
+  imagen1_fractal_rec: {'D': np.float64(1.8178384879505864)}
+  imagen1_multifractal_rec: {'dims': [np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864), np.float64(1.8178384879505864)]}
+  imagen1_informacion_mutua: {'Q1-Q2': np.float64(0.05368169913952495), 'Q1-Q3': np.float64(0.05368169913952495), 'Q1-Q4': np.float64(0.05178312747106344), 'Q2-Q3': np.float64(0.03340890567727077), 'Q2-Q4': np.float64(0.07280489156542862), 'Q3-Q4': np.float64(0.07280489156542862)}
+  imagen1_cruz_centro: {'x': 355, 'y': 355, 'rel_x': 0.35358565737051795, 'rel_y': 0.35358565737051795}
+  imagen1_jerarquico: {'scales': [8, 16, 32, 64, 128], 'entropy': [np.float64(0.2137939009134964), np.float64(0.21621164021164022), np.float64(0.16609471516815374), np.float64(0.21139327385037748), np.float64(0.1246376811594203)]}
+  imagen1_conectividad: {'total': 11139, 'large': 337}
+
+IMAGEN2
+----------------------------------------
+  imagen2_simetria: {'H': np.float64(0.0), 'V': np.float64(0.0), 'diag': np.float64(0.0)}
+  imagen2_periodicidad: {'H_mean': np.float64(0.0), 'V_mean': np.float64(0.0)}
+  imagen2_espectral: {'peaks_H': 1, 'peaks_V': 1}
+  imagen2_grid: {'rows': [], 'cols': []}
+  imagen2_fractal_rec: {'D': np.float64(1.8462921393139955)}
+  imagen2_multifractal_rec: {'dims': [np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955), np.float64(1.8462921393139955)]}
+  imagen2_informacion_mutua: {'Q1-Q2': np.float64(3.818973872117851e-07), 'Q1-Q3': np.float64(3.818973872117851e-07), 'Q1-Q4': np.float64(3.818973872117851e-07), 'Q2-Q3': np.float64(3.818973872117851e-07), 'Q2-Q4': np.float64(3.818973872117851e-07), 'Q3-Q4': np.float64(3.818973872117851e-07)}
+  imagen2_cruz_centro: {'x': 0, 'y': 0, 'rel_x': 0.0, 'rel_y': 0.0}
+  imagen2_jerarquico: {'scales': [8, 16, 32, 64, 128], 'entropy': [np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0)]}
+  imagen2_conectividad: {'total': 1, 'large': 1}
+
+IMAGEN3
+----------------------------------------
+  imagen3_simetria: {'H': np.float64(0.17122770919067215), 'V': np.float64(0.17122770919067215), 'diag': np.float64(0.0)}
+  imagen3_periodicidad: {'H_mean': np.float64(0.0), 'V_mean': np.float64(0.0)}
+  imagen3_espectral: {'peaks_H': 73, 'peaks_V': 73}
+  imagen3_grid: {'rows': [32, 62, 78, 137, 186, 229, 252, 293, 349, 387, 420, 470, 497, 524], 'cols': [32, 62, 78, 137, 186, 229, 252, 293, 349, 387, 420, 470, 497, 524]}
+  imagen3_celdas: {'n_cells': 25, 'mean_similarity': np.float64(0.6483854166666667)}
+  imagen3_fractal_rec: {'D': np.float64(1.6420727957787762)}
+  imagen3_multifractal_rec: {'dims': [np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762), np.float64(1.6420727957787762)]}
+  imagen3_informacion_mutua: {'Q1-Q2': np.float64(0.03172379314088933), 'Q1-Q3': np.float64(0.03172379314088933), 'Q1-Q4': np.float64(0.05967841231307307), 'Q2-Q3': np.float64(0.032324063286901614), 'Q2-Q4': np.float64(0.04144650290920583), 'Q3-Q4': np.float64(0.04144650290920583)}
+  imagen3_cruz_centro: {'x': 416, 'y': 416, 'rel_x': 0.7703703703703704, 'rel_y': 0.7703703703703704}
+  imagen3_jerarquico: {'scales': [8, 16, 32, 64, 128], 'entropy': [np.float64(0.2169753086419753), np.float64(0.06902985074626866), np.float64(0.1005050505050505), np.float64(0.1625), np.float64(0.0)]}
+  imagen3_conectividad: {'total': 4833, 'large': 195}

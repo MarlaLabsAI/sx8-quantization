@@ -1,0 +1,373 @@
+{
+  "F1_perfil_figura": [
+    {
+      "idx": 4,
+      "frecuencia": 0.003703703703703704,
+      "periodicidad_px": 270.0,
+      "magnitud_normalizada": 1.0
+    },
+    {
+      "idx": 8,
+      "frecuencia": 0.007407407407407408,
+      "periodicidad_px": 135.0,
+      "magnitud_normalizada": 0.3499247324501355
+    },
+    {
+      "idx": 6,
+      "frecuencia": 0.005555555555555556,
+      "periodicidad_px": 180.0,
+      "magnitud_normalizada": 0.23164614817811802
+    },
+    {
+      "idx": 12,
+      "frecuencia": 0.011111111111111112,
+      "periodicidad_px": 90.0,
+      "magnitud_normalizada": 0.1848034066568006
+    },
+    {
+      "idx": 16,
+      "frecuencia": 0.014814814814814815,
+      "periodicidad_px": 67.5,
+      "magnitud_normalizada": 0.16014174839806164
+    },
+    {
+      "idx": 20,
+      "frecuencia": 0.018518518518518517,
+      "periodicidad_px": 54.0,
+      "magnitud_normalizada": 0.08961711659867064
+    },
+    {
+      "idx": 26,
+      "frecuencia": 0.024074074074074074,
+      "periodicidad_px": 41.53846153846154,
+      "magnitud_normalizada": 0.07354768838280697
+    },
+    {
+      "idx": 31,
+      "frecuencia": 0.028703703703703703,
+      "periodicidad_px": 34.83870967741935,
+      "magnitud_normalizada": 0.058139315310247665
+    }
+  ],
+  "F2_espectro_2d": [
+    {
+      "dx": 0,
+      "dy": 8,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 256.0,
+      "magnitud": 1.0,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": -8,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 256.0,
+      "magnitud": 1.0,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 2,
+      "dy": 0,
+      "periodicidad_x_px": 1024.0,
+      "periodicidad_y_px": Infinity,
+      "magnitud": 0.5489716529846191,
+      "angulo_grados": 0.0
+    },
+    {
+      "dx": 0,
+      "dy": 16,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 128.0,
+      "magnitud": 0.36803850531578064,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": -16,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 128.0,
+      "magnitud": 0.36803850531578064,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": -23,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 89.04347826086956,
+      "magnitud": 0.2141854166984558,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": 23,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 89.04347826086956,
+      "magnitud": 0.2141854166984558,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": 31,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 66.06451612903226,
+      "magnitud": 0.2137739211320877,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": -31,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 66.06451612903226,
+      "magnitud": 0.2137739211320877,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 5,
+      "dy": -15,
+      "periodicidad_x_px": 409.6,
+      "periodicidad_y_px": 136.53333333333333,
+      "magnitud": 0.1824045330286026,
+      "angulo_grados": -71.56505117707799
+    }
+  ],
+  "F3_fondo": [
+    {
+      "idx": 4,
+      "frecuencia": 0.003703703703703704,
+      "periodicidad_px": 270.0,
+      "magnitud_normalizada": 1.0
+    },
+    {
+      "idx": 8,
+      "frecuencia": 0.007407407407407408,
+      "periodicidad_px": 135.0,
+      "magnitud_normalizada": 0.3499247324501355
+    },
+    {
+      "idx": 6,
+      "frecuencia": 0.005555555555555556,
+      "periodicidad_px": 180.0,
+      "magnitud_normalizada": 0.23164614817811804
+    },
+    {
+      "idx": 12,
+      "frecuencia": 0.011111111111111112,
+      "periodicidad_px": 90.0,
+      "magnitud_normalizada": 0.18480340665680056
+    },
+    {
+      "idx": 16,
+      "frecuencia": 0.014814814814814815,
+      "periodicidad_px": 67.5,
+      "magnitud_normalizada": 0.16014174839806167
+    },
+    {
+      "idx": 20,
+      "frecuencia": 0.018518518518518517,
+      "periodicidad_px": 54.0,
+      "magnitud_normalizada": 0.08961711659867065
+    },
+    {
+      "idx": 26,
+      "frecuencia": 0.024074074074074074,
+      "periodicidad_px": 41.53846153846154,
+      "magnitud_normalizada": 0.07354768838280695
+    },
+    {
+      "idx": 31,
+      "frecuencia": 0.028703703703703703,
+      "periodicidad_px": 34.83870967741935,
+      "magnitud_normalizada": 0.058139315310247665
+    }
+  ],
+  "F3_tela": [
+    {
+      "dx": 0,
+      "dy": 2,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 256.0,
+      "magnitud": 0.9891120195388794,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": -3,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 170.66666666666666,
+      "magnitud": 0.44083771109580994,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": -8,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 64.0,
+      "magnitud": 0.3627035915851593,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": 8,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 64.0,
+      "magnitud": 0.3627035915851593,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 7,
+      "dy": 1,
+      "periodicidad_x_px": 73.14285714285714,
+      "periodicidad_y_px": 512.0,
+      "magnitud": 0.2148962765932083,
+      "angulo_grados": 8.13010235415598
+    },
+    {
+      "dx": -7,
+      "dy": -1,
+      "periodicidad_x_px": 73.14285714285714,
+      "periodicidad_y_px": 512.0,
+      "magnitud": 0.2148962765932083,
+      "angulo_grados": -171.86989764584402
+    },
+    {
+      "dx": 0,
+      "dy": -24,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 21.333333333333332,
+      "magnitud": 0.09676114469766617,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": 24,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 21.333333333333332,
+      "magnitud": 0.09676114469766617,
+      "angulo_grados": 90.0
+    }
+  ],
+  "F4_xray1": [
+    {
+      "idx": 1,
+      "frecuencia": 0.000925925925925926,
+      "periodicidad_px": 1080.0,
+      "magnitud_normalizada": 1.0
+    },
+    {
+      "idx": 8,
+      "frecuencia": 0.007407407407407408,
+      "periodicidad_px": 135.0,
+      "magnitud_normalizada": 0.26674474884201294
+    },
+    {
+      "idx": 6,
+      "frecuencia": 0.005555555555555556,
+      "periodicidad_px": 180.0,
+      "magnitud_normalizada": 0.2628891641687184
+    },
+    {
+      "idx": 11,
+      "frecuencia": 0.010185185185185186,
+      "periodicidad_px": 98.18181818181817,
+      "magnitud_normalizada": 0.19239695877070354
+    },
+    {
+      "idx": 15,
+      "frecuencia": 0.01388888888888889,
+      "periodicidad_px": 72.0,
+      "magnitud_normalizada": 0.1522759098031237
+    },
+    {
+      "idx": 42,
+      "frecuencia": 0.03888888888888889,
+      "periodicidad_px": 25.714285714285715,
+      "magnitud_normalizada": 0.05616956583239914
+    }
+  ],
+  "F4_xray1_2d": [
+    {
+      "dx": 0,
+      "dy": 2,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 1024.0,
+      "magnitud": 0.5414842963218689,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": -3,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 682.6666666666666,
+      "magnitud": 0.468370258808136,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": -11,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 186.1818181818182,
+      "magnitud": 0.1693020462989807,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": 11,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 186.1818181818182,
+      "magnitud": 0.1693020462989807,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": -15,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 136.53333333333333,
+      "magnitud": 0.15466341376304626,
+      "angulo_grados": -90.0
+    },
+    {
+      "dx": 0,
+      "dy": 15,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 136.53333333333333,
+      "magnitud": 0.15466341376304626,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": 21,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 97.52380952380952,
+      "magnitud": 0.09857431054115295,
+      "angulo_grados": 90.0
+    },
+    {
+      "dx": 0,
+      "dy": -21,
+      "periodicidad_x_px": Infinity,
+      "periodicidad_y_px": 97.52380952380952,
+      "magnitud": 0.09857431054115295,
+      "angulo_grados": -90.0
+    }
+  ],
+  "F5_control": {
+    "n_picos_real": 8,
+    "n_picos_azar_mean": 164.6,
+    "energia_real": 0.29800859009569436,
+    "energia_azar_mean": 0.45445994997976874,
+    "z": -12.523308151840572
+  },
+  "F6_interpretacion": {
+    "periodicidades": [
+      270.0,
+      135.0,
+      180.0,
+      90.0,
+      67.5
+    ],
+    "n_cortas": 0,
+    "n_medias": 1,
+    "n_largas": 4
+  }
+}

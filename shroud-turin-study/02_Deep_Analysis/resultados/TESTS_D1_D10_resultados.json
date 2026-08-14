@@ -1,0 +1,163 @@
+{
+  "D1_fractal_dimension": {
+    "D_center": 1.5296390765759205,
+    "D_peripheral": 1.4372392914442742,
+    "D_global": 1.5407369554952013,
+    "delta_D": 0.09239978513164626,
+    "center_density": 0.3034000098705292,
+    "peripheral_density": 0.21480000019073486
+  },
+  "D2_multifractal": {
+    "alpha_min": -0.0,
+    "alpha_max": 4.765221436127377,
+    "delta_alpha": 4.765221436127377,
+    "alpha_peak": 1.8979753461701563,
+    "skewness": 0.9692707437870647
+  },
+  "D3_curvature": {
+    "K_center": 0.0,
+    "H_center": 0.0,
+    "K_center_avg": -0.00047743055555555554,
+    "H_center_avg": -0.0009902817838787405,
+    "K_peripheral": -0.0006504335684891241,
+    "H_peripheral": 6.376374847188799e-05,
+    "K_ratio": 0.7340189354995423
+  },
+  "D4_topology": {
+    "beta0_center": 1,
+    "beta1_center": 0,
+    "euler_center": 1,
+    "beta0_peripheral": 1,
+    "beta1_peripheral": 0,
+    "hole_density": 0.0
+  },
+  "D5_spectral": {
+    "low_freq_pct": 33.63850021362305,
+    "mid_freq_pct": 24.7913761138916,
+    "high_freq_pct": 41.57012176513672,
+    "n_peaks": 25,
+    "low_freq_pct_peripheral": 52.10072326660156
+  },
+  "D6_wavelet": {
+    "wavelet_levels": 3,
+    "level_details": [
+      {
+        "level": 1,
+        "LL_pct": 34.326171875,
+        "LH_pct": 0.3423912227153778,
+        "HL_pct": 0.3423912227153778,
+        "HH_pct": 0.20311343669891357
+      },
+      {
+        "level": 2,
+        "LL_pct": 33.24821853637695,
+        "LH_pct": 0.45700526237487793,
+        "HL_pct": 0.45700526237487793,
+        "HH_pct": 0.16394156217575073
+      },
+      {
+        "level": 3,
+        "LL_pct": 28.960710525512695,
+        "LH_pct": 0.5552976131439209,
+        "HL_pct": 0.5552976131439209,
+        "HH_pct": 0.38845446705818176
+      }
+    ]
+  },
+  "D7_homology": {
+    "thresholds": [
+      0.1,
+      0.2,
+      0.30000000000000004,
+      0.4,
+      0.5,
+      0.6,
+      0.7000000000000001,
+      0.8,
+      0.9
+    ],
+    "betti_0_history": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "betti_1_history": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "beta0_max": 1,
+    "beta1_max": 0,
+    "beta0_persistence_pct": 100.0,
+    "beta1_persistence_pct": 0.0
+  },
+  "D8_information_tensor": {
+    "T_center": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "eigenvalues": [
+      0.0,
+      0.0
+    ],
+    "eigenvectors": [
+      [
+        0.0,
+        1.0
+      ],
+      [
+        1.0,
+        0.0
+      ]
+    ],
+    "trace": 0.0,
+    "determinant": 0.0,
+    "pressure": 0.0,
+    "shear": 0.0,
+    "shear_pressure_ratio": 0
+  },
+  "D9_dimensional_projection": {
+    "D2_center": 3.675292478945165e-15,
+    "D2_peripheral": 3.122263468580074e-15,
+    "ratio": 1.1771243893829992
+  },
+  "D10_topological_flow": {
+    "divergence": 0.0,
+    "curl": 0.0,
+    "Jacobian": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "eigenvalues": [
+      "0.0",
+      "0.0"
+    ],
+    "trace": 0.0,
+    "determinant": 0.0,
+    "discriminant": 0.0
+  }
+}

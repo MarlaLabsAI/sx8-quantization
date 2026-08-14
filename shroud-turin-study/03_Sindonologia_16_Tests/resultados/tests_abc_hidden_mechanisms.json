@@ -1,0 +1,163 @@
+{
+  "test_type": "hidden_correction_mechanisms",
+  "source_image": "imagen3_sepia",
+  "matrix_dimensions": [
+    1080,
+    1080
+  ],
+  "matrix_density": 0.133840873837471,
+  "tests": {
+    "test_A_antisymmetric": {
+      "S_magnitude": 49.06676483154297,
+      "A_magnitude": 0.0,
+      "ratio_A_S": 0.0,
+      "is_significant": false,
+      "central_peak_autocorr": NaN,
+      "low_freq_ratio": 0,
+      "has_structure": false
+    },
+    "test_B_adaptive_grid": {
+      "central": {
+        "n_h_lines": 6,
+        "n_v_lines": 6,
+        "h_spacing_mean": 42.4,
+        "h_spacing_std": 11.568923891183656,
+        "v_spacing_mean": 42.4,
+        "v_spacing_std": 11.568923891183656,
+        "density": 0.15764060616493225,
+        "h_spacings": [
+          49,
+          28,
+          47,
+          58,
+          30
+        ],
+        "v_spacings": [
+          49,
+          28,
+          47,
+          58,
+          30
+        ]
+      },
+      "peripheral": {
+        "n_h_lines": 3,
+        "n_v_lines": 3,
+        "h_spacing_mean": 83.0,
+        "h_spacing_std": 18.0,
+        "v_spacing_mean": 83.0,
+        "v_spacing_std": 18.0,
+        "density": 0.3389849066734314,
+        "h_spacings": [
+          65,
+          101
+        ],
+        "v_spacings": [
+          65,
+          101
+        ]
+      },
+      "h_spacing_ratio": 0.5108433734939759,
+      "v_spacing_ratio": 0.5108433734939759,
+      "density_ratio": 0.46503724225338094,
+      "is_adaptive": true,
+      "h_cv_central": 0.2728519785656523,
+      "h_cv_peripheral": 0.21686746987951808
+    },
+    "test_C_fractal_cross": {
+      "cross_center": [
+        270,
+        270
+      ],
+      "scale_results": [
+        {
+          "scale": 100,
+          "region_size": [
+            200,
+            200
+          ],
+          "density": 0.15915000438690186,
+          "fractal_dimension": 1.3910328685494975,
+          "radial_profile": [
+            1.0,
+            1.0,
+            0.7368420958518982,
+            0.557692289352417,
+            0.5161290168762207,
+            0.4166666567325592,
+            0.2666666805744171,
+            0.1875,
+            0.1525423675775528,
+            0.13114753365516663
+          ]
+        },
+        {
+          "scale": 50,
+          "region_size": [
+            100,
+            100
+          ],
+          "density": 0.14900000393390656,
+          "fractal_dimension": 1.2360315225353988,
+          "radial_profile": [
+            1.0,
+            1.0,
+            0.7368420958518982,
+            0.557692289352417,
+            0.5161290168762207,
+            0.4166666567325592,
+            0.2666666805744171,
+            0.1875,
+            0.1525423675775528,
+            0.13114753365516663
+          ]
+        },
+        {
+          "scale": 25,
+          "region_size": [
+            50,
+            50
+          ],
+          "density": 0.24799999594688416,
+          "fractal_dimension": 1.2515205968140988,
+          "radial_profile": [
+            1.0,
+            1.0,
+            0.7368420958518982,
+            0.557692289352417,
+            0.5161290168762207,
+            0.4166666567325592,
+            0.2666666805744171,
+            0.1875,
+            0.1525423675775528,
+            0.13114753365516663
+          ]
+        },
+        {
+          "scale": 10,
+          "region_size": [
+            20,
+            20
+          ],
+          "density": 0.6150000095367432,
+          "fractal_dimension": 1.4372345589580715,
+          "radial_profile": [
+            1.0,
+            1.0,
+            0.7368420958518982,
+            0.557692289352417
+          ]
+        }
+      ],
+      "D_mean": 1.3289548867142666,
+      "D_std": 0.08690365946354443,
+      "D_cv": 0.06539248271881275,
+      "is_self_similar": true,
+      "is_fractal": true,
+      "center_density": 1.0,
+      "peripheral_density": 0.13114753365516663,
+      "peak_ratio": 7.625000426080102,
+      "has_central_peak": true
+    }
+  }
+}

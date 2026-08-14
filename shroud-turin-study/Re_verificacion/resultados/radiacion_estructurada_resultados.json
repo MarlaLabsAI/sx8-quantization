@@ -1,0 +1,134 @@
+{
+  "H1_H2_cuantizacion": {
+    "sabana_completa": {
+      "cuantizacion": {
+        "n_picos": 3,
+        "posiciones_picos": [
+          5,
+          31,
+          165
+        ],
+        "profundidad_valles": 0.3781958803109875,
+        "cv_separacion_picos": 0.6749999999915625
+      },
+      "entropia_niveles": 5.802858304008273,
+      "fractalidad": {
+        "D_media": 2.039935299399057,
+        "CV": 0.009209645169549441
+      },
+      "combinacion_digital_fractal": {
+        "digital": false,
+        "fractal": true,
+        "combinacion": false
+      }
+    },
+    "rostro_negativo": {
+      "cuantizacion": {
+        "n_picos": 1,
+        "posiciones_picos": [
+          87
+        ],
+        "profundidad_valles": 0.0,
+        "cv_separacion_picos": NaN
+      },
+      "entropia_niveles": 4.90383839253653,
+      "fractalidad": {
+        "D_media": 2.303935013179545,
+        "CV": 0.07986895176761512
+      },
+      "combinacion_digital_fractal": {
+        "digital": false,
+        "fractal": true,
+        "combinacion": false
+      }
+    },
+    "xray1_radiografia": {
+      "cuantizacion": {
+        "n_picos": 1,
+        "posiciones_picos": [
+          208
+        ],
+        "profundidad_valles": 0.0,
+        "cv_separacion_picos": NaN
+      },
+      "entropia_niveles": 4.323294396298383,
+      "fractalidad": {
+        "D_media": 2.3446987869166267,
+        "CV": 0.0646944294019003
+      },
+      "combinacion_digital_fractal": {
+        "digital": false,
+        "fractal": true,
+        "combinacion": false
+      }
+    }
+  },
+  "H3_bitplanes": {
+    "0": {
+      "densidad": 0.499793,
+      "D_fractal": 2.03249861822798
+    },
+    "1": {
+      "densidad": 0.50007,
+      "D_fractal": 2.0324756567283666
+    },
+    "2": {
+      "densidad": 0.500505,
+      "D_fractal": 2.031982572436073
+    },
+    "3": {
+      "densidad": 0.498517,
+      "D_fractal": 2.0269095470378358
+    },
+    "4": {
+      "densidad": 0.518756,
+      "D_fractal": 2.010188937067727
+    },
+    "5": {
+      "densidad": 0.432496,
+      "D_fractal": 1.9555511393414582
+    },
+    "6": {
+      "densidad": 0.752055,
+      "D_fractal": 1.995543638807286
+    },
+    "7": {
+      "densidad": 0.282367,
+      "D_fractal": 1.7916995059941527
+    }
+  },
+  "H4_combinacion": {
+    "sabana_completa": {
+      "digital": false,
+      "fractal": true,
+      "combinacion": false
+    },
+    "rostro_negativo": {
+      "digital": false,
+      "fractal": true,
+      "combinacion": false
+    },
+    "xray1_radiografia": {
+      "digital": false,
+      "fractal": true,
+      "combinacion": false
+    }
+  },
+  "conclusion": {
+    "sabana_completa": {
+      "digital": false,
+      "fractal": true,
+      "combinacion": false
+    },
+    "rostro_negativo": {
+      "digital": false,
+      "fractal": true,
+      "combinacion": false
+    },
+    "xray1_radiografia": {
+      "digital": false,
+      "fractal": true,
+      "combinacion": false
+    }
+  }
+}

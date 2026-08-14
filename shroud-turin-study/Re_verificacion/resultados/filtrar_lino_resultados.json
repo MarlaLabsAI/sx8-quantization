@@ -1,0 +1,86 @@
+{
+  "F1_lino": [
+    {
+      "dx": 0,
+      "dy": 3,
+      "per_x": Infinity,
+      "per_y": 170.66666666666666,
+      "mag": 0.6276520490646362
+    },
+    {
+      "dx": -1,
+      "dy": -5,
+      "per_x": 512.0,
+      "per_y": 102.4,
+      "mag": 0.3725426197052002
+    },
+    {
+      "dx": 0,
+      "dy": 10,
+      "per_x": Infinity,
+      "per_y": 51.2,
+      "mag": 0.28450626134872437
+    },
+    {
+      "dx": 0,
+      "dy": -10,
+      "per_x": Infinity,
+      "per_y": 51.2,
+      "mag": 0.28450626134872437
+    }
+  ],
+  "F2_path": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/rostro_sin_lino.png",
+  "F3_quemaduras": {
+    "frac": 0.026484,
+    "media": 113.904553,
+    "std": 34.70665709730903
+  },
+  "F4_path": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/relieve_3d_rostro_sin_lino.png",
+  "F5_simetria": {
+    "original": 0.7768706656705024,
+    "sin_lino": 0.7459231620969057
+  },
+  "F5_estructura": {
+    "picos": [
+      89,
+      160,
+      225,
+      472,
+      605,
+      835,
+      911
+    ],
+    "valles": [
+      49,
+      114,
+      199,
+      442,
+      498,
+      809,
+      880,
+      937
+    ]
+  },
+  "F5_horizontal": {
+    "y": 160,
+    "picos_x": [
+      63,
+      100,
+      220,
+      250,
+      377,
+      457,
+      499,
+      570,
+      673,
+      735,
+      888,
+      937
+    ]
+  },
+  "conclusion": {
+    "sim_orig": 0.7768706656705024,
+    "sim_limpio": 0.7459231620969057,
+    "mejora": false
+  }
+}

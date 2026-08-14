@@ -1,0 +1,168 @@
+{
+  "topografia": {
+    "sabana_png": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/topografia_3d_sabana.png",
+    "xray1_png": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/topografia_3d_xray1.png",
+    "sabana_shape": [
+      125,
+      125
+    ],
+    "xray1_shape": [
+      125,
+      125
+    ]
+  },
+  "conectividad_bits": {
+    "sabana": {
+      "bit0-bit1": {
+        "corr": -0.00042994208105862785,
+        "mi": 1.3334123245898992e-07,
+        "co_occ": 0.9995699400986607,
+        "alineacion_bordes": 1.000463203164698
+      },
+      "bit1-bit2": {
+        "corr": 0.0006898589586232355,
+        "mi": 3.4329319507242105e-07,
+        "co_occ": 1.0006890660765781,
+        "alineacion_bordes": 1.0009069549968634
+      },
+      "bit2-bit3": {
+        "corr": -0.002197015124346496,
+        "mi": 3.481857412653412e-06,
+        "co_occ": 0.997798683290119,
+        "alineacion_bordes": 1.004799560647389
+      },
+      "bit3-bit4": {
+        "corr": -0.02820671591890303,
+        "mi": 0.0005739918192143208,
+        "co_occ": 0.9727515537382947,
+        "alineacion_bordes": 1.0561371556320747
+      },
+      "bit4-bit5": {
+        "corr": -0.22035066647582502,
+        "mi": 0.035281899018419424,
+        "co_occ": 0.7568866085365447,
+        "alineacion_bordes": 1.4259999566058528
+      },
+      "bit5-bit6": {
+        "corr": 0.09689580738824223,
+        "mi": 0.0068708195881608675,
+        "co_occ": 1.063731079922659,
+        "alineacion_bordes": 2.734393288685588
+      },
+      "bit6-bit7": {
+        "corr": -0.8950245916454836,
+        "mi": 0.610720563698508,
+        "co_occ": 0.18072052495216445,
+        "alineacion_bordes": 7.812377931594819
+      }
+    }
+  },
+  "controles_conectividad": {
+    "bit0-bit1": {
+      "corr_azar_mean": 7.597796725572631e-05,
+      "corr_azar_std": 0.0008690362350585611,
+      "z_corr": -0.5821622021091699,
+      "mi_azar_mean": 5.489432612224772e-07,
+      "mi_azar_std": 8.32161503168078e-07,
+      "z_mi": -0.4994247236639412,
+      "co_occ_azar_mean": 1.0000759987880727,
+      "co_occ_azar_std": 0.0008692743836315886,
+      "z_co": -0.5821622021091083,
+      "bordes_azar_mean": 1.0003588615096013,
+      "bordes_azar_std": 0.00011716140120865537,
+      "z_al": 0.8905804643880796
+    },
+    "bit1-bit2": {
+      "corr_azar_mean": 0.0001296986674238448,
+      "corr_azar_std": 0.001021755557768383,
+      "z_corr": 0.5482331727393166,
+      "mi_azar_mean": 7.652101910601103e-07,
+      "mi_azar_std": 8.312556884142386e-07,
+      "z_mi": -0.5075658451042514,
+      "co_occ_azar_mean": 1.0001295495996423,
+      "co_occ_azar_std": 0.0010205812139024487,
+      "z_co": 0.5482331727392963,
+      "bordes_azar_mean": 1.0003804327956103,
+      "bordes_azar_std": 0.00010162505105908906,
+      "z_al": 5.181027667548354
+    },
+    "bit2-bit3": {
+      "corr_azar_mean": 3.6755840421012055e-05,
+      "corr_azar_std": 0.0009296748396081707,
+      "z_corr": -2.402744346301739,
+      "mi_azar_mean": 6.244320910229447e-07,
+      "mi_azar_std": 9.061734407302826e-07,
+      "z_mi": 3.1532874317389794,
+      "co_occ_azar_mean": 1.0000368278055112,
+      "co_occ_azar_std": 0.0009314950709745696,
+      "z_co": -2.402744346301832,
+      "bordes_azar_mean": 1.0003982567301493,
+      "bordes_azar_std": 0.00011392406127656581,
+      "z_al": 38.63366410854108
+    },
+    "bit3-bit4": {
+      "corr_azar_mean": -1.202792639692583e-05,
+      "corr_azar_std": 0.0009762281382184085,
+      "z_corr": -28.881249053075535,
+      "mi_azar_mean": 6.875642755126837e-07,
+      "mi_azar_std": 1.0036638920263422e-06,
+      "z_mi": 571.2113980521291,
+      "co_occ_azar_mean": 0.999988380699582,
+      "co_occ_azar_std": 0.0009430626394043236,
+      "z_co": -28.881249053075777,
+      "bordes_azar_mean": 1.0003899407755983,
+      "bordes_azar_std": 0.00011539791205553133,
+      "z_al": 483.0868588822467
+    },
+    "bit4-bit5": {
+      "corr_azar_mean": 0.00011515470034507039,
+      "corr_azar_std": 0.0010964664200888892,
+      "z_corr": -201.0693780830034,
+      "mi_azar_mean": 8.767985037800122e-07,
+      "mi_azar_std": 1.1137212089842371e-06,
+      "z_mi": 31678.504400660102,
+      "co_occ_azar_mean": 1.0001270504427853,
+      "co_occ_azar_std": 0.001209733894963488,
+      "z_co": -201.06937808300563,
+      "bordes_azar_mean": 1.0003995096750353,
+      "bordes_azar_std": 0.00010062402057816899,
+      "z_al": 4229.610827368929
+    },
+    "bit5-bit6": {
+      "corr_azar_mean": 0.00012536965833103263,
+      "corr_azar_std": 0.0010079221844484486,
+      "z_corr": 96.00983014662542,
+      "mi_azar_mean": 7.441992209464743e-07,
+      "mi_azar_std": 8.139541284242158e-07,
+      "z_mi": 8440.371697899149,
+      "co_occ_azar_mean": 1.0000824591272865,
+      "co_occ_azar_std": 0.0006629385834572328,
+      "z_co": 96.0098301466239,
+      "bordes_azar_mean": 1.0004379456194987,
+      "bordes_azar_std": 0.00015660566073785477,
+      "z_al": 11072.111537325529
+    },
+    "bit6-bit7": {
+      "corr_azar_mean": 0.00015117399521292392,
+      "corr_azar_std": 0.0010571624173153923,
+      "z_corr": -846.7722187040548,
+      "mi_azar_mean": 8.228936737461351e-07,
+      "mi_azar_std": 1.0403017933753979e-06,
+      "z_mi": 587060.1634005385,
+      "co_occ_azar_mean": 1.0001383802775867,
+      "co_occ_azar_std": 0.0009676957240986224,
+      "z_co": -846.7722187040599,
+      "bordes_azar_mean": 1.000486712807018,
+      "bordes_azar_std": 0.00021761359365760915,
+      "z_al": 31302.691639317145
+    }
+  },
+  "conclusion": {
+    "pares_sig_corr": 4,
+    "pares_sig_mi": 5,
+    "pares_sig_co_occ": 4,
+    "pares_sig_bordes": 6,
+    "total_pares": 7,
+    "interpretacion": "Si la mayoria de pares tienen |z|>3, los bitplanes adyacentes estan conectados"
+  }
+}

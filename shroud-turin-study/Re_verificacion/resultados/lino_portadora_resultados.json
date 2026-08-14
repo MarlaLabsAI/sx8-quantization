@@ -1,0 +1,17 @@
+{
+  "L1": {
+    "frac_quemadura": 0.026484
+  },
+  "L2_path": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/lino_amplitud_local.png",
+  "L3": {
+    "corr_amp_intensidad": 0.4845652946145416
+  },
+  "L4_path": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/relieve_desde_lino.png",
+  "L5": {
+    "simetria_lino": 0.48362813575890834
+  },
+  "conclusion": {
+    "corr": 0.4845652946145416,
+    "simetria_lino": 0.48362813575890834
+  }
+}

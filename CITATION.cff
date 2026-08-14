@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Vidal Leandro
+    given-names: Martí
+title: "S-X8 v4.3: A 7.50-Bits-Per-Weight Quantization Format with FP16-Level Quality and Portable Decoding"
+date-released: 2026-08-13
+version: v1.0
+doi: 10.5281/zenodo.21922640
+license: Apache-2.0
+keywords:
+  - quantization
+  - LLM compression
+  - perplexity
+  - llama.cpp
+  - portable kernels

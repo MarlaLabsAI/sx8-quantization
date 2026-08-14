@@ -1,0 +1,94 @@
+{
+  "perfil": "horizontal",
+  "y_perfil": 540,
+  "punto_central_matriz": [
+    960,
+    960
+  ],
+  "punto_central_imagen": [
+    960,
+    540
+  ],
+  "bloques": [
+    {
+      "x0": 35,
+      "x1": 45,
+      "rel": 0.020833333333333332,
+      "anatomia": "Extremo izq"
+    },
+    {
+      "x0": 328,
+      "x1": 353,
+      "rel": 0.17734375,
+      "anatomia": "Cuello"
+    },
+    {
+      "x0": 380,
+      "x1": 433,
+      "rel": 0.21171875,
+      "anatomia": "Hombros"
+    },
+    {
+      "x0": 609,
+      "x1": 636,
+      "rel": 0.32421875,
+      "anatomia": "Pecho alto"
+    },
+    {
+      "x0": 667,
+      "x1": 698,
+      "rel": 0.35546875,
+      "anatomia": "Pecho alto"
+    },
+    {
+      "x0": 719,
+      "x1": 735,
+      "rel": 0.37864583333333335,
+      "anatomia": "Pecho alto"
+    },
+    {
+      "x0": 812,
+      "x1": 870,
+      "rel": 0.43802083333333336,
+      "anatomia": "Pecho"
+    },
+    {
+      "x0": 929,
+      "x1": 976,
+      "rel": 0.49609375,
+      "anatomia": "Torso sup"
+    },
+    {
+      "x0": 1036,
+      "x1": 1063,
+      "rel": 0.5466145833333333,
+      "anatomia": "PUNTO CENTRAL"
+    },
+    {
+      "x0": 1144,
+      "x1": 1214,
+      "rel": 0.6140625,
+      "anatomia": "Torso inf"
+    },
+    {
+      "x0": 1255,
+      "x1": 1287,
+      "rel": 0.6619791666666667,
+      "anatomia": "Caderas"
+    },
+    {
+      "x0": 1426,
+      "x1": 1452,
+      "rel": 0.7494791666666667,
+      "anatomia": "Muslos"
+    },
+    {
+      "x0": 1671,
+      "x1": 1678,
+      "rel": 0.8721354166666667,
+      "anatomia": "Piernas"
+    }
+  ],
+  "viz1": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/bloques_anatomicos_corregidos.png",
+  "viz2": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/matriz_recurrencia_horizontal.png"
+}

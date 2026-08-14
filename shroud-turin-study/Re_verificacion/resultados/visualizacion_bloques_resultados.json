@@ -1,0 +1,71 @@
+{
+  "punto_central": [
+    416,
+    416
+  ],
+  "columna_perfil_imagen": 960,
+  "bloques": [
+    {
+      "y0": 25,
+      "y1": 31,
+      "anatomia": "Cabeza alta"
+    },
+    {
+      "y0": 74,
+      "y1": 78,
+      "anatomia": "Frente"
+    },
+    {
+      "y0": 126,
+      "y1": 129,
+      "anatomia": "Ojos/Nariz"
+    },
+    {
+      "y0": 253,
+      "y1": 257,
+      "anatomia": "Cuello"
+    },
+    {
+      "y0": 291,
+      "y1": 295,
+      "anatomia": "Hombros"
+    },
+    {
+      "y0": 404,
+      "y1": 426,
+      "anatomia": "PECHO (punto central)"
+    },
+    {
+      "y0": 464,
+      "y1": 499,
+      "anatomia": "Torso medio"
+    },
+    {
+      "y0": 536,
+      "y1": 564,
+      "anatomia": "Cintura"
+    },
+    {
+      "y0": 655,
+      "y1": 698,
+      "anatomia": "Caderas"
+    },
+    {
+      "y0": 764,
+      "y1": 770,
+      "anatomia": "Rodillas"
+    },
+    {
+      "y0": 826,
+      "y1": 832,
+      "anatomia": "Piernas bajas"
+    },
+    {
+      "y0": 1033,
+      "y1": 1047,
+      "anatomia": "Tobillos/Pies"
+    }
+  ],
+  "viz1": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/bloques_anatomicos_sabana.png",
+  "viz2": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/matriz_recurrencia_fila416.png"
+}

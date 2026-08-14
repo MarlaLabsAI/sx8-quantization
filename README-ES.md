@@ -59,14 +59,22 @@ incluido en el patch.
 ## Transparencia
 
 Las semillas conceptuales de este formato provienen de un análisis matemático independiente de la imagen
-de la Sábana Santa de Turín. El estudio completo (con su propia re-verificación) se publica aparte; ver el
-Apéndice A del paper y [`docs/IDEA-PROVENANCE-ES.md`](docs/IDEA-PROVENANCE-ES.md) para la declaración
-completa. El formato en sí se valida empíricamente en este repositorio; el estudio se menciona solo como
+de la Sábana Santa de Turín. El estudio completo (con su propia re-verificación) se publica en este
+repositorio: [`shroud-turin-study/`](shroud-turin-study/) (íntegro y disponible, tal cual se produjo).
+Ver el Apéndice A del paper y [`docs/IDEA-PROVENANCE-ES.md`](docs/IDEA-PROVENANCE-ES.md) para la
+declaración completa. El formato en sí se valida empíricamente en este repositorio; el estudio se menciona solo como
 fuente de inspiración, con total honestidad sobre lo que el autor puede y no puede corroborar.
 
 ## Licencia
 
 Apache-2.0. Modelo base: Qwen3.5-4B (Apache-2.0). Ver [LICENSE](LICENSE).
+
+## Cómo citar este trabajo
+
+Si usas este trabajo, cítalo así:
+
+> Vidal Leandro, M. (2026). S-X8 v4.3: Un formato de cuantización a 7,50 bits por peso con calidad de FP16
+> y decodificación portable. Zenodo. https://doi.org/10.5281/zenodo.21922640
 
 ## Apoyo
 

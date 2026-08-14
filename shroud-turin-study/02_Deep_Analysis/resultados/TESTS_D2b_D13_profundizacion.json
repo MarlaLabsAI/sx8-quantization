@@ -1,0 +1,217 @@
+{
+  "D2b_multifractal_comparative": {
+    "Centro (0-20px)": {
+      "delta_alpha": 3.3094393654458734,
+      "alpha_peak": 1.289665188707838,
+      "skewness": 0.7301089880301972,
+      "alpha_min": -0.0,
+      "alpha_max": 3.3094393654458734
+    },
+    "Brazos (20-60px)": {
+      "delta_alpha": 4.496400140998351,
+      "alpha_peak": 1.9148299118771437,
+      "skewness": 0.6667403172440638,
+      "alpha_min": -0.0,
+      "alpha_max": 4.496400140998351
+    },
+    "Periferia (100-150px)": {
+      "delta_alpha": 4.696612701080284,
+      "alpha_peak": 1.8912656223517474,
+      "skewness": 0.9140814563767885,
+      "alpha_min": -0.0,
+      "alpha_max": 4.696612701080284
+    }
+  },
+  "D5b_spectral_radial": [
+    {
+      "radius": 20,
+      "high_freq_pct": 49.12080273023292,
+      "mid_freq_pct": 22.236454064637407,
+      "low_freq_pct": 28.64274320512968
+    },
+    {
+      "radius": 40,
+      "high_freq_pct": 62.68230173538478,
+      "mid_freq_pct": 16.409432976833973,
+      "low_freq_pct": 20.908265287781244
+    },
+    {
+      "radius": 60,
+      "high_freq_pct": 72.08489326450972,
+      "mid_freq_pct": 13.643289504854389,
+      "low_freq_pct": 14.271817230635895
+    },
+    {
+      "radius": 80,
+      "high_freq_pct": 75.71308011287151,
+      "mid_freq_pct": 12.899926053564045,
+      "low_freq_pct": 11.386993833564441
+    },
+    {
+      "radius": 100,
+      "high_freq_pct": 79.46779913227388,
+      "mid_freq_pct": 11.174122588338605,
+      "low_freq_pct": 9.358078279387506
+    },
+    {
+      "radius": 120,
+      "high_freq_pct": 85.15178326092219,
+      "mid_freq_pct": 8.300411544364165,
+      "low_freq_pct": 6.547805194713654
+    }
+  ],
+  "D8b_information_tensor_map": {
+    "Centro exacto": {
+      "position": [
+        416,
+        416
+      ],
+      "T_xx": 0.0,
+      "T_xy": 0.0,
+      "T_yy": 0.0,
+      "eigenvalues": [
+        0.0,
+        0.0
+      ],
+      "pressure": 0.0,
+      "shear": 0.0,
+      "shear_pressure_ratio": 0
+    },
+    "Brazo arriba (20px)": {
+      "position": [
+        416,
+        396
+      ],
+      "T_xx": 0.0,
+      "T_xy": 0.0,
+      "T_yy": 0.0,
+      "eigenvalues": [
+        0.0,
+        0.0
+      ],
+      "pressure": 0.0,
+      "shear": 0.0,
+      "shear_pressure_ratio": 0
+    },
+    "Brazo abajo (20px)": {
+      "position": [
+        416,
+        436
+      ],
+      "T_xx": 0.0,
+      "T_xy": 0.0,
+      "T_yy": 0.0,
+      "eigenvalues": [
+        0.0,
+        0.0
+      ],
+      "pressure": 0.0,
+      "shear": 0.0,
+      "shear_pressure_ratio": 0
+    },
+    "Brazo izquierda (20px)": {
+      "position": [
+        396,
+        416
+      ],
+      "T_xx": 0.0,
+      "T_xy": 0.0,
+      "T_yy": 0.0,
+      "eigenvalues": [
+        0.0,
+        0.0
+      ],
+      "pressure": 0.0,
+      "shear": 0.0,
+      "shear_pressure_ratio": 0
+    },
+    "Brazo derecha (20px)": {
+      "position": [
+        436,
+        416
+      ],
+      "T_xx": 0.0,
+      "T_xy": 0.0,
+      "T_yy": 0.0,
+      "eigenvalues": [
+        0.0,
+        0.0
+      ],
+      "pressure": 0.0,
+      "shear": 0.0,
+      "shear_pressure_ratio": 0
+    },
+    "Diagonal (30px)": {
+      "position": [
+        446,
+        446
+      ],
+      "T_xx": 0.0,
+      "T_xy": 0.0,
+      "T_yy": 0.0,
+      "eigenvalues": [
+        0.0,
+        0.0
+      ],
+      "pressure": 0.0,
+      "shear": 0.0,
+      "shear_pressure_ratio": 0
+    },
+    "Periferia (80px)": {
+      "position": [
+        496,
+        416
+      ],
+      "T_xx": 0.0,
+      "T_xy": 0.0,
+      "T_yy": 0.0,
+      "eigenvalues": [
+        0.0,
+        0.0
+      ],
+      "pressure": 0.0,
+      "shear": 0.0,
+      "shear_pressure_ratio": 0
+    }
+  },
+  "D9_continuous_correlation": {
+    "D2_center_continuous": 0.8956538373658053,
+    "D2_peripheral_continuous": 0.8851461598396372,
+    "ratio": 1.0118711214067424
+  },
+  "D11_cross_arms_structure": {
+    "Brazo arriba": {
+      "density": 0.14937500655651093,
+      "fractal_dimension": 1.490807751055896,
+      "entropy": 0.42162342852769985
+    },
+    "Brazo abajo": {
+      "density": 0.47749999165534973,
+      "fractal_dimension": 1.4951876724913944,
+      "entropy": 0.6921343385641024
+    },
+    "Brazo izquierda": {
+      "density": 0.14937500655651093,
+      "fractal_dimension": 1.490807751055896,
+      "entropy": 0.42162342852769985
+    },
+    "Brazo derecha": {
+      "density": 0.47749999165534973,
+      "fractal_dimension": 1.4951876724913944,
+      "entropy": 0.6921343385641024
+    }
+  },
+  "D12_projection_simulation": {
+    "D_center_simulated": 1.7369655941662079,
+    "D_peripheral_simulated": 0.0,
+    "delta_alpha_center_simulated": 5.2041864066426555,
+    "delta_alpha_peripheral_simulated": 0.964002346728481
+  },
+  "D13_mutual_information": {
+    "mean_MI": 0.006721429240401615,
+    "max_MI": 0.22693721233818187,
+    "min_MI": 0.0,
+    "correlation_MI_distance": -0.13414088170274566,
+    "n_cells": 169
+  }
+}

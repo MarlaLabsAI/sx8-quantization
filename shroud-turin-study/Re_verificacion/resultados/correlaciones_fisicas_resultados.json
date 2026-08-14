@@ -1,0 +1,115 @@
+{
+  "X1_densidades": {
+    "aire": 1.2,
+    "cuerpo_tejido": 1060,
+    "lino": 1500,
+    "celulosa": 1500,
+    "hueso": 1900,
+    "agua": 1000
+  },
+  "X1_atenuacion": {
+    "UV-B (280nm)": {
+      "tejido": 100.0,
+      "celulosa": 90.0,
+      "penetracion": "micras",
+      "penetracion_um": 74.07407407407408
+    },
+    "UV-C (254nm)": {
+      "tejido": 300.0,
+      "celulosa": 280.0,
+      "penetracion": "sub-micras",
+      "penetracion_um": 23.80952380952381
+    },
+    "VUV (150nm)": {
+      "tejido": 2000.0,
+      "celulosa": 1900.0,
+      "penetracion": "10-100 nm",
+      "penetracion_um": 3.508771929824561
+    },
+    "X suave (10keV)": {
+      "tejido": 4.5,
+      "celulosa": 3.0,
+      "penetracion": "mm",
+      "penetracion_um": 2222.222222222222
+    },
+    "X dura (100keV)": {
+      "tejido": 0.17,
+      "celulosa": 0.15,
+      "penetracion": "cm",
+      "penetracion_um": 44444.444444444445
+    },
+    "gamma (1MeV)": {
+      "tejido": 0.07,
+      "celulosa": 0.06,
+      "penetracion": "decenas cm",
+      "penetracion_um": 111111.11111111111
+    }
+  },
+  "X2_superficialidad": {
+    "UV-B (280nm)": {
+      "tejido": 100.0,
+      "celulosa": 90.0,
+      "penetracion": "micras",
+      "penetracion_um": 74.07407407407408
+    },
+    "UV-C (254nm)": {
+      "tejido": 300.0,
+      "celulosa": 280.0,
+      "penetracion": "sub-micras",
+      "penetracion_um": 23.80952380952381
+    },
+    "VUV (150nm)": {
+      "tejido": 2000.0,
+      "celulosa": 1900.0,
+      "penetracion": "10-100 nm",
+      "penetracion_um": 3.508771929824561
+    },
+    "X suave (10keV)": {
+      "tejido": 4.5,
+      "celulosa": 3.0,
+      "penetracion": "mm",
+      "penetracion_um": 2222.222222222222
+    },
+    "X dura (100keV)": {
+      "tejido": 0.17,
+      "celulosa": 0.15,
+      "penetracion": "cm",
+      "penetracion_um": 44444.444444444445
+    },
+    "gamma (1MeV)": {
+      "tejido": 0.07,
+      "celulosa": 0.06,
+      "penetracion": "decenas cm",
+      "penetracion_um": 111111.11111111111
+    }
+  },
+  "X3_paradoja_aire": {
+    "beta": 0.005,
+    "analisis": "gradiente no es atenuacion en aire"
+  },
+  "X4_modelos": {
+    "tac": -0.04553014476463296,
+    "emision": 0.038877254464324905,
+    "contacto": -0.06937383990790111,
+    "mejor": "EMISION"
+  },
+  "X5_energia": {
+    "energia_cm2": 6.944444444444444,
+    "energia_total_kJ": 69.44444444444444
+  },
+  "X6_simetria": {
+    "real": 0.7768706656705029,
+    "sintetico": 0.9999914805814387,
+    "ratio": 0.776877283436374
+  },
+  "X7_direccion": {
+    "nota": "45° es en gran parte la banda diagonal (artefacto)"
+  },
+  "conclusion": {
+    "radiacion_superficial": "VUV/UV-C",
+    "paradoja_aire": "gradiente no es atenuacion atmosferica",
+    "mejor_modelo": "EMISION",
+    "simetria_real": 0.7768706656705029,
+    "energia_cm2": 6.944444444444444
+  }
+}

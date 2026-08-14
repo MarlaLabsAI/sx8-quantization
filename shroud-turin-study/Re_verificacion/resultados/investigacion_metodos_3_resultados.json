@@ -1,0 +1,30 @@
+{
+  "permutation": {
+    "grid_rows_mean": 14.72,
+    "grid_rows_std": 2.5887448696231155,
+    "pct_ge_14": 70.0,
+    "pct_eq_14": 20.0,
+    "similarity_mean": 0.5296336515883842,
+    "similarity_std": 0.032530198028523104,
+    "pct_sim_ge_real": 0.0,
+    "density_mean": 0.09921982167352537
+  },
+  "gaussian": {
+    "grid_rows_mean": 15.73,
+    "grid_rows_std": 3.375959122975277,
+    "pct_ge_14": 68.0,
+    "pct_eq_14": 5.0,
+    "similarity_mean": 0.5404254294297288,
+    "similarity_std": 0.03577838689549286,
+    "pct_sim_ge_real": 1.0,
+    "density_mean": 0.09589375857338822
+  },
+  "real": {
+    "grid_rows": 14,
+    "grid_cols": 14,
+    "similarity": 0.6483854166666667,
+    "n_cells": 25,
+    "density": 0.09921982167352537
+  },
+  "conclusion": "Si los controles tambien producen grids ~14x14 y similitudes ~0.6-0.7, los hallazgos 'grid 14x14' y '64.8% redundancia' son artefactos del METODO (deteccion por umbral+agrupacion y fraccion de iguales en matriz sparse)."
+}

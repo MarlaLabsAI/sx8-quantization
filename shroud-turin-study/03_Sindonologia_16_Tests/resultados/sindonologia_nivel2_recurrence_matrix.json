@@ -1,0 +1,176 @@
+{
+  "matrix_type": "recurrence_matrix",
+  "source_image": "imagen3_sepia",
+  "dimensions": [
+    1080,
+    1080
+  ],
+  "density": 0.133840873837471,
+  "tests": {
+    "test_1_z_relief": {
+      "z_min": 0.0,
+      "z_max": 1.0000001192092896,
+      "z_mean": 0.13372352719306946,
+      "z_std": 0.3079040050506592,
+      "continuous_encoding": true
+    },
+    "test_2_fft_2d": {
+      "max_spectral": 239.1665802001953,
+      "mean_spectral": 86.6748275756836,
+      "periodic_peaks": 41109,
+      "low_freq_ratio": 0.014840790604952525,
+      "has_periodic_pattern": true
+    },
+    "test_3_gradient_isotropy": {
+      "mean_angle": 167.8729705810547,
+      "std_angle": 103.47663879394531,
+      "isotropy_score": 0.8898708962263455,
+      "is_isotropic": true,
+      "angle_distribution": [
+        0.11108492418886008,
+        0.1377170241181554,
+        0.11073140073847121,
+        0.1406237724880195,
+        0.11219786838452876,
+        0.13669573415036532,
+        0.11112420457223662,
+        0.13982507135936315
+      ]
+    },
+    "test_4_spatial_autocorrelation": {
+      "radial_decay": [
+        0.8584948778152466,
+        0.6456459164619446,
+        0.4225082993507385,
+        0.28208887577056885,
+        0.19747662544250488,
+        0.14369837939739227,
+        0.10765139758586884,
+        0.08387667685747147,
+        0.06552955508232117,
+        0.052956584841012955
+      ],
+      "left_right_symmetry": 0.9999999999999823,
+      "is_symmetric": true,
+      "correlation_length": 7
+    },
+    "test_5_multifractal_spectrum": {
+      "D_min": 1.4933878818259751,
+      "D_max": 1.4933878818259751,
+      "D_mean": 1.493387881825975,
+      "D_range": 0.0,
+      "is_multifractal": false,
+      "dimension_curve": [
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751,
+        1.4933878818259751
+      ]
+    },
+    "test_6_laplacian_pyramid": {
+      "n_levels": 4,
+      "energy_ratios": [
+        0.8941533958525417,
+        0.04070145158879207,
+        0.033205614783496255,
+        0.03193953777516991
+      ],
+      "low_freq_dominance": true,
+      "high_freq_content": false
+    },
+    "test_7_hurst_exponent": {
+      "H": 0.859162691022656,
+      "is_persistent": true,
+      "memory_type": "larga"
+    },
+    "test_8_radon_transform": {
+      "sinogram_variance": 3849.8787325818776,
+      "sinogram_mean": 131.2025386335428,
+      "projection_similarity": 0.4602060680328659,
+      "is_cylindrical": false,
+      "n_projections": 18
+    },
+    "test_9_tomographic_cuts": {
+      "n_high_depth": 156112,
+      "n_mid_depth": 0,
+      "n_low_depth": 1010288,
+      "ratio_high": 0.133840877914952,
+      "ratio_mid": 0.0,
+      "ratio_low": 0.866159122085048,
+      "is_pyramidal": false
+    },
+    "test_10_topological_skeleton": {
+      "skeleton_pixels": 6920,
+      "skeleton_density": 0.00593278463648834,
+      "has_clear_skeleton": true,
+      "structural_complexity": "media"
+    },
+    "test_11_local_shannon_entropy": {
+      "entropy_mean": 0.3685124290868926,
+      "entropy_max": 1.2052681573467177,
+      "entropy_min": 0.0,
+      "entropy_std": 0.312661610116189,
+      "high_entropy_regions": 7829,
+      "information_density": "baja"
+    },
+    "test_12_recurrence_plot": {
+      "recurrence_rate": 0.133840873837471,
+      "n_diagonal_lines": 12261,
+      "determinism": 0.9723787903785706,
+      "is_deterministic": true
+    },
+    "test_13_bilateral_symmetry": {
+      "ncc": 0.022255998104810715,
+      "is_symmetric": false,
+      "symmetry_strength": "d\u00e9bil"
+    },
+    "test_14_svd_analysis": {
+      "variance_explained_top10": 0.8760722279548645,
+      "spectral_entropy": 5.02628755569458,
+      "effective_rank": 215,
+      "total_singular_values": 1080,
+      "is_low_rank": false
+    },
+    "test_15_game_of_life": {
+      "initial_density": 0.4922,
+      "final_density": 0.007,
+      "density_sequence": [
+        0.4922,
+        0.0096,
+        0.0082,
+        0.0066,
+        0.0086,
+        0.0058,
+        0.007
+      ],
+      "convergence_type": "estable",
+      "is_stable": true
+    },
+    "test_16_eigenvector_centrality": {
+      "max_centrality_position": [
+        6,
+        23
+      ],
+      "mean_centrality": 0.011327804066240788,
+      "max_centrality": 0.1144171953201294,
+      "centrality_ratio": 10.100562708452598,
+      "has_central_hub": true
+    }
+  }
+}

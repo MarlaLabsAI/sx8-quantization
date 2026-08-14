@@ -1,0 +1,109 @@
+{
+  "X1_cubo": {
+    "3": {
+      "redundancia_binaria": 0.9040870240756443,
+      "redundancia_binaria_std": 0.036072468789785705,
+      "correlacion_media": 0.9368262198049097
+    },
+    "4": {
+      "redundancia_binaria": 0.8646346114493988,
+      "redundancia_binaria_std": 0.06770229239990243,
+      "correlacion_media": 0.9041267742023217
+    },
+    "5": {
+      "redundancia_binaria": 0.8205187890555833,
+      "redundancia_binaria_std": 0.09918061419248547,
+      "correlacion_media": 0.8743556485158462
+    },
+    "6": {
+      "redundancia_binaria": 0.8381613014818547,
+      "redundancia_binaria_std": 0.08909048030922197,
+      "correlacion_media": 0.8978635720313091
+    },
+    "7": {
+      "redundancia_binaria": 0.7259985093887036,
+      "redundancia_binaria_std": 0.16953237671851207,
+      "correlacion_media": 0.823948125710242
+    },
+    "8": {
+      "redundancia_binaria": 0.8377380037045741,
+      "redundancia_binaria_std": 0.07877469117989654,
+      "correlacion_media": 0.8767295354508863
+    }
+  },
+  "X2_esfera_excentrica": {
+    "3": {
+      "redundancia_binaria": 0.8183391107307686,
+      "redundancia_binaria_std": 0.0729247764085142,
+      "correlacion_media": 0.5062565445399827
+    },
+    "4": {
+      "redundancia_binaria": 0.8320992228749035,
+      "redundancia_binaria_std": 0.06795983497497088,
+      "correlacion_media": 0.5724215038841727
+    },
+    "5": {
+      "redundancia_binaria": 0.8615463376045227,
+      "redundancia_binaria_std": 0.06295063989845355,
+      "correlacion_media": 0.6330823272537492
+    },
+    "6": {
+      "redundancia_binaria": 0.8705536081240728,
+      "redundancia_binaria_std": 0.06264974608283627,
+      "correlacion_media": 0.5765258534050481
+    },
+    "7": {
+      "redundancia_binaria": 0.8874270333038582,
+      "redundancia_binaria_std": 0.05880323532836656,
+      "correlacion_media": 0.5651963461459537
+    },
+    "8": {
+      "redundancia_binaria": 0.9131562939056983,
+      "redundancia_binaria_std": 0.03823338087899793,
+      "correlacion_media": 0.6024690595757601
+    }
+  },
+  "X3_cubo_densidad": {
+    "3": {
+      "redundancia_binaria": 0.9064801354984661,
+      "redundancia_binaria_std": 0.03793619104968749,
+      "correlacion_media": 0.9431612560387735
+    },
+    "4": {
+      "redundancia_binaria": 0.9150855711528233,
+      "redundancia_binaria_std": 0.04475982742638972,
+      "correlacion_media": 0.9507450064049044
+    },
+    "5": {
+      "redundancia_binaria": 0.8835672873717088,
+      "redundancia_binaria_std": 0.04724486801042594,
+      "correlacion_media": 0.928353722911801
+    },
+    "6": {
+      "redundancia_binaria": 0.8799090529536153,
+      "redundancia_binaria_std": 0.05418554972783396,
+      "correlacion_media": 0.9304508709536842
+    },
+    "7": {
+      "redundancia_binaria": 0.8544695396999736,
+      "redundancia_binaria_std": 0.10932470605130258,
+      "correlacion_media": 0.9222279535620865
+    },
+    "8": {
+      "redundancia_binaria": 0.8787142850540497,
+      "redundancia_binaria_std": 0.05507873638227802,
+      "correlacion_media": 0.9221524498897076
+    }
+  },
+  "X4_sabana": {
+    "redundancia": 0.6887239583333333,
+    "std": 0.24482274985501487
+  },
+  "X5_despejar_N": {
+    "n_despejado": 6.42516523048607,
+    "redundancia": 0.6887239583333333
+  },
+  "conclusion": {
+    "n_despejado": 6.42516523048607
+  }
+}

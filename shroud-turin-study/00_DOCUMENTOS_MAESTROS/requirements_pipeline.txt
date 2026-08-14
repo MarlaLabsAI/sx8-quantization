@@ -1,0 +1,13 @@
+# Shroud FGN V3 Transfer Pipeline - Minimal Dependencies
+# Install: pip install -r requirements_pipeline.txt
+
+# Core
+torch>=2.0.0
+numpy>=1.24.0
+
+# Hugging Face (>=4.45 needed for Qwen3_5RMSNorm)
+transformers>=4.45.0
+datasets>=2.15.0
+
+# Optional: faster model loading
+accelerate>=0.24.0

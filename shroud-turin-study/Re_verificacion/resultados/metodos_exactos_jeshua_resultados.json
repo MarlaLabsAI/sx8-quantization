@@ -1,0 +1,109 @@
+{
+  "factor": 2.149074074074074,
+  "imagen3_referencia": {
+    "metodo_chip": {
+      "densidad": 0.09921982167352537,
+      "grid": "14x14",
+      "grid_rows": 14,
+      "grid_cols": 14,
+      "cruz_abs": [
+        416,
+        416
+      ],
+      "cruz_rel": [
+        0.77,
+        0.77
+      ],
+      "similitud_celdas": 0.6483854166666667,
+      "n_celdas": 25,
+      "D_fractal": 1.6420727957787762
+    },
+    "metodo_d": {
+      "densidad": 0.133840877914952,
+      "grid": "7x7",
+      "grid_rows": 7,
+      "grid_cols": 7,
+      "cruz_abs": [
+        460,
+        460
+      ],
+      "cruz_rel": [
+        0.852,
+        0.852
+      ],
+      "similitud_celdas": 0.7766513621059075,
+      "n_celdas": 25,
+      "D_fractal": 1.5062500305465447
+    }
+  },
+  "jeshua2": {
+    "metodo_chip_original": {
+      "densidad": 0.14112738328889646,
+      "grid": "16x16",
+      "grid_rows": 16,
+      "grid_cols": 16,
+      "cruz_abs": [
+        322,
+        322
+      ],
+      "cruz_rel": [
+        0.278,
+        0.278
+      ],
+      "similitud_celdas": 0.5275720164609053,
+      "n_celdas": 25,
+      "D_fractal": 1.6975727460639802
+    },
+    "metodo_d_original": {
+      "densidad": 0.17152329080101675,
+      "grid": "8x8",
+      "grid_rows": 8,
+      "grid_cols": 8,
+      "cruz_abs": [
+        1141,
+        1141
+      ],
+      "cruz_rel": [
+        0.984,
+        0.984
+      ],
+      "similitud_celdas": 0.5288548752834468,
+      "n_celdas": 25,
+      "D_fractal": 1.5693339566598214
+    },
+    "metodo_chip_escalado": {
+      "densidad": 0.14112738328889646,
+      "grid": "12x12",
+      "grid_rows": 12,
+      "grid_cols": 12,
+      "cruz_abs": [
+        322,
+        322
+      ],
+      "cruz_rel": [
+        0.278,
+        0.278
+      ],
+      "similitud_celdas": 0.6089615438011939,
+      "n_celdas": 25,
+      "D_fractal": 1.6975727460639802
+    },
+    "metodo_d_escalado": {
+      "densidad": 0.19188214828882869,
+      "grid": "5x5",
+      "grid_rows": 5,
+      "grid_cols": 5,
+      "cruz_abs": [
+        490,
+        490
+      ],
+      "cruz_rel": [
+        0.422,
+        0.422
+      ],
+      "similitud_celdas": 0.5086422941536578,
+      "n_celdas": 16,
+      "D_fractal": 1.5664902326479584
+    }
+  }
+}

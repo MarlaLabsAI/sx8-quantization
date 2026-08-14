@@ -1,0 +1,53 @@
+{
+  "imagen3_original": {
+    "pendiente": -0.005888782747136546,
+    "std": 43.209800720214844,
+    "rango": [
+      46.3332633972168,
+      232.6751251220703
+    ]
+  },
+  "Jeshua2-izq_original": {
+    "pendiente": 0.009396041739890159,
+    "std": 44.03813552856445,
+    "rango": [
+      34.89480209350586,
+      252.88055419921875
+    ]
+  },
+  "aditiva_blur101": {
+    "pendiente": 0.0028930720432294482,
+    "std": 8.527503967285156,
+    "gradiente_pct": 78.74309103925637,
+    "estructura_preservada": 0.9871885915921964
+  },
+  "multiplicativa_blur101": {
+    "pendiente": 0.0015111634092510266,
+    "std": 11.183844566345215,
+    "gradiente_pct": 31.36140038485732,
+    "estructura_preservada": 0.8689935081330118
+  },
+  "aditiva_blur201": {
+    "pendiente": 0.003153637653854235,
+    "std": 11.91540813446045,
+    "gradiente_pct": 61.429645648702106,
+    "estructura_preservada": 0.9833981436706253
+  },
+  "multiplicativa_blur201": {
+    "pendiente": 0.0005138137354270344,
+    "std": 15.3056640625,
+    "gradiente_pct": 7.791636318792664,
+    "estructura_preservada": 0.8914035548352365
+  },
+  "perfil_highpass": {
+    "pendiente": 0.0017824816691988492,
+    "std": 28.580663681030273,
+    "gradiente_pct": 14.475311001810134,
+    "estructura_preservada": 0.9971163236951802
+  },
+  "imagen3_corregida": {
+    "pendiente": 0.012676280756009451,
+    "std": 24.134544372558594
+  },
+  "conclusion": "Revisar tabla y elegir metodo con gradiente < 20% y estructura > 0.9"
+}

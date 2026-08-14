@@ -1,0 +1,23 @@
+{
+  "antisymmetry_error": 0.0,
+  "is_antisymmetric": true,
+  "D_magnitude": 49.06676483154297,
+  "D_max": 186.34185791015625,
+  "D_std": 61.10787582397461,
+  "S_magnitude": 49.06676483154297,
+  "ratio_directional": 1.0,
+  "central_peak_autocorr": 1.0,
+  "low_freq_ratio": 0.08030083083191543,
+  "has_structure": false,
+  "ratio_positive": 0.49953703703703706,
+  "ratio_negative": 0.49953703703703706,
+  "ratio_zero": 0.000925925925925926,
+  "quadrant_means": {
+    "Q1": 0.0,
+    "Q2": -0.6960288882255554,
+    "Q3": 0.6960292458534241,
+    "Q4": 6.430041139537934e-07
+  },
+  "has_directional_preference": true,
+  "is_significant": false
+}

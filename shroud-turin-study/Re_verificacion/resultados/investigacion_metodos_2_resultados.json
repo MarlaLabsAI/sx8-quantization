@@ -1,0 +1,77 @@
+{
+  "V1_grid_similitud_en_controles": {
+    "permutation": {
+      "grid_rows_mean": 9.25,
+      "grid_rows_std": 3.027787971440537,
+      "grid_cols_mean": 9.25,
+      "grid_cols_std": 3.027787971440537,
+      "similarity_mean": 0.6729156722066122,
+      "similarity_std": 0.06661647776017567,
+      "pct_controls_ge_14_rows": 98.0,
+      "pct_controls_ge_sim": 1.0,
+      "real": {
+        "grid": [
+          7,
+          7
+        ],
+        "similarity": 0.8152278645833333
+      }
+    },
+    "gaussian": {
+      "grid_rows_mean": 9.31,
+      "grid_rows_std": 2.621812350264603,
+      "grid_cols_mean": 9.31,
+      "grid_cols_std": 2.621812350264603,
+      "similarity_mean": 0.6856614480143164,
+      "similarity_std": 0.06593858818849344,
+      "pct_controls_ge_14_rows": 97.0,
+      "pct_controls_ge_sim": 0.0,
+      "real": {
+        "grid": [
+          7,
+          7
+        ],
+        "similarity": 0.8152278645833333
+      }
+    },
+    "real": {
+      "grid": [
+        7,
+        7
+      ],
+      "similarity": 0.8152278645833333
+    }
+  },
+  "V2_pico_central_control_adecuado": {
+    "real_ratio": 7.848369704749679,
+    "controles": {
+      "gauss_sigma50": {
+        "mean": 1.3243950332804124,
+        "std": 0.012811923657314149
+      },
+      "gauss_sigma100": {
+        "mean": 3.200822858892822,
+        "std": 0.0257917257691273
+      },
+      "gauss_sigma200": {
+        "mean": 10.654605309878546,
+        "std": 0.07261633238599755
+      },
+      "gauss_sigma400": {
+        "mean": 10.971369667060124,
+        "std": 0.0760365246700841
+      }
+    }
+  },
+  "V3_direccionalidad_trivial": {
+    "Q2_mean_diff": 0.6960287859969583,
+    "Q3_mean_diff": -0.6960287859969583,
+    "explicacion": "Q2 = mean(p[:h]) - mean(p[h:]); Q3 = -Q2. No hay mecanismo direccional."
+  },
+  "V4_similitud_permutada": {
+    "real": 0.8152278645833333,
+    "permutada_mean": 0.8076118815104166,
+    "permutada_std": 0.00023782706912407707,
+    "es_artefacto": false
+  }
+}

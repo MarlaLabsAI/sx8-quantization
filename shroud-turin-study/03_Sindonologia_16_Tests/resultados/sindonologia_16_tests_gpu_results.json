@@ -1,0 +1,524 @@
+{
+  "imagen1_negativo": {
+    "image_name": "imagen1_negativo",
+    "dimensions": [
+      2008,
+      3032
+    ],
+    "tests": {
+      "test_1_z_relief": {
+        "z_min": 0.0470588281750679,
+        "z_max": 0.9999998807907104,
+        "z_mean": 0.5697548985481262,
+        "z_std": 0.21509961783885956,
+        "continuous_encoding": true
+      },
+      "test_2_fft_2d": {
+        "max_spectral": 412.03057861328125,
+        "mean_spectral": 173.01522827148438,
+        "periodic_peaks": 164680,
+        "low_freq_ratio": 0.002506736864445783,
+        "has_periodic_pattern": true
+      },
+      "test_3_gradient_isotropy": {
+        "mean_angle": 179.26864624023438,
+        "std_angle": 105.74285125732422,
+        "isotropy_score": 0.8706994960648554,
+        "is_isotropic": true,
+        "angle_distribution": [
+          0.14032251346546332,
+          0.10981504580559313,
+          0.10912067291145568,
+          0.14163672514671163,
+          0.1406584649919876,
+          0.10863072076673674,
+          0.10784372828372066,
+          0.14197212862833128
+        ]
+      },
+      "test_4_spatial_autocorrelation": {
+        "radial_decay": [
+          0.9902228713035583,
+          0.9731563925743103,
+          0.9476672410964966,
+          0.927588164806366,
+          0.9105725288391113,
+          0.8950321078300476,
+          0.8802497982978821,
+          0.8657531142234802,
+          0.8517025113105774,
+          0.837841808795929
+        ],
+        "left_right_symmetry": 0.9999999999999007,
+        "is_symmetric": true,
+        "correlation_length": 101
+      },
+      "test_5_multifractal_spectrum": {
+        "D_min": 1.7246677684295155,
+        "D_max": 2.0066943603069936,
+        "D_mean": 1.8947820756292277,
+        "D_range": 0.28202659187747803,
+        "is_multifractal": true,
+        "dimension_curve": [
+          2.0066943603069936,
+          2.005883027798272,
+          2.003994655508108,
+          2.0022396841633534,
+          1.9983949268630403,
+          1.988607994311653,
+          1.964232549209172,
+          1.9292731296847907,
+          1.9069559080194005,
+          1.8926356682034071,
+          1.8784755277976677,
+          1.8660289215736663,
+          1.856983340714491,
+          1.855820854016632,
+          1.848479827591042,
+          1.836000612251145,
+          1.8067537753458562,
+          1.767604496517292,
+          1.755914484279063,
+          1.7246677684295155
+        ]
+      },
+      "test_6_laplacian_pyramid": {
+        "n_levels": 4,
+        "energy_ratios": [
+          0.9989643423711737,
+          0.00038903264542877107,
+          0.0003290057432954736,
+          0.0003176192401020074
+        ],
+        "low_freq_dominance": true,
+        "high_freq_content": false
+      },
+      "test_7_hurst_exponent": {
+        "H": 1.0235779473272042,
+        "is_persistent": true,
+        "memory_type": "larga"
+      },
+      "test_8_radon_transform": {
+        "sinogram_variance": 7838092684.973028,
+        "sinogram_mean": 228479.6255313691,
+        "projection_similarity": 0.6109649539611786,
+        "is_cylindrical": false,
+        "n_projections": 18
+      },
+      "test_9_tomographic_cuts": {
+        "n_high_depth": 1784714,
+        "n_mid_depth": 2297645,
+        "n_low_depth": 2005897,
+        "ratio_high": 0.2931404329909912,
+        "ratio_mid": 0.377389682694026,
+        "ratio_low": 0.3294698843149828,
+        "is_pyramidal": false
+      },
+      "test_10_topological_skeleton": {
+        "skeleton_pixels": 2466390,
+        "skeleton_density": 0.4051061584795383,
+        "has_clear_skeleton": true,
+        "structural_complexity": "alta"
+      },
+      "test_11_local_shannon_entropy": {
+        "entropy_mean": 1.2936784330399627,
+        "entropy_max": 2.2650242939947187,
+        "entropy_min": 0.0,
+        "entropy_std": 0.5247149107872187,
+        "high_entropy_regions": 5214,
+        "information_density": "baja"
+      },
+      "test_12_recurrence_plot": {
+        "recurrence_rate": 0.11265803128480911,
+        "n_diagonal_lines": 101587,
+        "determinism": 0.6921310424804688,
+        "is_deterministic": true
+      },
+      "test_13_bilateral_symmetry": {
+        "ncc": 0.6430970430374146,
+        "is_symmetric": false,
+        "symmetry_strength": "moderada"
+      },
+      "test_14_svd_analysis": {
+        "variance_explained_top10": 0.990546464920044,
+        "spectral_entropy": 4.934921741485596,
+        "effective_rank": 34,
+        "total_singular_values": 2008,
+        "is_low_rank": true
+      },
+      "test_15_game_of_life": {
+        "initial_density": 0.0356,
+        "final_density": 0.006,
+        "density_sequence": [
+          0.0356,
+          0.0076,
+          0.0056,
+          0.0053,
+          0.0054,
+          0.0065,
+          0.006
+        ],
+        "convergence_type": "estable",
+        "is_stable": true
+      },
+      "test_16_eigenvector_centrality": {
+        "max_centrality_position": [
+          19,
+          21
+        ],
+        "mean_centrality": 0.01750672608613968,
+        "max_centrality": 0.08278331160545349,
+        "centrality_ratio": 4.728657499873389,
+        "has_central_hub": true
+      }
+    }
+  },
+  "imagen2_dos_caras": {
+    "image_name": "imagen2_dos_caras",
+    "dimensions": [
+      675,
+      1200
+    ],
+    "tests": {
+      "test_1_z_relief": {
+        "z_min": 0.021647058427333832,
+        "z_max": 0.9963921904563904,
+        "z_mean": 0.4076574444770813,
+        "z_std": 0.21271704137325287,
+        "continuous_encoding": true
+      },
+      "test_2_fft_2d": {
+        "max_spectral": 365.0263977050781,
+        "mean_spectral": 172.28726196289062,
+        "periodic_peaks": 19070,
+        "low_freq_ratio": 0.016443828727971187,
+        "has_periodic_pattern": true
+      },
+      "test_3_gradient_isotropy": {
+        "mean_angle": 179.1376190185547,
+        "std_angle": 106.90447998046875,
+        "isotropy_score": 0.7613948022484853,
+        "is_isotropic": true,
+        "angle_distribution": [
+          0.15273085353593618,
+          0.09727738681872868,
+          0.09449626711933681,
+          0.1539257049623416,
+          0.16099592926479556,
+          0.09823326795985299,
+          0.09141849465200982,
+          0.15092209568699838
+        ]
+      },
+      "test_4_spatial_autocorrelation": {
+        "radial_decay": [
+          0.9219107627868652,
+          0.8366398215293884,
+          0.7456615567207336,
+          0.6636271476745605,
+          0.5923793315887451,
+          0.5348345041275024,
+          0.4875238537788391,
+          0.4500091075897217,
+          0.4200400412082672,
+          0.3941649794578552
+        ],
+        "left_right_symmetry": 0.9999999999999917,
+        "is_symmetric": true,
+        "correlation_length": 28
+      },
+      "test_5_multifractal_spectrum": {
+        "D_min": 1.2783405594462487,
+        "D_max": 2.0020035237486957,
+        "D_mean": 1.7010214962218686,
+        "D_range": 0.723662964302447,
+        "is_multifractal": true,
+        "dimension_curve": [
+          2.0020035237486957,
+          1.9872758568861213,
+          1.9657448594384122,
+          1.9319189550345421,
+          1.892095482151826,
+          1.853978423094261,
+          1.8187146958882985,
+          1.7824072774306319,
+          1.7476072109642706,
+          1.7239397778435435,
+          1.7000574331807177,
+          1.673315776328333,
+          1.6449976869648073,
+          1.611123632184847,
+          1.571866444758424,
+          1.5271059179483983,
+          1.4868011946061859,
+          1.4434231242677762,
+          1.377712092271031,
+          1.2783405594462487
+        ]
+      },
+      "test_6_laplacian_pyramid": {
+        "n_levels": 4,
+        "energy_ratios": [
+          0.9777588458499156,
+          0.008623304057468457,
+          0.0068781360763422875,
+          0.006739714016273714
+        ],
+        "low_freq_dominance": true,
+        "high_freq_content": false
+      },
+      "test_7_hurst_exponent": {
+        "H": 0.9524054100015757,
+        "is_persistent": true,
+        "memory_type": "larga"
+      },
+      "test_8_radon_transform": {
+        "sinogram_variance": 838247284.2793794,
+        "sinogram_mean": 52744.25435185185,
+        "projection_similarity": 0.7050820733638564,
+        "is_cylindrical": true,
+        "n_projections": 18
+      },
+      "test_9_tomographic_cuts": {
+        "n_high_depth": 100285,
+        "n_mid_depth": 217793,
+        "n_low_depth": 491922,
+        "ratio_high": 0.12380864197530864,
+        "ratio_mid": 0.26888024691358026,
+        "ratio_low": 0.6073111111111111,
+        "is_pyramidal": true
+      },
+      "test_10_topological_skeleton": {
+        "skeleton_pixels": 285446,
+        "skeleton_density": 0.3524024691358025,
+        "has_clear_skeleton": true,
+        "structural_complexity": "alta"
+      },
+      "test_11_local_shannon_entropy": {
+        "entropy_mean": 1.5836767686850886,
+        "entropy_max": 2.5703309940889367,
+        "entropy_min": 0.0,
+        "entropy_std": 0.5864366178445609,
+        "high_entropy_regions": 3826,
+        "information_density": "baja"
+      },
+      "test_12_recurrence_plot": {
+        "recurrence_rate": 0.101091668009758,
+        "n_diagonal_lines": 7151,
+        "determinism": 0.27884483337402344,
+        "is_deterministic": false
+      },
+      "test_13_bilateral_symmetry": {
+        "ncc": 0.2719689607620239,
+        "is_symmetric": false,
+        "symmetry_strength": "d\u00e9bil"
+      },
+      "test_14_svd_analysis": {
+        "variance_explained_top10": 0.9684944152832031,
+        "spectral_entropy": 4.86561393737793,
+        "effective_rank": 81,
+        "total_singular_values": 675,
+        "is_low_rank": true
+      },
+      "test_15_game_of_life": {
+        "initial_density": 0.7821,
+        "final_density": 0.1052,
+        "density_sequence": [
+          0.7821,
+          0.0311,
+          0.0693,
+          0.062,
+          0.1126,
+          0.0503,
+          0.1052
+        ],
+        "convergence_type": "oscilante",
+        "is_stable": false
+      },
+      "test_16_eigenvector_centrality": {
+        "max_centrality_position": [
+          7,
+          28
+        ],
+        "mean_centrality": 0.011200723238289356,
+        "max_centrality": 0.1253652721643448,
+        "centrality_ratio": 11.192605111050968,
+        "has_central_hub": true
+      }
+    }
+  },
+  "imagen3_sepia": {
+    "image_name": "imagen3_sepia",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "tests": {
+      "test_1_z_relief": {
+        "z_min": 0.0006274509942159057,
+        "z_max": 0.9758432507514954,
+        "z_mean": 0.5667588710784912,
+        "z_std": 0.22665444016456604,
+        "continuous_encoding": true
+      },
+      "test_2_fft_2d": {
+        "max_spectral": 390.3895568847656,
+        "mean_spectral": 162.86477661132812,
+        "periodic_peaks": 102368,
+        "low_freq_ratio": 0.007528440666621311,
+        "has_periodic_pattern": true
+      },
+      "test_3_gradient_isotropy": {
+        "mean_angle": 177.37106323242188,
+        "std_angle": 102.01070404052734,
+        "isotropy_score": 0.8083952569539831,
+        "is_isotropic": true,
+        "angle_distribution": [
+          0.11063218621886474,
+          0.15477440761190356,
+          0.13765534456054798,
+          0.09474349551195552,
+          0.10953691358282819,
+          0.15686362810266935,
+          0.1409749373957601,
+          0.09481908701547052
+        ]
+      },
+      "test_4_spatial_autocorrelation": {
+        "radial_decay": [
+          0.9280915260314941,
+          0.8117719888687134,
+          0.7337687015533447,
+          0.6702864766120911,
+          0.616392970085144,
+          0.5673185586929321,
+          0.5225342512130737,
+          0.48241135478019714,
+          0.44684186577796936,
+          0.4128856360912323
+        ],
+        "left_right_symmetry": 0.9999999999999708,
+        "is_symmetric": true,
+        "correlation_length": 25
+      },
+      "test_5_multifractal_spectrum": {
+        "D_min": 1.3359920413364872,
+        "D_max": 1.9916301940232994,
+        "D_mean": 1.8131448539374524,
+        "D_range": 0.6556381526868122,
+        "is_multifractal": true,
+        "dimension_curve": [
+          1.9916301940232994,
+          1.9832483475277476,
+          1.9774301199510889,
+          1.9715368018986879,
+          1.9654884003380575,
+          1.9580283737219442,
+          1.9500588443736058,
+          1.9386472609885192,
+          1.9234344110712813,
+          1.904042272743157,
+          1.8824971752758048,
+          1.8544775470314157,
+          1.8184998753741102,
+          1.7765729615363397,
+          1.7333412430198354,
+          1.6785757186866694,
+          1.617970835188335,
+          1.5433646479633736,
+          1.4580600066992846,
+          1.3359920413364872
+        ]
+      },
+      "test_6_laplacian_pyramid": {
+        "n_levels": 4,
+        "energy_ratios": [
+          0.9965736161752571,
+          0.0020000354036132906,
+          0.0008107947765808718,
+          0.0006155536445487703
+        ],
+        "low_freq_dominance": true,
+        "high_freq_content": false
+      },
+      "test_7_hurst_exponent": {
+        "H": 0.8530369994493934,
+        "is_persistent": true,
+        "memory_type": "larga"
+      },
+      "test_8_radon_transform": {
+        "sinogram_variance": 2872403768.065851,
+        "sinogram_mean": 114534.3923900463,
+        "projection_similarity": 0.657098251871009,
+        "is_cylindrical": false,
+        "n_projections": 18
+      },
+      "test_9_tomographic_cuts": {
+        "n_high_depth": 661929,
+        "n_mid_depth": 875862,
+        "n_low_depth": 535809,
+        "ratio_high": 0.31921730324074077,
+        "ratio_mid": 0.4223871527777778,
+        "ratio_low": 0.25839554398148146,
+        "is_pyramidal": false
+      },
+      "test_10_topological_skeleton": {
+        "skeleton_pixels": 1356791,
+        "skeleton_density": 0.6543166473765432,
+        "has_clear_skeleton": true,
+        "structural_complexity": "alta"
+      },
+      "test_11_local_shannon_entropy": {
+        "entropy_mean": 1.8718941131709577,
+        "entropy_max": 2.713499562468127,
+        "entropy_min": 0.0,
+        "entropy_std": 0.6078351311838089,
+        "high_entropy_regions": 1487,
+        "information_density": "baja"
+      },
+      "test_12_recurrence_plot": {
+        "recurrence_rate": 0.13551758229732513,
+        "n_diagonal_lines": 26853,
+        "determinism": 0.281168669462204,
+        "is_deterministic": false
+      },
+      "test_13_bilateral_symmetry": {
+        "ncc": 0.3541395962238312,
+        "is_symmetric": false,
+        "symmetry_strength": "d\u00e9bil"
+      },
+      "test_14_svd_analysis": {
+        "variance_explained_top10": 0.9627555012702942,
+        "spectral_entropy": 5.083483695983887,
+        "effective_rank": 102,
+        "total_singular_values": 1080,
+        "is_low_rank": true
+      },
+      "test_15_game_of_life": {
+        "initial_density": 0.6032,
+        "final_density": 0.0382,
+        "density_sequence": [
+          0.6032,
+          0.0526,
+          0.0436,
+          0.0377,
+          0.0384,
+          0.0358,
+          0.0382
+        ],
+        "convergence_type": "estable",
+        "is_stable": true
+      },
+      "test_16_eigenvector_centrality": {
+        "max_centrality_position": [
+          34,
+          22
+        ],
+        "mean_centrality": 0.014119820669293404,
+        "max_centrality": 0.14084802567958832,
+        "centrality_ratio": 9.975199329966898,
+        "has_central_hub": true
+      }
+    }
+  }
+}

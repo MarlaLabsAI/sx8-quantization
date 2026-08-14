@@ -1,0 +1,41 @@
+{
+  "G1_rostro": {
+    "n_modos": 1,
+    "posiciones": [
+      88
+    ],
+    "rango": [
+      42,
+      251
+    ]
+  },
+  "G1_detalle": {
+    "y_media_detalle": 605.09,
+    "y_min": 398,
+    "y_max": 953
+  },
+  "G2_beer": {
+    "cuantiles": [
+      74,
+      88,
+      104,
+      132,
+      185
+    ],
+    "rango_interno": 44.0,
+    "rango_fondo": 8.0
+  },
+  "G3_nitidez": {
+    "borde_idx": 345,
+    "pend_max": 0.22222222222134036,
+    "ancho_transicion": 6
+  },
+  "G5_xray1": {
+    "n_modos": 0
+  },
+  "conclusion": {
+    "n_modos_rostro": 1,
+    "ancho_borde": 6,
+    "pulso_corto": true
+  }
+}

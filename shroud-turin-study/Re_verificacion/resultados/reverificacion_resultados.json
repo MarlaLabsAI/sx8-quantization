@@ -1,0 +1,265 @@
+{
+  "config": {
+    "n_controls": 100,
+    "seed": 42,
+    "threshold": 10.0,
+    "sigma": 15.0
+  },
+  "reproduction": {
+    "density": 0.133840873837471,
+    "shape": [
+      1080,
+      1080
+    ],
+    "matches_original": true,
+    "metrics_real": {
+      "density": 0.133840873837471,
+      "fractal_dimension": 1.6521059465510768,
+      "multifractal": {
+        "delta_alpha": 2.1512095461286513,
+        "alpha_peak": -1.1728051679622666,
+        "skewness": 0.26482042287006724,
+        "alpha_min": -2.1159997295915587,
+        "alpha_max": 0.03520981653709265
+      },
+      "grid_rows": 27,
+      "grid_cols": 27,
+      "cell_similarity": 0.07752557518868819,
+      "central_peak_ratio": 6.64968729019165,
+      "directional": {
+        "Q1": 1.9961474936031348e-15,
+        "Q2": 0.6960287859969276,
+        "Q3": -0.6960287859969276,
+        "Q4": 7.984589974412539e-16
+      },
+      "mi_center_cells": {
+        "mean_MI": 0.027997735498760553,
+        "correlation_MI_distance": 0.010738840840646031
+      }
+    }
+  },
+  "controls": {},
+  "threshold_sweep": {
+    "5.0": {
+      "density": 0.07024519890546799,
+      "grid": "35x35",
+      "fractal_dimension": 1.5547634285038738,
+      "central_peak_ratio": 9.395660400390625
+    },
+    "10.0": {
+      "density": 0.133840873837471,
+      "grid": "27x27",
+      "fractal_dimension": 1.6521059465510768,
+      "central_peak_ratio": 6.64968729019165
+    },
+    "15.0": {
+      "density": 0.1937568634748459,
+      "grid": "19x19",
+      "fractal_dimension": 1.7148957867224486,
+      "central_peak_ratio": 5.141753196716309
+    },
+    "20.0": {
+      "density": 0.252201646566391,
+      "grid": "23x23",
+      "fractal_dimension": 1.764685543789182,
+      "central_peak_ratio": 3.965081214904785
+    }
+  },
+  "imagen2_diagnosis": {
+    "shape": [
+      675,
+      1200
+    ],
+    "dtype": "uint8",
+    "min_max": [
+      0,
+      255
+    ],
+    "mean_std": [
+      104.2227024691358,
+      56.953512577963664
+    ],
+    "contrast": 0.5464597561580525,
+    "recurrence_density": 1.0,
+    "recurrence_shape": [
+      675,
+      675
+    ],
+    "profile_std": 0.02187641803758903,
+    "profile_range": [
+      32.00000000000001,
+      32.158470160717194
+    ],
+    "pairs_within_threshold_pct": 100.0
+  },
+  "significance": {
+    "permutation": {
+      "fractal_dimension": {
+        "real": 1.6521059465510768,
+        "control_mean": 1.971214285931149,
+        "control_std": 0.0015088607114352797,
+        "z_score": -211.48959407692809,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "cell_similarity": {
+        "real": 0.07752557518868819,
+        "control_mean": 0.021500768550248038,
+        "control_std": 0.033478233600397596,
+        "z_score": 1.6734696133363138,
+        "percentile": 96.0,
+        "p_value_empirical": 0.04
+      },
+      "central_peak_ratio": {
+        "real": 6.64968729019165,
+        "control_mean": 1.1298865163326264,
+        "control_std": 0.12588509574883164,
+        "z_score": 43.84792926457503,
+        "percentile": 100.0,
+        "p_value_empirical": 0.0
+      },
+      "grid_rows": {
+        "real": 27,
+        "control_mean": 58.96,
+        "control_std": 3.1077966471440823,
+        "z_score": -10.283813141175026,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "grid_cols": {
+        "real": 27,
+        "control_mean": 58.96,
+        "control_std": 3.1077966471440823,
+        "z_score": -10.283813141175026,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "delta_alpha": {
+        "real": 2.1512095461286513,
+        "control_mean": 4.060286175444299,
+        "control_std": 0.004763738724360681,
+        "z_score": -400.7517497870028,
+        "percentile": 0.0
+      },
+      "mi_distance_corr": {
+        "real": 0.010738840840646031,
+        "control_mean": -0.018332303870335055,
+        "control_std": 0.02378537202845721,
+        "z_score": 1.22222787502335,
+        "percentile": 86.0
+      }
+    },
+    "gaussian": {
+      "fractal_dimension": {
+        "real": 1.6521059465510768,
+        "control_mean": 1.969235851126017,
+        "control_std": 0.0024187202152864853,
+        "z_score": -131.1147534016777,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "cell_similarity": {
+        "real": 0.07752557518868819,
+        "control_mean": 0.018546250487286906,
+        "control_std": 0.025970448192459156,
+        "z_score": 2.2710168212856128,
+        "percentile": 99.0,
+        "p_value_empirical": 0.01
+      },
+      "central_peak_ratio": {
+        "real": 6.64968729019165,
+        "control_mean": 1.165727568268776,
+        "control_std": 0.13705377844845384,
+        "z_score": 40.01319616288726,
+        "percentile": 100.0,
+        "p_value_empirical": 0.0
+      },
+      "grid_rows": {
+        "real": 27,
+        "control_mean": 58.82,
+        "control_std": 3.1317087987231504,
+        "z_score": -10.160587093210436,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "grid_cols": {
+        "real": 27,
+        "control_mean": 58.82,
+        "control_std": 3.1317087987231504,
+        "z_score": -10.160587093210436,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "delta_alpha": {
+        "real": 2.1512095461286513,
+        "control_mean": 4.053787567630875,
+        "control_std": 0.008390766869213244,
+        "z_score": -226.7466193683699,
+        "percentile": 0.0
+      },
+      "mi_distance_corr": {
+        "real": 0.010738840840646031,
+        "control_mean": -0.020874684532986777,
+        "control_std": 0.02248927827842519,
+        "z_score": 1.4057154250237034,
+        "percentile": 94.0
+      }
+    },
+    "ar1": {
+      "fractal_dimension": {
+        "real": 1.6521059465510768,
+        "control_mean": 1.9006252105525454,
+        "control_std": 0.013842397443908142,
+        "z_score": -17.953484214603208,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "cell_similarity": {
+        "real": 0.07752557518868819,
+        "control_mean": 0.02762772969035462,
+        "control_std": 0.03443474801516716,
+        "z_score": 1.4490550497525208,
+        "percentile": 88.0,
+        "p_value_empirical": 0.12
+      },
+      "central_peak_ratio": {
+        "real": 6.64968729019165,
+        "control_mean": 1.4679705345630645,
+        "control_std": 0.3032684255095218,
+        "z_score": 17.0862388556368,
+        "percentile": 100.0,
+        "p_value_empirical": 0.0
+      },
+      "grid_rows": {
+        "real": 27,
+        "control_mean": 50.18,
+        "control_std": 3.1412736270500217,
+        "z_score": -7.3791725115549385,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "grid_cols": {
+        "real": 27,
+        "control_mean": 50.18,
+        "control_std": 3.1412736270500217,
+        "z_score": -7.3791725115549385,
+        "percentile": 0.0,
+        "p_value_empirical": 1.0
+      },
+      "delta_alpha": {
+        "real": 2.1512095461286513,
+        "control_mean": 3.4862947488912726,
+        "control_std": 0.15648810722092288,
+        "z_score": -8.531544195098531,
+        "percentile": 0.0
+      },
+      "mi_distance_corr": {
+        "real": 0.010738840840646031,
+        "control_mean": -0.021784576229017975,
+        "control_std": 0.04615285521734833,
+        "z_score": 0.7046891663907031,
+        "percentile": 76.0
+      }
+    }
+  }
+}

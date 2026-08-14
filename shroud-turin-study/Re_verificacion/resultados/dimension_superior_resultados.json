@@ -1,0 +1,89 @@
+{
+  "W1_redundancia_vs_N": {
+    "3": {
+      "redundancia_binaria": 0.9908624092737833,
+      "redundancia_binaria_std": 0.0012227394885442396,
+      "correlacion_media": 0.998692507198636,
+      "n_pares": 66
+    },
+    "4": {
+      "redundancia_binaria": 0.9884538804039811,
+      "redundancia_binaria_std": 0.0017624183266035372,
+      "correlacion_media": 0.9983109606291887,
+      "n_pares": 66
+    },
+    "5": {
+      "redundancia_binaria": 0.9878784670974269,
+      "redundancia_binaria_std": 0.0012845319561084773,
+      "correlacion_media": 0.9974805714612969,
+      "n_pares": 66
+    },
+    "6": {
+      "redundancia_binaria": 0.9846890207492944,
+      "redundancia_binaria_std": 0.0017596984365981904,
+      "correlacion_media": 0.9958786005146406,
+      "n_pares": 66
+    },
+    "7": {
+      "redundancia_binaria": 0.981917162736257,
+      "redundancia_binaria_std": 0.002045344214944612,
+      "correlacion_media": 0.9924858857466582,
+      "n_pares": 66
+    }
+  },
+  "W2_binaria": {},
+  "W3_D_eff": {
+    "3": 2.6666666666666665,
+    "4": 3.75,
+    "5": 4.8,
+    "6": 5.833333333333333,
+    "7": 6.857142857142857
+  },
+  "W4_sabana": {
+    "redundancia": 0.6887239583333333,
+    "std": 0.24482274985501487
+  },
+  "conclusion": {
+    "mejor_n": 7,
+    "formula_C14": {
+      "3": 0.3333333333333333,
+      "4": 0.5,
+      "5": 0.6,
+      "6": 0.6666666666666666,
+      "7": 0.7142857142857143
+    },
+    "redundancia_sabana": 0.6887239583333333,
+    "resultados_por_N": {
+      "3": {
+        "redundancia_binaria": 0.9908624092737833,
+        "redundancia_binaria_std": 0.0012227394885442396,
+        "correlacion_media": 0.998692507198636,
+        "n_pares": 66
+      },
+      "4": {
+        "redundancia_binaria": 0.9884538804039811,
+        "redundancia_binaria_std": 0.0017624183266035372,
+        "correlacion_media": 0.9983109606291887,
+        "n_pares": 66
+      },
+      "5": {
+        "redundancia_binaria": 0.9878784670974269,
+        "redundancia_binaria_std": 0.0012845319561084773,
+        "correlacion_media": 0.9974805714612969,
+        "n_pares": 66
+      },
+      "6": {
+        "redundancia_binaria": 0.9846890207492944,
+        "redundancia_binaria_std": 0.0017596984365981904,
+        "correlacion_media": 0.9958786005146406,
+        "n_pares": 66
+      },
+      "7": {
+        "redundancia_binaria": 0.981917162736257,
+        "redundancia_binaria_std": 0.002045344214944612,
+        "correlacion_media": 0.9924858857466582,
+        "n_pares": 66
+      }
+    }
+  }
+}

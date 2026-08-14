@@ -58,14 +58,22 @@ patch.
 ## Transparency
 
 The conceptual seeds of this format came from an independent mathematical analysis of the image of the
-Shroud of Turin. The full study (with its own re-verification) is published separately; see the paper's
-Appendix A and [`docs/IDEA-PROVENANCE.md`](docs/IDEA-PROVENANCE.md) for the complete statement. The format
+Shroud of Turin. The full study (with its own re-verification) is published in this repository:
+[`shroud-turin-study/`](shroud-turin-study/) (complete and available, exactly as produced). See the
+paper's Appendix A and [`docs/IDEA-PROVENANCE.md`](docs/IDEA-PROVENANCE.md) for the complete statement. The format
 itself is validated empirically in this repository; the study is disclosed only as the source of
 inspiration, with full honesty about what the author can and cannot corroborate.
 
 ## License
 
 Apache-2.0. Base model: Qwen3.5-4B (Apache-2.0). See [LICENSE](LICENSE).
+
+## Cite this work
+
+If you use this work, please cite:
+
+> Vidal Leandro, M. (2026). S-X8 v4.3: A 7.50-Bits-Per-Weight Quantization Format with FP16-Level Quality
+> and Portable Decoding. Zenodo. https://doi.org/10.5281/zenodo.21922640
 
 ## Support
 

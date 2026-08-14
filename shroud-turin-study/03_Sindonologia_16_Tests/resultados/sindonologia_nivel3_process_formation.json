@@ -1,0 +1,73 @@
+{
+  "analysis_type": "process_formation",
+  "source_image": "imagen3_sepia",
+  "matrix_dimensions": [
+    1080,
+    1080
+  ],
+  "matrix_density": 0.133840873837471,
+  "tests": {
+    "P1_residual_analysis": {
+      "asic_density": 0.13657750189304352,
+      "environment_density": 0.13292866945266724,
+      "density_ratio": 1.0274495521199476,
+      "environment_symmetry": 0.9960043336479976,
+      "asic_dominance": false
+    },
+    "P2_nonlocal_correlations": {
+      "correlations": {
+        "Q1-Q2": 0.035405671970872604,
+        "Q1-Q3": 0.035405671970872486,
+        "Q1-Q4": 0.14101535010555263,
+        "Q2-Q3": -0.024220581978529918,
+        "Q2-Q4": 0.02474058901990924,
+        "Q3-Q4": 0.024740589019909012
+      },
+      "max_correlation": 0.14101535010555263,
+      "min_correlation": -0.024220581978529918,
+      "diagonal_correlation": 0.14101535010555263,
+      "has_nonlocal_correlation": false
+    },
+    "P3_spectral_signature": {
+      "energy_bands": [
+        0.32986366356024377,
+        0.5303044887406732,
+        0.6853050687203327,
+        0.8400150202540044,
+        1.0
+      ],
+      "low_freq_concentration": 0.32986366356024377,
+      "high_freq_peaks": 3839,
+      "has_spectral_signature": true
+    },
+    "P4_process_symmetry": {
+      "diagonal_symmetry": 1.0,
+      "horizontal_symmetry": 0.02177104013963723,
+      "vertical_symmetry": 0.021771040139637158,
+      "rotation_180_symmetry": 0.1119514530441935,
+      "is_diagonal_symmetric": true,
+      "process_symmetry_type": "diagonal"
+    },
+    "P5_grid_structure": {
+      "n_horizontal_lines": 8,
+      "n_vertical_lines": 8,
+      "horizontal_spacing_mean": 57.714285714285715,
+      "vertical_spacing_mean": 57.714285714285715,
+      "horizontal_regularidad": 0.7622988987242773,
+      "vertical_regularidad": 0.7622988987242773,
+      "has_regular_grid": true,
+      "grid_size_estimate": "8x8"
+    },
+    "P6_cross_central": {
+      "cross_center_position": [
+        270,
+        270
+      ],
+      "center_density": 0.6150000095367432,
+      "peripheral_density": 0.14900000393390656,
+      "density_ratio": 4.127516733553544,
+      "decay_rate": 0.0695304276675209,
+      "has_central_peak": true
+    }
+  }
+}

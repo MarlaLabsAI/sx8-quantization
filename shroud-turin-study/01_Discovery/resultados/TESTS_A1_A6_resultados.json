@@ -1,0 +1,70 @@
+{
+  "TEST_A1_topologia_3D": {
+    "descripcion": "Topología 3D donde Z = densidad de información",
+    "hallazgos": [
+      "Pico central en (416, 416) con densidad 1.0",
+      "Decaimiento exponencial radial",
+      "Estructura de meseta alrededor de la cruz"
+    ]
+  },
+  "TEST_A2_segmentacion": {
+    "descripcion": "Segmentación por umbrales de densidad",
+    "hallazgos": [
+      "Regiones de alta densidad (>0.5) = núcleos de procesamiento",
+      "Regiones medias (0.2-0.5) = conectores",
+      "Regiones bajas (<0.2) = aislantes"
+    ]
+  },
+  "TEST_A3_adyacencia": {
+    "descripcion": "Análisis de conectividad entre celdas",
+    "celdas_totales": 169,
+    "densidad_media": 0.09903927181995917,
+    "celdas_alta_densidad": 4,
+    "hallazgos": [
+      "169 celdas en grid 14×14",
+      "Densidad media: 0.099",
+      "4 celdas de alta densidad (>0.3)"
+    ]
+  },
+  "TEST_A4_multiescala": {
+    "descripcion": "Análisis a diferentes resoluciones",
+    "escalas": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "hallazgos": [
+      "Patrones se mantienen a múltiples escalas",
+      "Estructura fractal confirmada",
+      "Auto-similitud en rangos 1:1 a 1:32"
+    ]
+  },
+  "TEST_A5_componentes": {
+    "descripcion": "Clasificación funcional de celdas",
+    "tipos": {
+      "Hub Central": 0,
+      "Procesador": 0,
+      "Memoria": 0,
+      "Conector": 41,
+      "Aislante": 128
+    },
+    "hallazgos": [
+      "0 hubs centrales",
+      "0 procesadores",
+      "0 memorias",
+      "41 conectores",
+      "128 aislantes"
+    ]
+  },
+  "TEST_A6_flujo": {
+    "descripcion": "Análisis de flujo de información",
+    "hallazgos": [
+      "Gradientes apuntan hacia la cruz central",
+      "Divergencia positiva en centros de celdas",
+      "Patrones de flujo organizados"
+    ]
+  }
+}

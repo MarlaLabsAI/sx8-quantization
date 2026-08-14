@@ -1,0 +1,44 @@
+{
+  "relieve_path": "/mnt/Data_3TB/Estudios_Sabana_Santa_Turin/Re_verificacion/resultados/relieve_3d_rostro.png",
+  "simetria": 0.7768706656705024,
+  "perfil_vertical": {
+    "picos": [
+      339,
+      676,
+      805
+    ],
+    "valles": [
+      303,
+      571,
+      756,
+      948
+    ]
+  },
+  "perfil_horizontal": {
+    "y_nariz": 676,
+    "picos_x": [
+      107,
+      166,
+      272,
+      344,
+      573,
+      709,
+      783,
+      873
+    ]
+  },
+  "estructura_facial": {
+    "nariz_x": 272,
+    "centralidad": 0.544,
+    "laterales": [
+      107,
+      166,
+      344
+    ]
+  },
+  "conclusion": {
+    "simetria": 0.7768706656705024,
+    "n_picos_v": 3,
+    "n_valles_v": 4
+  }
+}

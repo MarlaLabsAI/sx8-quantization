@@ -1,0 +1,64 @@
+{
+  "real": {
+    "grid_rows": 14,
+    "grid_cols": 14,
+    "similarity": 0.6483854166666667,
+    "n_cells": 25,
+    "density": 0.09921982167352537,
+    "peak_ratio": 2.066119415881794
+  },
+  "gaussian_controls": {
+    "sigma100": {
+      "grid_mean": 0.0,
+      "grid_std": 0.0,
+      "sim_mean": NaN,
+      "sim_std": NaN,
+      "pico_mean": 1.0,
+      "pico_std": 0.0
+    },
+    "sigma200": {
+      "grid_mean": 0.0,
+      "grid_std": 0.0,
+      "sim_mean": NaN,
+      "sim_std": NaN,
+      "pico_mean": 1.0,
+      "pico_std": 0.0
+    },
+    "sigma400": {
+      "grid_mean": 0.0,
+      "grid_std": 0.0,
+      "sim_mean": NaN,
+      "sim_std": NaN,
+      "pico_mean": 1.0,
+      "pico_std": 0.0
+    }
+  },
+  "gaussian_fit_real": {
+    "params": [
+      -43.63482624626521,
+      479.9437438939127,
+      48.08723676332811,
+      153.27441159106445
+    ],
+    "r2": 0.036329922644447676,
+    "study_on_fit": {
+      "grid_rows": 0,
+      "grid_cols": 0,
+      "similarity": NaN,
+      "n_cells": 0,
+      "density": 0.6044170096021948,
+      "peak_ratio": 0.28539898325087376
+    },
+    "residual_std": 57.93771575424346,
+    "profile_std": 59.019725020788535
+  },
+  "conclusion": {
+    "similitud_real_vs_gaussiano": 0.6483854166666667,
+    "similitud_gaussiano_rango": [
+      NaN,
+      NaN
+    ],
+    "pico_real": 2.066119415881794,
+    "r2_gaussiano": 0.036329922644447676
+  }
+}
