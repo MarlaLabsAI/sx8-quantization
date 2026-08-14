@@ -1,14 +1,16 @@
 NOTICE
 ======
 
-This repository contains a **derivative work** of the following base model:
+This repository contains the **S-X8 v4.3 quantization format** (original work of the author) and a
+**quantized version of the model Qwen3.5-4B**:
 
   Qwen3.5-4B
   Copyright (C) 2026 Qwen Team, Alibaba Group
   https://huggingface.co/Qwen/Qwen3.5-4B
   Licensed under the Apache License, Version 2.0
 
-Modifications made:
+The S-X8 format, kernels, scripts and paper are **original work, not a Qwen work**; they use
+Qwen3.5-4B only as the base model. Modifications made to the base model:
   - The weights of the text transformer (4.2B parameters) were quantized to the
     S-X8 v4.3 format (7.50 bits per weight) developed in this repository.
   - Vision tower, MTP head, norms and conv1d layers remain in FP16.
