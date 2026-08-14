@@ -1,6 +1,7 @@
 # S-X8 v4.3 — A 7.50-bits-per-weight quantization format
 
 **Paper (Zenodo, DOI):** [10.5281/zenodo.21922640](https://doi.org/10.5281/zenodo.21922640)
+**Quantized model (HuggingFace):** [marlalabsAI/Qwen3.5-4B-SX8](https://huggingface.co/marlalabsAI/Qwen3.5-4B-SX8)
 
 **S-X8 v4.3** is a weight quantization format for large language models: **30 bytes per block = 7.50 bpp**
 (fully accounted), FP16-level quality, and a portable byte-aligned decoder (~9–10 ALU ops per weight, no

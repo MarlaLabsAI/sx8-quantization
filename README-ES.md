@@ -1,6 +1,7 @@
 # S-X8 v4.3 — Un formato de cuantización a 7,50 bits por peso
 
 **Paper (Zenodo, DOI):** [10.5281/zenodo.21922640](https://doi.org/10.5281/zenodo.21922640)
+**Modelo cuantizado (HuggingFace):** [marlalabsAI/Qwen3.5-4B-SX8](https://huggingface.co/marlalabsAI/Qwen3.5-4B-SX8)
 
 **S-X8 v4.3** es un formato de cuantización de pesos para modelos de lenguaje grandes: **30 bytes por
 bloque = 7,50 bpp** (contabilizados al completo), calidad de nivel FP16 y un decodificador portable
