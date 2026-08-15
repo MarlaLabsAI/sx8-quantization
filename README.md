@@ -78,6 +78,16 @@ If you use this work, please cite:
 > Vidal Leandro, M. (2026). S-X8 v4.3: A 7.50-Bits-Per-Weight Quantization Format with FP16-Level Quality
 > and Portable Decoding. Zenodo. https://doi.org/10.5281/zenodo.21922640
 
+## Contact
+
+Looking for collaborations, integration help or opportunities? Reach out:
+
+- **LinkedIn (profile):** https://www.linkedin.com/in/vidalmarti/
+- **LinkedIn (company):** https://www.linkedin.com/company/marlalabs/
+- **X / Twitter:** https://x.com/MarlaLabsAI
+- **Email:** info@marlalabs.com
+- **Web:** https://marlalabs.com
+
 ## Support
 
 Marla Labs is an independent AI lab. If this work helps you, consider a donation:

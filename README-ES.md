@@ -79,6 +79,16 @@ Si usas este trabajo, cítalo así:
 > Vidal Leandro, M. (2026). S-X8 v4.3: Un formato de cuantización a 7,50 bits por peso con calidad de FP16
 > y decodificación portable. Zenodo. https://doi.org/10.5281/zenodo.21922640
 
+## Contacto
+
+¿Buscas colaboración, ayuda con la integración u oportunidades? Contacta:
+
+- **LinkedIn (perfil):** https://www.linkedin.com/in/vidalmarti/
+- **LinkedIn (empresa):** https://www.linkedin.com/company/marlalabs/
+- **X / Twitter:** https://x.com/MarlaLabsAI
+- **Email:** info@marlalabs.com
+- **Web:** https://marlalabs.com
+
 ## Apoyo
 
 Marla Labs es un laboratorio independiente de IA. Si este trabajo te es útil, considera una donación:
