@@ -59,3 +59,6 @@ que derivan.
 Este documento, junto con el paper S-X8 y la especificación del contenedor, se registró con certificados
 sellados con fecha (Safe Creative; Registro de la Propiedad Intelectual, España) antes de la publicación
 pública, como evidencia de autoría y fecha de la metodología y sus miembros.
+
+**Registro en Safe Creative:** ID 2608136715874 —
+https://www.safecreative.org/work/2608136715874

@@ -59,3 +59,6 @@ document evidences the authorship and date of the methodology from which they de
 This document, together with the S-X8 paper and the container specification, was registered with
 timestamped certificates (Safe Creative; Registro de la Propiedad Intelectual, Spain) before public
 publication, as evidence of authorship and date of the methodology and its members.
+
+**Safe Creative registration:** ID 2608136715874 —
+https://www.safecreative.org/work/2608136715874
