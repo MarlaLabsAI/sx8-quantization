@@ -70,7 +70,9 @@ fuente de inspiración, con total honestidad sobre lo que el autor puede y no pu
 Apache-2.0. El formato S-X8 es obra original del autor; el modelo cuantizado usa **Qwen3.5-4B** de
 Qwen Team (Alibaba Group), Apache-2.0 ([model card](https://huggingface.co/Qwen/Qwen3.5-4B)) como modelo
 base — solo se cuantizaron los pesos al formato S-X8 v4.3, sin otras modificaciones. Ver
-[LICENSE](LICENSE) y [NOTICE](NOTICE).
+[LICENSE](LICENSE) y [NOTICE](NOTICE). Evidencia de autoría: Safe Creative ID
+[2608136715874](https://www.safecreative.org/work/2608136715874) · Zenodo DOI
+[10.5281/zenodo.21922640](https://doi.org/10.5281/zenodo.21922640).
 
 ## Cómo citar este trabajo
 
