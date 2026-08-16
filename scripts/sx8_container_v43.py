@@ -121,3 +121,89 @@ if __name__ == "__main__":
     out = "/mnt/Data_3TB/project Marla/quant-paper/models/Qwen3.5-4B-SX8v43.sx8"
     write_sx43(pkl, out)
     verify_sx43(pkl, out)
+
+
+# ============================================================================
+# v1.1 — sección SXT1 (retrocompatible): config JSON + tensores pequeños (1D)
+# Los lectores v1.0 leen los registros de tensor y se detienen; el bloque SXT1
+# queda como datos finales ignorados. read_all_v11 lo lee completo.
+# dtype: 0 = float16 · 1 = float32
+# ============================================================================
+SMALL_MAGIC = b"SXT1"
+
+
+def write_small_section(f, config, small_tensors):
+    """Escribe la sección v1.1 al final de un archivo abierto en modo append.
+    small_tensors: dict {name: {'shape': tuple, 'dtype': 'fp16'|'fp32', 'data': np.ndarray}}
+    """
+    import json as _json
+    cb = _json.dumps(config).encode()
+    f.write(SMALL_MAGIC)
+    f.write(struct.pack('<I', len(cb)))
+    f.write(cb)
+    f.write(struct.pack('<I', len(small_tensors)))
+    for name in sorted(small_tensors):
+        st = small_tensors[name]
+        nb = name.encode()
+        f.write(struct.pack('<I', len(nb))); f.write(nb)
+        f.write(struct.pack('<B', len(st['shape'])))
+        f.write(struct.pack('<%dI' % len(st['shape']), *st['shape']))
+        dt = 0 if st['dtype'] == 'fp16' else 1
+        f.write(struct.pack('<B', dt))
+        f.write(st['data'].tobytes())
+
+
+def read_small_section(f):
+    """Lee la sección SXT1 desde la posición actual. Devuelve (config, small) o (None, None)."""
+    import json as _json
+    pos = f.tell()
+    magic = f.read(4)
+    if magic != SMALL_MAGIC:
+        f.seek(pos)
+        return None, None
+    (cl,) = struct.unpack('<I', f.read(4))
+    config = _json.loads(f.read(cl))
+    (n,) = struct.unpack('<I', f.read(4))
+    small = {}
+    for _ in range(n):
+        (nl,) = struct.unpack('<I', f.read(4))
+        name = f.read(nl).decode()
+        (nd,) = struct.unpack('<B', f.read(1))
+        shape = struct.unpack('<%dI' % nd, f.read(4 * nd))
+        (dt,) = struct.unpack('<B', f.read(1))
+        nbytes = int(np.prod(shape)) * (2 if dt == 0 else 4)
+        data = np.frombuffer(f.read(nbytes), np.float16 if dt == 0 else np.float32).reshape(shape)
+        small[name] = {'shape': tuple(shape), 'dtype': 'fp16' if dt == 0 else 'fp32', 'data': data}
+    return config, small
+
+
+def read_all_v11(sx43_path):
+    """Lee el .sx8v43 v1.1 completo → (wd, bd, meta, config, small)."""
+    f = open(sx43_path, 'rb')
+    assert f.read(8) == MAGIC
+    f.read(1); (ml,) = struct.unpack('<I', f.read(4)); meta = eval(f.read(ml))
+    (nt,) = struct.unpack('<I', f.read(4))
+    wd = {}; bd = {}
+    for _ in range(nt):
+        (nl,) = struct.unpack('<I', f.read(4)); name = f.read(nl).decode()
+        sh = struct.unpack('<II', f.read(8))
+        (n_os,) = struct.unpack('<B', f.read(1))
+        os_ = struct.unpack('<%dI' % n_os, f.read(4 * n_os))
+        nb, ncb = struct.unpack('<II', f.read(8))
+        dmin = np.frombuffer(f.read(nb*2), np.float16)
+        dmax = np.frombuffer(f.read(nb*2), np.float16)
+        config_ = np.frombuffer(f.read(nb), np.uint8)
+        hi = np.frombuffer(f.read(nb*16), np.uint8)
+        lo = np.frombuffer(f.read(nb*8), np.uint8)
+        coeff = np.frombuffer(f.read(nb), np.uint8)
+        (ncb2,) = struct.unpack('<I', f.read(4))
+        data = np.frombuffer(f.read(ncb2*64*4), np.float32).reshape(ncb2, 64)
+        scales = np.frombuffer(f.read(ncb2*2*4), np.float32).reshape(ncb2, 2)
+        os_final = os_ if tuple(os_) != (sh[0], sh[1]) else None
+        wd[name] = {'shape': (sh[0], sh[1]), 'orig_shape': os_final, 'n_blocks': nb, 'n_cb': ncb,
+                    'dmin': dmin, 'dmax': dmax, 'config': config_,
+                    'levels_hi': hi, 'levels_lo': lo, 'coeff': coeff}
+        bd[name] = {'n_cb': ncb2, 'data': data, 'scales': scales}
+    cfg, small = read_small_section(f)
+    f.close()
+    return wd, bd, dict(meta), cfg, small

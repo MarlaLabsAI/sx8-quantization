@@ -95,3 +95,13 @@ Looking for collaborations, integration help or opportunities? Reach out:
 Marla Labs is an independent AI lab. If this work helps you, consider a donation:
 [Ko-fi](https://ko-fi.com/marlalabs) · [GitHub Sponsors](https://github.com/sponsors/MarlaLabs)
 · details in `FUNDING.yml`. 🐱
+
+## v1.1 (2026-08-16) — Complete standalone container
+
+- The `.sx8v43` container now embeds the model config + all non-quantized 1D tensors
+  (section `SXT1`) → the container is a **complete standalone model** (no base model needed).
+- `eval_common.load_model_standalone(container)` builds everything from the container.
+- Fix: degenerate-block decode fallback (`step = 1e-10`) across all kernels + llama.cpp fork.
+- Re-validated on the v2 container: **PPL wikitext-2 10.2364** (ref 10.2267) ·
+  **Winogrande_s 0.5722** (ref 0.5722) · **decode VRAM 3.720 GB** (ref 3.955 GB).
+- See [CHANGELOG.md](CHANGELOG.md) for details.

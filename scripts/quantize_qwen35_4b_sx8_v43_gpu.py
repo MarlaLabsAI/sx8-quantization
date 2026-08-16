@@ -309,7 +309,7 @@ def sx8_v6_kernel(dmin_f, dmax_f, config, hi_arr, lo_arr, weights, n_blocks):
     elif strat == 2: rlo, rhi = hi_f - q, hi_f
     else: rlo, rhi = lo_f + q, hi_f - q
     step = (rhi - rlo) * 0.015873
-    if step < 1e-10: step = 0.015873
+    if step < 1e-10: step = 1e-10
     weights[bid * 32 + tid] = rlo + step * lv
 
 sum_cs, sum_mse, n_chk = 0.0, 0.0, 0

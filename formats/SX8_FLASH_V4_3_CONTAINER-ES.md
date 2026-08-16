@@ -68,3 +68,43 @@ Todos los campos en little-endian. Los bloques usan la estructura de 30 bytes de
 
 - Tamaño: 4,38 GB · tensores: 381 · bloques: ~146M · el payload teórico a 30 B/bloque coincide con el
   tamaño del archivo en <0,1%.
+
+## 6. v1.1 — Small-tensor section (`SXT1`) — complete standalone model
+
+v1.1 appends a trailing section after the tensor records. v1.0 readers read the tensor records
+and ignore the trailing bytes (backward compatible); v1.1 readers (`read_all_v11`) read everything.
+
+```
+┌──────────────┬───────────────────────────────────────────────┐
+│ SMALL_MAGIC  │ 4 bytes: "SXT1"                               │
+│ config_len   │ uint32 LE — length of the config JSON         │
+│ config       │ config_len bytes — full model config (JSON)   │
+│ n_small      │ uint32 LE — number of small tensors           │
+│ small 1      │ (see below)                                   │
+│ ...          │                                               │
+│ small n      │                                               │
+└──────────────┴───────────────────────────────────────────────┘
+```
+
+Per small tensor (1D/3D non-quantized tensors: layer norms, `A_log`, `dt_bias`, ...):
+
+| Field | Encoding | Meaning |
+|---|---|---|
+| `name_len` | uint32 LE | byte length of the tensor name |
+| `name` | `name_len` bytes | tensor name (UTF-8) |
+| `ndim` | uint8 | number of dimensions |
+| `shape` | `ndim` × uint32 LE | tensor shape |
+| `dtype` | uint8 | 0 = float16 · 1 = float32 |
+| `data` | prod(shape) × 2/4 B | tensor payload |
+
+With the config + small tensors embedded, the `.sx8v43` file is a **complete standalone model**:
+`eval_common.load_model_standalone(container)` builds the architecture from the embedded config
+and materializes every tensor from the file — no base model required.
+
+### v1.1 changes
+
+- `read_all(path)` — unchanged (v1.0 behavior, ignores the trailing section).
+- `read_all_v11(path)` — returns `(weights, bases, meta, config, small)`.
+- `write_small_section(f, config, small)` — appends the section to an open file.
+- Model files published as v1.1 (v2 files): `Qwen3.5-4B-SX8v43.sx8`. The quantized 2D records are
+  byte-identical to the v1 file (verified by prefix SHA-256).

@@ -1,14 +1,19 @@
-"""S-X8 v4 decode compartido — kernel propio Numba CUDA (V6 + PCA inline, 100% GPU)"""
-import torch, numpy as np, pickle, os, gc, time
+"""eval_common.py v2 — S-X8 v4.3 runtime compartido (STANDALONE).
+
+v1.1 del contenedor (config + 2D cuantizados + 1D dentro) → modelo completo
+sin depender del modelo base. Sin rutas hardcodeadas.
+
+Fix v1.1 (2026-08-16): kernel de decode con fallback correcto para bloques
+degenerados (min==max) — `step = 1e-10` en vez de `step = 0.015873`.
+"""
+import torch, numpy as np, os, gc, time
 from numba import cuda as nbcuda
 from kernel_sx8_v4 import decode_tensor_gpu
 from kernel_sx8_v43 import decode_tensor_gpu_fast as decode_tensor_gpu_v43
 
-PKL_PATH = "/mnt/Data_3TB/project Marla/quant-paper/models/qwen35_4b_sx8_flash_v4_new.pkl"
-PKL_PATH_V43 = "/mnt/Data_3TB/project Marla/quant-paper/models/qwen35_4b_sx8_flash_v4_3.pkl"
-MODEL_PATH = "/mnt/Data_3TB/Qwen3.5-4B"
 DEV = torch.device("cuda")
 N_BASES = 4
+
 
 @nbcuda.jit
 def sx8_v6_kernel(dmin_f, dmax_f, config, hi_arr, lo_arr, weights, n_blocks):
@@ -25,7 +30,7 @@ def sx8_v6_kernel(dmin_f, dmax_f, config, hi_arr, lo_arr, weights, n_blocks):
     elif strat == 2: rlo, rhi = hi_f - q, hi_f
     else: rlo, rhi = lo_f + q, hi_f - q
     step = (rhi - rlo) * 0.015873
-    if step < 1e-10: step = 0.015873
+    if step < 1e-10: step = 1e-10
     weights[bid * 32 + tid] = rlo + step * lv
 
 
@@ -69,68 +74,107 @@ def decode_tensor(qt, bases_info):
     return Wrec.astype(np.float16)
 
 
-def load_model(quantized=True, use_cache=True, verify=False, mode="v4", source_file=None):
-    """Carga el modelo FP16 (clase multimodal Qwen3_5ForConditionalGeneration) y
-    (si quantized) sustituye los pesos con el decode del kernel propio v4 (100% GPU).
-    mode="v4" = 4 bases (formato v4) · mode="v42" = 2 bases (v4.2) · mode="v43" = v4.3 (config aparte + escala FP16)"""
-    from transformers import Qwen3_5ForConditionalGeneration, AutoTokenizer
-    model = Qwen3_5ForConditionalGeneration.from_pretrained(
-        MODEL_PATH, dtype=torch.float16, device_map="cuda",
-        low_cpu_mem_usage=True)
+def load_model_standalone(container_path, tokenizer_dir=None, device="cuda",
+                          verify=False, decode_fn=None):
+    """Carga el modelo SOLO desde el contenedor .sx8v43 v1.1 (autosuficiente).
+
+    - container_path: .sx8v43 v1.1 (config + 2D cuantizados + 1D dentro)
+    - tokenizer_dir: carpeta con tokenizer.json
+    El modelo se construye en CPU (estructura + buffers correctos) y los pesos
+    se sustituyen: 1D del contenedor + decode 2D con kernel propio. CERO
+    dependencia del modelo base.
+    """
+    from transformers import Qwen3_5ForConditionalGeneration, Qwen3_5Config
+    from sx8_container_v43 import read_all_v11
+    wd, bd, meta, config, small = read_all_v11(container_path)
+    if config is None:
+        raise ValueError("Contenedor v1.0 sin sección v1.1 (config+1D) — usa el v2")
+
+    dec = decode_fn or decode_tensor_gpu_v43
+    t0 = time.time()
+    cfg_obj = Qwen3_5Config(**config)
+    model = Qwen3_5ForConditionalGeneration(cfg_obj)
     model.eval()
-    tok = AutoTokenizer.from_pretrained(MODEL_PATH)
+    print(f"Estructura creada desde config del contenedor ({(time.time()-t0):.0f}s)", flush=True)
 
-    if not quantized:
-        return model, tok, None
-
-    pkl_path = PKL_PATH_V43 if mode == "v43" else PKL_PATH
-    decode_fn = decode_tensor_gpu_v43 if mode == "v43" else decode_tensor_gpu
-    if source_file:
-        from sx8_container_v43 import read_all
-        wd, bd, meta = read_all(source_file)
-        print(f"📄 Cargado desde archivo: {source_file.split('/')[-1]}", flush=True)
-    else:
-        d = pickle.load(open(pkl_path, 'rb'))
-        wd, bd, meta = d['weights'], d['bases'], d['meta']
     params = dict(model.named_parameters())
-
-    missing = [k for k in wd if k not in params]
-    if missing:
-        print(f"⚠️ {len(missing)} tensores del pkl NO están en el modelo (se ignoran): {missing[:5]}")
-    matched = 0
-    sumsq_o = 0.0; sumsq_r = 0.0; dot = 0.0
-    t_start = time.time()
-    for idx, (name, qt) in enumerate(wd.items()):
+    n_small = 0
+    for name, st in sorted(small.items()):
         if name not in params:
             continue
-        qt_use = qt
-        if mode == "v42":
-            qt_use = dict(qt)
-            c = np.zeros_like(qt['coeff']); c[:, 0] = qt['coeff'][:, 0]
-            qt_use['coeff'] = c                       # solo bases 0-1 (coeff 1 byte)
-        W = decode_fn(qt_use, bd[name])               # kernel propio (v4 o v4.3)
-        p = params[name]
-        p.data.copy_(W)
+        arr = st['data']
+        dt = torch.float16 if st['dtype'] == 'fp16' else torch.float32
+        params[name].data = torch.from_numpy(arr.copy()).to(dt)
+        n_small += 1
+    print(f"Tensores 1D materializados: {n_small}/{len(small)}", flush=True)
+
+    matched = 0
+    for name, qt in wd.items():
+        if name not in params:
+            continue
+        W = dec(qt, bd[name])
+        params[name].data = W.to(torch.float16).cpu()
         matched += 1
-        if verify:
-            o = p.data.float().cpu().numpy().ravel().astype(np.float64)
-            r = W.cpu().numpy().ravel().astype(np.float64)
-            dot += float(o @ r)
-            sumsq_o += float((o * o).sum()); sumsq_r += float((r * r).sum())
         del W
-        if (idx + 1) % 10 == 0:
+        if (matched + 1) % 50 == 0:
             torch.cuda.empty_cache()
-        if (idx + 1) % 50 == 0 or (idx + 1) == len(wd):
-            print(f"  [{idx+1}/{len(wd)}] tensores decodeados con kernel v{'4.3' if mode=='v43' else '4'} ({time.time()-t_start:.0f}s)", flush=True)
-    print(f"SX8 {mode} ({pkl_path.split('/')[-1]}): {matched}/{len(wd)} tensores aplicados", flush=True)
+        if (matched + 1) % 100 == 0 or matched == len(wd):
+            print(f"  [{matched}/{len(wd)}] tensores 2D decodeados ({time.time()-t0:.0f}s)", flush=True)
+    print(f"SX8 v4.3 standalone: {matched}/{len(wd)} tensores 2D aplicados", flush=True)
+    model = model.to(device)
+
     if verify:
-        cs = dot / (np.sqrt(sumsq_o) * np.sqrt(sumsq_r) + 1e-12)
-        print(f"  ✅ CosSim GLOBAL (todos los tensores): {cs:.6f}")
+        sum_cs, n = 0.0, 0
+        import random
+        sample = random.sample(list(wd.keys()), min(10, len(wd)))
+        for name in sample:
+            qt = wd[name]
+            W = dec(qt, bd[name]).to(torch.float16)
+            o = params[name].data.float()
+            r = W.float()
+            cs = float((o * r).sum() / (o.norm() * r.norm() + 1e-12))
+            sum_cs += cs; n += 1
+        print(f"  ✅ CosSim muestra ({n} tensores): {sum_cs/n:.6f}", flush=True)
+
+    tok = None
+    if tokenizer_dir is None:
+        tokenizer_dir = os.path.dirname(container_path)
+    try:
+        from transformers import AutoTokenizer
+        tok = AutoTokenizer.from_pretrained(tokenizer_dir, trust_remote_code=True)
+    except Exception as e:
+        print(f"⚠️ Tokenizer no cargado: {e}", flush=True)
     return model, tok, meta
+
+
+def load_model(quantized=True, use_cache=True, verify=False, mode="v4",
+               source_file=None, container=None):
+    """Compatibilidad con scripts v1: carga standalone desde el contenedor v1.1.
+
+    El contenedor .sx8v43 v1.1 es COMPLETO (config + 2D cuantizados + 1D), así que
+    no existe ya un "modelo base" separado: el modelo ES el contenedor. Los modos
+    v4/v42/v43 eran del pkl; el contenedor es siempre v4.3.
+    """
+    if quantized is False:
+        raise NotImplementedError(
+            "Modo FP16-base eliminado en v1.1: el modelo standalone se evalúa "
+            "desde el contenedor (.sx8v43). Usa quantized=True (por defecto).")
+    c = container or source_file or os.environ.get(
+        "SX8_CONTAINER", "Qwen3.5-4B-SX8v43.sx8")
+    if not os.path.exists(c):
+        raise FileNotFoundError(
+            f"Contenedor no encontrado: {c}. Pasa source_file=<ruta.al.sx8v43> "
+            f"o define SX8_CONTAINER.")
+    return load_model_standalone(c, tokenizer_dir=None, verify=verify, device="cuda")
 
 
 if __name__ == "__main__":
     import sys
-    m, t, meta = load_model(quantized=(len(sys.argv) < 2 or sys.argv[1] != 'fp16'))
+    if len(sys.argv) < 2:
+        print("Uso: python3 eval_common.py <contenedor.sx8> [tokenizer_dir]")
+        sys.exit(1)
+    m, t, meta = load_model_standalone(sys.argv[1],
+                                       sys.argv[2] if len(sys.argv) > 2 else None,
+                                       verify=True)
     n = sum(v.numel() for v in m.parameters())
-    print(f"OK — modelo cargado, {n/1e9:.2f}B params")
+    print(f"OK — modelo cargado standalone, {n/1e9:.2f}B params")

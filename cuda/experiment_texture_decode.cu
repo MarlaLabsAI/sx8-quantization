@@ -56,7 +56,7 @@ __global__ void tex_fetch_levels_kernel(
         float rlo = lo_f + q * (3 * (s == 2) + (s == 3));
         float rhi = hi_f - q * (3 * (s == 1) + (s == 3));
         float step = (rhi - rlo) * 0.015873f;
-        if (step < 1e-10f) step = 0.015873f;
+        if (step < 1e-10f) step = 1e-10f;
         int c0 = coeff & 0xF;  if (c0 >= 8) c0 -= 16;
         int c1 = (coeff >> 4) & 0xF;  if (c1 >= 8) c1 -= 16;
         // niveles vía TEXTURA (en vez de load global)

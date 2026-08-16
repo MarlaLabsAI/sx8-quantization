@@ -114,7 +114,7 @@ __global__ void decode1_v44_kernel(
         float rlo = lo_f + q * (3 * (s == 2) + (s == 3));
         float rhi = hi_f - q * (3 * (s == 1) + (s == 3));
         float step = (rhi - rlo) * 0.015873f;
-        if (step < 1e-10f) step = 0.015873f;
+        if (step < 1e-10f) step = 1e-10f;
 
         // ---- coeff PCA (signed 4-bit x2) ----
         int c0 = coeff & 0xF;  if (c0 >= 8) c0 -= 16;

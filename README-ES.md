@@ -96,3 +96,15 @@ Si usas este trabajo, cítalo así:
 Marla Labs es un laboratorio independiente de IA. Si este trabajo te es útil, considera una donación:
 [Ko-fi](https://ko-fi.com/marlalabs) · [GitHub Sponsors](https://github.com/sponsors/MarlaLabs)
 · detalles en `FUNDING.yml`. 🐱
+
+## v1.1 (2026-08-16) — Contenedor completo autosuficiente
+
+- El contenedor `.sx8v43` ahora incluye la config del modelo + todos los tensores 1D no
+  cuantizados (sección `SXT1`) → el contenedor es un **modelo completo autosuficiente**
+  (sin necesidad del modelo base).
+- `eval_common.load_model_standalone(container)` construye todo desde el contenedor.
+- Fix: fallback de decode para bloques degenerados (`step = 1e-10`) en todos los kernels
+  + fork de llama.cpp.
+- Re-validado con el contenedor v2: **PPL wikitext-2 10.2364** (ref 10.2267) ·
+  **Winogrande_s 0.5722** (ref 0.5722) · **VRAM decode 3.720 GB** (ref 3.955 GB).
+- Detalles en [CHANGELOG.md](CHANGELOG.md).

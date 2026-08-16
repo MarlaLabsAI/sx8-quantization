@@ -1,3 +1,102 @@
+diff --git a/convert_pkl_to_gguf_sx8.py b/convert_pkl_to_gguf_sx8.py
+new file mode 100644
+index 000000000..558ff5061
+--- /dev/null
++++ b/convert_pkl_to_gguf_sx8.py
+@@ -0,0 +1,93 @@
++"""convert_pkl_to_gguf_sx8.py — convierte el pkl S-X8 v4.3 a GGUF con tipo SX8 (v2 vectorizado).
++
++Escribe los tensores SX8 del pkl como bloques de 30 B (block_sx8) en el GGUF
++con raw_dtype=GGMLQuantizationType.SX8(41). El layout de cada bloque es
++idéntico al .sx8v43 (dmin dmax config qh[16] ql[8] coeff) → byte-compatible.
++
++Blockify VECTORIZADO: construye el buffer (n_blk, 30) con reordenamiento de
++arrays completos (sin loop por bloque).
++"""
++import sys, os, pickle
++import numpy as np
++
++sys.path.insert(0, "/mnt/Data_3TB/llama-cpp-sx8/gguf-py")
++from gguf import GGUFWriter, GGMLQuantizationType
++
++PKL = "/mnt/Data_3TB/project Marla/quant-paper/models/qwen35_4b_sx8_flash_v4_3.pkl"
++OUT = "/mnt/Data_3TB/project Marla/quant-paper/models/Qwen3.5-4B-SX8v43.gguf"
++
++
++def blockify_vec(qt):
++    """(n_blk, 30) uint8: dmin(2) dmax(2) config(1) qh(16) ql(8) coeff(1)."""
++    n_blk = qt['n_blocks']
++    dm = qt['dmin'].astype(np.float16).reshape(-1)
++    dx = qt['dmax'].astype(np.float16).reshape(-1)
++    cfg = qt['config'].reshape(-1).astype(np.uint8)
++    co = qt['coeff'].reshape(-1).astype(np.uint8)
++    hi = qt['levels_hi'].reshape(n_blk, 16)
++    lo = qt['levels_lo'].reshape(n_blk, 8)
++
++    out = np.zeros((n_blk, 30), dtype=np.uint8)
++    # vistas: cada columna de 30 B se llena con el campo correspondiente
++    out[:, 0:2] = dm.view(np.uint8).reshape(n_blk, 2)
++    out[:, 2:4] = dx.view(np.uint8).reshape(n_blk, 2)
++    out[:, 4] = cfg
++    out[:, 5:21] = hi
++    out[:, 21:29] = lo
++    out[:, 29] = co
++    return out
++
++
++def main():
++    d = pickle.load(open(PKL, "rb"))
++    wd = d['weights']
++    print(f"Pkl: {len(wd)} tensores", flush=True)
++
++    if os.path.exists(OUT):
++        os.remove(OUT)
++    w = GGUFWriter(OUT, "qwen35")
++    w.add_name("Qwen3.5-4B-SX8")
++    w.add_quantization_version(2)
++    w.add_context_length(262144)
++    w.add_embedding_length(2560)
++    w.add_block_count(32)
++    w.add_feed_forward_length(9216)
++    w.add_full_attention_interval(4)
++    w.add_head_count(16)
++    w.add_head_count_kv(4)
++    w.add_layer_norm_rms_eps(1e-6)
++    w.add_rope_dimension_count(64)
++    w.add_rope_freq_base(10000000.0)
++    w.add_rope_dimension_sections([11, 11, 10, 0])
++    w.add_ssm_conv_kernel(4)
++    w.add_ssm_state_size(128)
++    w.add_ssm_group_count(16)
++    w.add_ssm_time_step_rank(32)
++    w.add_ssm_inner_size(4096)
++    w.add_file_type(7)
++
++    total = 0
++    n_lin = 0
++    for name, qt in wd.items():
++        if len(qt['shape']) != 2:
++            continue
++        out_f, in_f = qt['shape']
++        n_cb = qt['n_cb']
++        blocks = blockify_vec(qt)
++        byte_shape = (out_f, n_cb * 30)
++        w.add_tensor(name, blocks.reshape(byte_shape),
++                     raw_dtype=GGMLQuantizationType(41))
++        total += blocks.nbytes
++        n_lin += 1
++        del blocks
++        if n_lin % 50 == 0:
++            print(f"  {n_lin} tensores... ({total/1e9:.2f} GB)", flush=True)
++    w.write_header_to_file()
++    w.write_kv_data_to_file()
++    w.write_tensors_to_file()
++    w.close()
++    print(f"GGUF SX8 escrito: {OUT} ({total/1e9:.2f} GB, {n_lin} lineales)")
++
++
++if __name__ == "__main__":
++    main()
 diff --git a/ggml/include/ggml.h b/ggml/include/ggml.h
 index 669f66b65..bfdc57c26 100644
 --- a/ggml/include/ggml.h
@@ -145,7 +244,7 @@ index d950972c8..6487aed33 100644
          case GGML_TYPE_MXFP4:
          case GGML_TYPE_NVFP4:
 diff --git a/ggml/src/ggml-cpu/quants.c b/ggml/src/ggml-cpu/quants.c
-index 7ebbb9c6f..f430dcddc 100644
+index 7ebbb9c6f..831e44ab3 100644
 --- a/ggml/src/ggml-cpu/quants.c
 +++ b/ggml/src/ggml-cpu/quants.c
 @@ -372,6 +372,52 @@ void ggml_vec_dot_q8_0_q8_0_generic(int n, float * GGML_RESTRICT s, size_t bs, c
@@ -188,7 +287,7 @@ index 7ebbb9c6f..f430dcddc 100644
 +            const float rlo = lo_f + q * (float)(3 * (s_ == 2) + (s_ == 3));
 +            const float rhi = hi_f - q * (float)(3 * (s_ == 1) + (s_ == 3));
 +            float step = (rhi - rlo) * 0.015873f;
-+            if (step < 1e-10f) step = 0.015873f;
++            if (step < 1e-10f) step = 1e-10f;
 +            const float w = rlo + step * (float)lv;
 +            const float yv = (float)y[ib].qs[j] * yd + ym;
 +            sumf += w * yv;
@@ -276,7 +375,7 @@ index 9a69f41d1..aa1392e0c 100644
          case GGML_TYPE_Q2_K:
          case GGML_TYPE_Q3_K:
 diff --git a/ggml/src/ggml-cuda/mmq.cuh b/ggml/src/ggml-cuda/mmq.cuh
-index 255e59f6f..3dd25949f 100644
+index 255e59f6f..ca302c128 100644
 --- a/ggml/src/ggml-cuda/mmq.cuh
 +++ b/ggml/src/ggml-cuda/mmq.cuh
 @@ -65,6 +65,7 @@ static mmq_q8_1_ds_layout mmq_get_q8_1_ds_layout(const ggml_type type_x) {
@@ -378,7 +477,7 @@ index 255e59f6f..3dd25949f 100644
 +            const float rlo0 = lo_f + q * (float)(3 * (s0 == 2) + (s0 == 3));
 +            const float rhi0 = hi_f - q * (float)(3 * (s0 == 1) + (s0 == 3));
 +            float step0 = (rhi0 - rlo0) * 0.015873f;
-+            if (step0 < 1e-10f) step0 = 0.015873f;
++            if (step0 < 1e-10f) step0 = 1e-10f;
 +            const float w0 = rlo0 + step0 * (float)lv0;
 +
 +            // peso j1
@@ -389,7 +488,7 @@ index 255e59f6f..3dd25949f 100644
 +            const float rlo1 = lo_f + q * (float)(3 * (s1 == 2) + (s1 == 3));
 +            const float rhi1 = hi_f - q * (float)(3 * (s1 == 1) + (s1 == 3));
 +            float step1 = (rhi1 - rlo1) * 0.015873f;
-+            if (step1 < 1e-10f) step1 = 0.015873f;
++            if (step1 < 1e-10f) step1 = 1e-10f;
 +            const float w1 = rlo1 + step1 * (float)lv1;
 +
 +            x_qs[i*MMQ_MMA_TILE_X_K_SX8 + k2] = __floats2half2_rn(w0, w1);
@@ -584,7 +683,7 @@ index 000000000..59bdb0ae1
 +
 +DECL_MMQ_CASE(GGML_TYPE_SX8);
 diff --git a/ggml/src/ggml-cuda/vecdotq.cuh b/ggml/src/ggml-cuda/vecdotq.cuh
-index 40b2b41e7..24f95a782 100644
+index 40b2b41e7..8bf0f9046 100644
 --- a/ggml/src/ggml-cuda/vecdotq.cuh
 +++ b/ggml/src/ggml-cuda/vecdotq.cuh
 @@ -763,6 +763,46 @@ static __device__ __forceinline__ float vec_dot_q8_0_q8_1(
@@ -615,7 +714,7 @@ index 40b2b41e7..24f95a782 100644
 +    const float rlo = lo_f + q * (float)(3 * (s_ == 2) + (s_ == 3));
 +    const float rhi = hi_f - q * (float)(3 * (s_ == 1) + (s_ == 3));
 +    float step = (rhi - rlo) * 0.015873f;
-+    if (step < 1e-10f) step = 0.015873f;
++    if (step < 1e-10f) step = 1e-10f;
 +
 +    float sumf = 0.0f;
 +#pragma unroll
@@ -635,7 +734,7 @@ index 40b2b41e7..24f95a782 100644
      const void * __restrict__ vbq, const block_q8_1 * __restrict__ bq8_1, const int & kbx, const int & iqs) {
  
 diff --git a/ggml/src/ggml-quants.c b/ggml/src/ggml-quants.c
-index 48695a61e..5df48ae71 100644
+index 48695a61e..3e7b99a52 100644
 --- a/ggml/src/ggml-quants.c
 +++ b/ggml/src/ggml-quants.c
 @@ -449,6 +449,86 @@ void dequantize_row_q8_0(const block_q8_0 * GGML_RESTRICT x, float * GGML_RESTRI
@@ -661,7 +760,7 @@ index 48695a61e..5df48ae71 100644
 +            const float rlo = lo_f + q * (float)(3 * (s == 2) + (s == 3));
 +            const float rhi = hi_f - q * (float)(3 * (s == 1) + (s == 3));
 +            float step = (rhi - rlo) * 0.015873f;
-+            if (step < 1e-10f) step = 0.015873f;
++            if (step < 1e-10f) step = 1e-10f;
 +            y[i*qk + j] = rlo + step * (float)lv;
 +        }
 +    }
@@ -708,7 +807,7 @@ index 48695a61e..5df48ae71 100644
 +            const float rlo = lo_f + q * (float)(3 * (s == 2) + (s == 3));
 +            const float rhi = hi_f - q * (float)(3 * (s == 1) + (s == 3));
 +            float step = (rhi - rlo) / 63.0f;
-+            if (step < 1e-10f) step = 1.0f / 63.0f;
++            if (step < 1e-10f) step = 1e-10f;
 +            float lvf = roundf((x[i*qk + j] - rlo) / step);
 +            const int lv = (int)(lvf < 0 ? 0 : (lvf > 63 ? 63 : lvf));
 +            const int hi = lv >> 2;

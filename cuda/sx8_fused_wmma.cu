@@ -80,9 +80,9 @@ __global__ void sx8_wmma_kernel(
             float rlo2 = lo_f + q * (float)(3 * (s2 == 2) + (s2 == 3));
             float rhi2 = hi_f - q * (float)(3 * (s2 == 1) + (s2 == 3));
             float stp1 = (rhi1 - rlo1) * 0.015873f;
-            if (stp1 < 1e-10f) stp1 = 0.015873f;
+            if (stp1 < 1e-10f) stp1 = 1e-10f;
             float stp2 = (rhi2 - rlo2) * 0.015873f;
-            if (stp2 < 1e-10f) stp2 = 0.015873f;
+            if (stp2 < 1e-10f) stp2 = 1e-10f;
             // PCA (1 vez por bloque)
             int c0r = coeff[bid] & 0xF; if (c0r >= 8) c0r -= 16;
             int c1r = (coeff[bid] >> 4) & 0xF; if (c1r >= 8) c1r -= 16;

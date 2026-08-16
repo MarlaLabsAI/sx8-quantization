@@ -45,11 +45,11 @@ class SX8LinearV44(SX8Linear):
         orig_shape = x.shape
         if x.dim() > 2:
             x = x.reshape(-1, x.shape[-1])
-        if self._tensors is None:
-            self._tensors = make_tensors(self._kbm, self.bases_info, x.device)
         M = x.shape[0]
         if M == 1:
             # ---- decode M=1 v4.4 (nuevo kernel CUDA v3) ----
+            # Solo se construyen las tablas compactas v4.4 (30 B/bloque); las
+            # tablas wmma (_tensors) NO se crean para M==1 (VRAM mínima).
             self._load_t44()
             hdr_t, lvl_t, bas_t, sca_t = self._t44
             split_k = best_split_k(self.out_f, self.qt['n_cb'])
@@ -58,6 +58,8 @@ class SX8LinearV44(SX8Linear):
             y = y.unsqueeze(0)
         else:
             # ---- M>=32: wmma (tensor cores, igual que antes) ----
+            if self._tensors is None:
+                self._tensors = make_tensors(self._kbm, self.bases_info, x.device)
             y = gemm_sx8_wmma_cached(x, self._tensors, self.qt['n_cb'])
         y = y.half()
         if self.bias is not None:

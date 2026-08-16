@@ -144,7 +144,7 @@ def decode_v44_numpy(v44, X, n):
             rhi = hi_f - q * (3 * (s == 1) + (s == 3))
             step = (rhi - rlo) * 0.015873
             if step < 1e-10:
-                step = 0.015873
+                step = 1e-10
             hi4 = v44['levels'][bid, sb * 4:sb * 4 + 4]
             lo2 = v44['levels'][bid, 16 + sb * 2:16 + sb * 2 + 2]
             for i in range(8):  # peso local del sub-bloque

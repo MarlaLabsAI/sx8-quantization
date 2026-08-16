@@ -7,7 +7,7 @@ precomputar los 4 pares (rlo, step) por bloque (uno por sub-bloque) con la
 fórmula sin branches ya validada:
     rlo = lo + q*(3*(s==2) + (s==3))
     rhi = hi - q*(3*(s==1) + (s==3))
-    step = (rhi - rlo) * 0.015873  (clamp >= 1e-10 -> 0.015873)
+    step = (rhi - rlo) * 0.015873  (clamp < 1e-10 -> 1e-10, bloques degenerados)
 
 Layout de inferencia (en VRAM): rlo (n_blk,4) fp16 + step (n_blk,4) fp16
 = 16 B/bloque, reemplazando dmin+dmax+config (5 B) -> 41 B/bloque en runtime.

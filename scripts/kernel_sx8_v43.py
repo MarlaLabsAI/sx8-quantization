@@ -35,7 +35,7 @@ def sx8_v43_kernel(dmin, dmax, config, coeff, hi_arr, lo_arr, basis_buf, scales_
     elif strat == 2: rlo, rhi = hi_f - q, hi_f
     else: rlo, rhi = lo_f + q, hi_f - q
     step = (rhi - rlo) * 0.015873
-    if step < 1e-10: step = 0.015873
+    if step < 1e-10: step = 1e-10
     w = rlo + step * lv
 
     # Corrección PCA con 2 bases (2 FMAs)
