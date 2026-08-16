@@ -121,6 +121,10 @@ def load_model_standalone(container_path, tokenizer_dir=None, device="cuda",
         if (matched + 1) % 100 == 0 or matched == len(wd):
             print(f"  [{matched}/{len(wd)}] tensores 2D decodeados ({time.time()-t0:.0f}s)", flush=True)
     print(f"SX8 v4.3 standalone: {matched}/{len(wd)} tensores 2D aplicados", flush=True)
+    import kernel_sx8_v43 as _k43
+    _k43._BUFFER_POOL.clear()
+    _k43._BUFFER_POOL_ORDER.clear()
+    torch.cuda.empty_cache()
     model = model.to(device)
 
     if verify:

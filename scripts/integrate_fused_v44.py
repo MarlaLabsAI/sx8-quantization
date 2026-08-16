@@ -10,7 +10,7 @@ Estrategia SEGURA (sin tocar integrate_fused.py):
 Test: test_igualdad_v44 — logits a través de 32 capas vs FP16 (cuBLAS),
 mismo protocolo que integrate_fused.test_igualdad (rel < 5e-2).
 """
-import sys, pickle, time, gc
+import sys, os, pickle, time, gc
 import torch
 import torch.nn as nn
 
@@ -57,10 +57,18 @@ class SX8LinearV44(SX8Linear):
                                bas_t, sca_t, self.hdr_bytes, split_k)
             y = y.unsqueeze(0)
         else:
-            # ---- M>=32: wmma (tensor cores, igual que antes) ----
-            if self._tensors is None:
-                self._tensors = make_tensors(self._kbm, self.bases_info, x.device)
-            y = gemm_sx8_wmma_cached(x, self._tensors, self.qt['n_cb'])
+            # ---- M>=32: GEMM COMPACTO (decode on-the-fly, 30 B/bloque) ----
+            # VRAM = solo los datos compactos v4.4 (los mismos _t44 de M=1).
+            # Opt-in wmma (más rápido, +44 B/bloque de tablas): SX8_USE_WMMA=1
+            if os.environ.get("SX8_USE_WMMA") == "1":
+                if self._tensors is None:
+                    self._tensors = make_tensors(self._kbm, self.bases_info, x.device)
+                y = gemm_sx8_wmma_cached(x, self._tensors, self.qt['n_cb'])
+            else:
+                self._load_t44()
+                hdr_t, lvl_t, bas_t, sca_t = self._t44
+                y = gemm_sx8_compact(x, self.qt, self.bases_info,
+                                     hdr_t, lvl_t, bas_t, sca_t, self.hdr_bytes)
         y = y.half()
         if self.bias is not None:
             y = y + self.bias
@@ -71,6 +79,7 @@ class SX8LinearV44(SX8Linear):
 
 # import tardio (evita ciclo)
 from sx8_fused_wmma import gemm_sx8_wmma_cached, make_tensors  # noqa: E402
+from sx8_gemm_compact import gemm_sx8_compact  # noqa: E402
 
 
 def clone_model_fused_v44(model, wd, bd, hdr_bytes=6):
