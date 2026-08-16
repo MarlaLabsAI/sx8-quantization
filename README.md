@@ -105,3 +105,13 @@ Marla Labs is an independent AI lab. If this work helps you, consider a donation
 - Re-validated on the v2 container: **PPL wikitext-2 10.2364** (ref 10.2267) ·
   **Winogrande_s 0.5722** (ref 0.5722) · **decode VRAM 3.720 GB** (ref 3.955 GB).
 - See [CHANGELOG.md](CHANGELOG.md) for details.
+
+### Chat engines (honest)
+
+| Engine | Prompt | Generation | VRAM |
+|---|---|---|---|
+| llama.cpp fork + `.gguf` (fast) | ~1877 tok/s | ~63.79 tok/s | ~4-5 GB |
+| Python runtime (`scripts/infer_sx8.py`) | token-by-token | ~2 tok/s | ~6.7 GB |
+
+Fast chat at the declared speeds: `./run_llama_chat.sh build` then `./run_llama_chat.sh`.
+Python runtime (no build, needs CUDA toolkit): `python3 scripts/infer_sx8.py --container Qwen3.5-4B-SX8v43.sx8`.

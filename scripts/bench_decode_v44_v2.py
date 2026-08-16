@@ -11,10 +11,16 @@ import torch
 from sx8_container_v43 import read_all_v11
 from sx8_decode1_v3 import make_tensors_v44, decode1_v44, best_split_k
 
-CONTAINER = "/mnt/Data_3TB/project Marla/quant-paper/models/Qwen3.5-4B-SX8v43-v2.sx8"
+CONTAINER = None
 
 
 def main():
+    global CONTAINER
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--container", default=os.environ.get("SX8_CONTAINER", "Qwen3.5-4B-SX8v43.sx8"))
+    args = ap.parse_args()
+    CONTAINER = args.container
     wd, bd, meta, cfg, small = read_all_v11(CONTAINER)
     print(f"Contenedor v2: {len(wd)} tensores 2D", flush=True)
 

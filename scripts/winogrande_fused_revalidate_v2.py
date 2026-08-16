@@ -8,7 +8,7 @@ from integrate_fused_v44 import clone_model_fused_v44
 from eval_common import load_model_standalone, DEV
 from sx8_container_v43 import read_all_v11
 
-CONTAINER = "/mnt/Data_3TB/project Marla/quant-paper/models/Qwen3.5-4B-SX8v43-v2.sx8"
+CONTAINER = None
 TOK_DIR = "/tmp/opencode/standalone_test/tokenizer"
 
 
@@ -53,6 +53,14 @@ def run_winogrande(model, tok, label):
 
 
 def main():
+    global CONTAINER
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--container", default=os.environ.get("SX8_CONTAINER", "Qwen3.5-4B-SX8v43.sx8"))
+    ap.add_argument("--tokenizer-dir", default=None)
+    args = ap.parse_args()
+    CONTAINER = args.container
+    TOK_DIR = args.tokenizer_dir or os.path.dirname(os.path.abspath(CONTAINER))
     from sx8_container_v43 import read_all_v11
     from integrate_fused_v44 import SX8LinearV44
     wd, bd, meta, cfg, small = read_all_v11(CONTAINER)
