@@ -3,6 +3,31 @@
 All notable changes to the S-X8 quantization project are documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [v1.2] — 2026-08-16
+
+### Added — Compact GEMM for M >= 32 (`cuda/sx8_gemm_compact.cu` + `scripts/sx8_gemm_compact.py`)
+
+- **Prompt/PPL processing now decodes on-the-fly from the compact v4.4 layout (30 B/block) — no FP16
+  materialization, no precomputed WMMA tables (44 B/block extra).**
+- **VRAM during prompt = the loaded compact data + KV**: measured **4.31 GB** during the full
+  wikitext-2 PPL run (previously ~9.5 GB with the WMMA tables) — "lo que ocupa cargado + KV".
+- **Prompt throughput (steady state, RTX 5060 Ti): ~273 tok/s** (512-token forward in 1.87 s).
+- Kernel design: 64-column tiles × 64-row blocks (grid.y over M), M_TILE=16 with amortized decode,
+  butterfly reduction; PCA (Z0/Z1) precomputed per row with `compute_z44_batch`.
+- **Equality validated** against the numba reference (`decode_tensor_gpu_fast` + matmul) on real
+  container tensors (N=8192/9216/2560/248320, M=32..512): maxdiff < 1.5e-3.
+- Tensors with N < 64 (e.g., GLA `in_proj_a`, 32×2560) use a numba decode + matmul fallback
+  (transient FP16, 164 KB — negligible).
+- `SX8_USE_WMMA=1` keeps the old WMMA path as an opt-in (faster prompt, +44 B/block of tables).
+- `eval_common.load_model_standalone` now clears the numba decode buffer pool after loading
+  (freed ~5 GB of cached workspace).
+
+### Re-validated on the v2 container with the compact GEMM
+
+- **PPL wikitext-2 = 10.2368** (reference 10.2267, Δ +0.0101 — PASS, same protocol: ctx 512, stride 128).
+- Prompt VRAM during the run: **4.31 GB**.
+
 ## [v1.1] — 2026-08-16
 
 ### Added — Container format v1.1 (`.sx8v43`, section `SXT1`)
