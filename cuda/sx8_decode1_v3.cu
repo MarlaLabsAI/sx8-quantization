@@ -183,44 +183,64 @@ __global__ void reduce_split_kernel(
 // wrappers (variantes HDR_BYTES 6 y 8)
 // ---------------------------------------------------------------------------
 torch::Tensor compute_z44(torch::Tensor X, torch::Tensor basis, torch::Tensor scales,
-                          int64_t n_cb) {
+                          int64_t n_cb, torch::Tensor out) {
     int K = X.size(0);
     auto Xc = X.contiguous();
-    auto Z = torch::empty({n_cb, 2}, X.options().dtype(torch::kFloat32));
     compute_z44_kernel<<<n_cb, 32, 0, at::cuda::getCurrentCUDAStream()>>>(
         (const __half*)Xc.data_ptr(),
         (const float*)basis.data_ptr(),
         (const float*)scales.data_ptr(),
-        (float*)Z.data_ptr(), (int)n_cb);
-    return Z;
+        (float*)out.data_ptr(), (int)n_cb);
+    return out;
 }
 
 torch::Tensor decode1_v44(torch::Tensor X, torch::Tensor hdr, torch::Tensor levels,
                           torch::Tensor Z, int64_t n_cb, int64_t hdr_bytes,
-                          int64_t split_k) {
+                          int64_t split_k, torch::Tensor out) {
+    // split_k=1: escritura directa en `out` (sin reduce_split, sin allocs)
     int K = X.size(0);
     int N = hdr.size(0) / n_cb;   // hdr en kb-major: n_blk = n_cb * N
     auto Xc = X.contiguous();
-    auto Y = torch::empty({(int)split_k, N}, X.options().dtype(torch::kFloat32));
-    auto Yout = torch::empty({N}, X.options().dtype(torch::kFloat32));
     int blocks = (N + 63) / 64;
-    dim3 grid(blocks, (int)split_k);
     if (hdr_bytes == 8) {
-        decode1_v44_kernel<8><<<grid, 256, 0, at::cuda::getCurrentCUDAStream()>>>(
+        decode1_v44_kernel<8><<<blocks, 256, 0, at::cuda::getCurrentCUDAStream()>>>(
             (const __half*)Xc.data_ptr(),
             (const unsigned char*)hdr.data_ptr(),
             (const unsigned char*)levels.data_ptr(),
             (const float*)Z.data_ptr(),
-            (float*)Y.data_ptr(), K, N, (int)n_cb, (int)split_k);
+            (float*)out.data_ptr(), K, N, (int)n_cb, 1);
     } else {
-        decode1_v44_kernel<6><<<grid, 256, 0, at::cuda::getCurrentCUDAStream()>>>(
+        decode1_v44_kernel<6><<<blocks, 256, 0, at::cuda::getCurrentCUDAStream()>>>(
             (const __half*)Xc.data_ptr(),
             (const unsigned char*)hdr.data_ptr(),
             (const unsigned char*)levels.data_ptr(),
             (const float*)Z.data_ptr(),
-            (float*)Y.data_ptr(), K, N, (int)n_cb, (int)split_k);
+            (float*)out.data_ptr(), K, N, (int)n_cb, 1);
     }
-    reduce_split_kernel<<<(N + 255) / 256, 256, 0, at::cuda::getCurrentCUDAStream()>>>(
-        (const float*)Y.data_ptr(), (float*)Yout.data_ptr(), N, (int)split_k);
-    return Yout;
+    return out;
+}
+
+torch::Tensor decode1_v44_combined(torch::Tensor X, torch::Tensor hdr, torch::Tensor levels,
+                                   torch::Tensor basis, torch::Tensor scales,
+                                   int64_t n_cb, int64_t hdr_bytes,
+                                   torch::Tensor Z, torch::Tensor out) {
+    int K = X.size(0);
+    int N = hdr.size(0) / n_cb;
+    auto Xc = X.contiguous();
+    compute_z44_kernel<<<n_cb, 32, 0, at::cuda::getCurrentCUDAStream()>>>(
+        (const __half*)Xc.data_ptr(), (const float*)basis.data_ptr(),
+        (const float*)scales.data_ptr(), (float*)Z.data_ptr(), (int)n_cb);
+    int blocks = (N + 63) / 64;
+    if (hdr_bytes == 8) {
+        decode1_v44_kernel<8><<<blocks, 256, 0, at::cuda::getCurrentCUDAStream()>>>(
+            (const __half*)Xc.data_ptr(), (const unsigned char*)hdr.data_ptr(),
+            (const unsigned char*)levels.data_ptr(), (const float*)Z.data_ptr(),
+            (float*)out.data_ptr(), K, N, (int)n_cb, 1);
+    } else {
+        decode1_v44_kernel<6><<<blocks, 256, 0, at::cuda::getCurrentCUDAStream()>>>(
+            (const __half*)Xc.data_ptr(), (const unsigned char*)hdr.data_ptr(),
+            (const unsigned char*)levels.data_ptr(), (const float*)Z.data_ptr(),
+            (float*)out.data_ptr(), K, N, (int)n_cb, 1);
+    }
+    return out;
 }

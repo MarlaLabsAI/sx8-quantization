@@ -125,33 +125,35 @@ def run_question(model, tok, messages, args, engine):
     if engine == "fused-compact":
         cache = None
         n_in = prompt_ids.shape[1]
+        mask = torch.ones(1, args.ctx + args.max_new_tokens, dtype=torch.long, device="cuda")
         with torch.no_grad():
-            for i in range(n_in):
-                out = model(input_ids=prompt_ids[:, i:i+1], past_key_values=cache,
-                            use_cache=True,
-                            attention_mask=torch.ones(1, i+1, dtype=torch.long, device="cuda"))
-                cache = out.past_key_values
-                del out
+            # PREFILL: un solo forward con el prompt completo (M>=32 → GEMM compacto,
+            # ~273 tok/s, VRAM = compacto + KV)
+            out = model(input_ids=prompt_ids, past_key_values=None, use_cache=True,
+                        attention_mask=torch.ones_like(prompt_ids))
+            cache = out.past_key_values
+            del out
+            # GENERACIÓN: M=1 con KV cache (kernel decode1 optimizado, ~13-16 tok/s)
+            t_gen = time.time()
             gen_ids = []
+            prev = int(prompt_ids[0, -1].item())
             n_gen = 0
             while n_gen < args.max_new_tokens:
-                cur = torch.tensor([[gen_ids[-1]]] if gen_ids else prompt_ids[:, -1:],
-                                   dtype=torch.long, device="cuda")
+                cur = torch.tensor([[prev]], dtype=torch.long, device="cuda")
                 out = model(input_ids=cur, past_key_values=cache, use_cache=True,
-                            attention_mask=torch.ones(1, n_in + n_gen, dtype=torch.long,
-                                                      device="cuda"))
+                            attention_mask=mask[:, :n_in + n_gen])
                 cache = out.past_key_values
                 logits = out.logits[0, -1]
                 del out
-                tok_id = sample_token(logits, args.temp, args.top_p,
-                                      args.repeat_penalty, gen_ids, eos_id)
-                gen_ids.append(tok_id)
+                prev = sample_token(logits, args.temp, args.top_p,
+                                    args.repeat_penalty, gen_ids, eos_id)
+                gen_ids.append(prev)
                 n_gen += 1
-                if tok_id == eos_id:
+                if prev == eos_id:
                     break
                 if n_gen % 20 == 0:
                     torch.cuda.empty_cache()
-        dt = time.time() - t0
+        dt = time.time() - t_gen if n_gen else time.time() - t0
         out_text = tok.decode(gen_ids, skip_special_tokens=True)
         tok_s = n_gen / max(dt, 1e-6)
     else:

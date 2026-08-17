@@ -36,12 +36,18 @@ def _ext():
         _cached = load_inline(
             name="sx8_decode1_v3",
             cpp_sources="""
-torch::Tensor compute_z44(torch::Tensor X, torch::Tensor basis, torch::Tensor scales, int64_t n_cb);
+torch::Tensor compute_z44(torch::Tensor X, torch::Tensor basis, torch::Tensor scales,
+                          int64_t n_cb, torch::Tensor out);
 torch::Tensor decode1_v44(torch::Tensor X, torch::Tensor hdr, torch::Tensor levels,
-                          torch::Tensor Z, int64_t n_cb, int64_t hdr_bytes, int64_t split_k);
+                          torch::Tensor Z, int64_t n_cb, int64_t hdr_bytes,
+                          int64_t split_k, torch::Tensor out);
+torch::Tensor decode1_v44_combined(torch::Tensor X, torch::Tensor hdr, torch::Tensor levels,
+                                   torch::Tensor basis, torch::Tensor scales,
+                                   int64_t n_cb, int64_t hdr_bytes,
+                                   torch::Tensor Z, torch::Tensor out);
 """,
             cuda_sources=CUDA_SRC,
-            functions=["compute_z44", "decode1_v44"],
+            functions=["compute_z44", "decode1_v44", "decode1_v44_combined"],
             extra_cuda_cflags=["-O3"],
             verbose=False,
         )
@@ -71,20 +77,36 @@ def best_split_k(N, n_cb):
     return min(sk, 16)
 
 
+_BUF = {}
+
+
+def _buf(key, shape):
+    b = _BUF.get(key)
+    if b is None or b.shape != tuple(shape) or b.device != DEV:
+        b = torch.empty(*shape, dtype=torch.float32, device=DEV)
+        _BUF[key] = b
+    return b
+
+
 def decode1_v44(X, qt, bases_info, hdr_t=None, lvl_t=None, bas_t=None, sca_t=None,
-                hdr_bytes=6, split_k=None):
-    """Y = X @ W (SX8 v4.4) con el kernel nuevo. X: (K,) half."""
+                hdr_bytes=6, split_k=1):
+    """Y = X @ W (SX8 v4.4) con el kernel nuevo. X: (K,) half.
+    split_k=1 por defecto (sin reduce_split): más rápido en generación M=1.
+    Buffers Z/Y reutilizados (pools) — sin allocs por llamada."""
     if hdr_t is None:
         hdr_t, lvl_t, bas_t, sca_t = make_tensors_v44(qt, bases_info,
                                                       hdr_aligned=(hdr_bytes == 8))
     n_cb = qt['n_cb']
     N = qt['shape'][0]
-    if split_k is None:
-        split_k = best_split_k(N, n_cb)
     Xc = X.contiguous().half()
     ext = _ext()
-    Z = ext.compute_z44(Xc, bas_t, sca_t, n_cb)
-    Y = ext.decode1_v44(Xc, hdr_t, lvl_t, Z, n_cb, hdr_bytes, split_k)
+    Z = _buf(("Z", n_cb), (n_cb, 2))
+    Y = _buf(("Y", N), (N,))
+    try:
+        ext.decode1_v44_combined(Xc, hdr_t, lvl_t, bas_t, sca_t, n_cb, hdr_bytes, Z, Y)
+    except AttributeError:
+        ext.compute_z44(Xc, bas_t, sca_t, n_cb, Z)
+        ext.decode1_v44(Xc, hdr_t, lvl_t, Z, n_cb, hdr_bytes, 1, Y)
     return Y, (hdr_t, lvl_t, bas_t, sca_t)
 
 

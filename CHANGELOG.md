@@ -4,6 +4,24 @@ All notable changes to the S-X8 quantization project are documented in this file
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+
+## [v1.3] — 2026-08-17
+
+### Added — Generation speedup for the Python runtime (Option A)
+
+- **`decode1_v44` (M=1) optimized**: `split_k=1` (no reduce_split), reusable buffer pools for
+  Z/Y (no per-call allocations), and a combined `compute_z44` + `decode1` CUDA call (one launch
+  per tensor instead of two).
+  - Per-tensor kernel throughput: **8.8 G p/s → 376 G p/s** (45×).
+- **`infer_sx8.py`**: prefill in ONE pass (M≥32 → compact GEMM, ~273 tok/s) + generation M=1 with
+  KV cache (decode1 optimized) + static attention mask.
+- **Measured generation (RTX 5060 Ti, real chat with KV cache)**: **~10-13 tok/s** ·
+  VRAM **4.41 GB** (= loaded compact + KV). GPU-bound (35% util → margin is orchestration
+  launch bubbles).
+- **Coming soon (Option B)**: CUDA Graphs + static KV cache (subclass of `Qwen3_5Cache` that
+  writes in place) — target ~55 tok/s generation for the Python runtime. llama.cpp fork remains
+  the fast chat path today (63.79 tok/s).
+
 ## [v1.2] — 2026-08-16
 
 ### Added — Compact GEMM for M >= 32 (`cuda/sx8_gemm_compact.cu` + `scripts/sx8_gemm_compact.py`)
