@@ -110,8 +110,9 @@ Marla Labs is an independent AI lab. If this work helps you, consider a donation
 
 | Engine | Prompt | Generation | VRAM |
 |---|---|---|---|
-| llama.cpp fork + `.gguf` (fast) | ~1877 tok/s | ~63.79 tok/s | ~4-5 GB |
-| Python runtime (`scripts/infer_sx8.py`) | token-by-token | ~2 tok/s | ~6.7 GB |
+| llama.cpp fork + `.gguf` (fast chat) | ~1877 tok/s | **~63.79 tok/s** | ~4-5 GB |
+| Python runtime (`scripts/infer_sx8.py`) | **~273 tok/s** (compact GEMM, 1-pass prefill) | **~10-13 tok/s** (decode1 optimized) | **4.31 GB** (= loaded compact + KV) |
 
 Fast chat at the declared speeds: `./run_llama_chat.sh build` then `./run_llama_chat.sh`.
-Python runtime (no build, needs CUDA toolkit): `python3 scripts/infer_sx8.py --container Qwen3.5-4B-SX8v43.sx8`.
+Python runtime (no build, needs CUDA toolkit): `python3 scripts/infer_sx8.py --container Qwen3.5-4B-SX8v43.sx8`
+(prefill in one pass, generation M=1 with KV cache — **CUDA Graphs + static KV cache coming soon, target ~55 tok/s**).

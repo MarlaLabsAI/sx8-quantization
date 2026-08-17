@@ -108,3 +108,11 @@ Marla Labs es un laboratorio independiente de IA. Si este trabajo te es útil, c
 - Re-validado con el contenedor v2: **PPL wikitext-2 10.2364** (ref 10.2267) ·
   **Winogrande_s 0.5722** (ref 0.5722) · **VRAM decode 3.720 GB** (ref 3.955 GB).
 - Detalles en [CHANGELOG.md](CHANGELOG.md).
+
+### Chat (resumen ES)
+
+Dos motores (mismos pesos S-X8): **llama.cpp fork + `.gguf`** = chat rápido a las velocidades
+declaradas (decode ~63.79 tok/s, prompt ~1877 tok/s, VRAM ~4-5 GB; `./run_llama_chat.sh build` y
+`./run_llama_chat.sh`); **runtime Python** (`scripts/infer_sx8.py`) = sin build (requiere CUDA
+toolkit); prompt ~273 tok/s (GEMM compacto, 1 pasada) y generación ~10-13 tok/s a **4.31 GB**
+(contenedor cargado + KV). CUDA Graphs + KV cache estática próximamente.
