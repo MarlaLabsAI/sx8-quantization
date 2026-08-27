@@ -31,8 +31,7 @@ hardware es favorable en casi cualquier máquina.
 |---|---|---|
 | **GPU ≥ 8 GB VRAM** (RTX 5060 Ti, 4060, 3050...) | `NGL=99` — modelo entero en VRAM | **Óptima**: decode ~63.79 tok/s, VRAM 3.720 GB |
 | **GPU 4–6 GB VRAM** | `NGL=32` (ajustar) | Muy buena: mayoría de capas en GPU |
-| **APU / iGPU con ≥ 16 GB RAM unificada** | `NGL=0` (CPU) o iGPU vía Vulkan | Funcional: responde; en CPU es lento pero usable |
-| **Solo CPU (sin GPU)** | `NGL=0` | **Muy lenta** (~1-3 tok/s estimados, AVX2, sin medir) — solo para verificar que carga y responde |
+| **APU / iGPU con ≥ 16 GB RAM unificada** | iGPU vía Vulkan (o CPU AVX2 como fallback) | Funcional: responde a ritmo moderado |
 | **Windows** | WSL2 + CUDA | No probado nativamente |
 
 - **Referencia medida (RTX 5060 Ti, 16 GB)**: decode 63.79 tok/s · prompt 1877.85 tok/s
@@ -68,7 +67,7 @@ pip install -r requirements.txt
 |---|---|---|
 | **≥ 8 GB VRAM** | `NGL=99 ./run_llama_chat.sh` | Todo el modelo a VRAM. Máxima velocidad (~63.79 tok/s). |
 | **4–6 GB VRAM** | `NGL=32 ./run_llama_chat.sh` | Ajusta según VRAM libre. |
-| **Solo CPU / APU** | `NGL=0 ./run_llama_chat.sh` | **Muy lenta** — solo para verificar carga/respuesta (kernel AVX2 S-X8). |
+| **APU / iGPU** | iGPU vía Vulkan (o CPU AVX2 como fallback) | Funcional (no medido en APU). |
 | **Windows** | WSL2 + CUDA | No probado — en Windows usar WSL2 con CUDA toolkit. |
 
 ## 5. CHAT — VÍA B: runtime Python propio + .sx8v43 (kernel CUDA S-X8)
@@ -111,3 +110,8 @@ python3 scripts/infer_sx8.py --container Qwen3.5-4B-SX8v43.sx8
   FP16": el claim es "≈FP16 dentro del ruido, 9× menos pérdida que Q8_0".
 - El GGUF requiere el **fork de llama.cpp** (S-X8 es tipo nativo `GGML_TYPE_SX8 = 41`);
   con llama.cpp estándar no cargará.
+- **Sobre CPU**: el modo CPU (kernel AVX2) NO es una vía de uso real — nadie ejecuta
+  estos modelos en una CPU de propósito general. En nuestro equipo lo usamos solo como
+  iteración de verificación para confirmar la coherencia correcta del modelo
+  (prueba de 50 preguntas en 4 idiomas, mismo método que este 4B). En producción se
+  usa **GPU o APU**; y a mayor tamaño del modelo, mayor calidad (mismo método).

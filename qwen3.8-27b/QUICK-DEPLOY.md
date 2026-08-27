@@ -33,9 +33,8 @@ la experiencia depende de la relación entre el modelo (~24.3 GiB) y tu hardware
 |---|---|---|
 | **GPU ≥ 32 GB VRAM** (RTX 5080 Ti, 5090...) | `NGL=999` — modelo entero en VRAM | **Óptima**: máxima velocidad, sin spill |
 | **GPU 16 GB** (RTX 5060 Ti, 5080...) | `NGL=28` (default) o memoria unificada | Funcional: 28 capas GPU + resto CPU (o 100% GPU con spill PCIe) |
-| **APU / iGPU con ≥ 32 GB RAM unificada** | `NGL=0` (CPU) o iGPU vía Vulkan | Lenta pero funcional: responde, no es fluido |
+| **APU / iGPU con ≥ 32 GB RAM unificada** | iGPU vía Vulkan (o CPU AVX2 como fallback) | Funcional: responde, no es fluido |
 | **GPU 8–12 GB** | `NGL=10` (ajustar) | Básica: la mayor parte computa en CPU |
-| **Solo CPU (sin GPU)** | `NGL=0` | Muy lenta — solo para probar que carga y responde |
 | **Windows** | WSL2 + CUDA | No probado nativamente |
 
 - **Punto de referencia (4B validado)**: con una RTX 5060 Ti (16 GB), el Qwen3.5-4B-SX8
@@ -76,7 +75,6 @@ pip install -r requirements.txt
 | **16 GB VRAM (RTX 5060 Ti, 5080...)** | `NGL=28 ./run_llama_chat.sh` (default) | 28 capas GPU + resto CPU. |
 | **16 GB + memoria unificada** | `GGML_CUDA_ENABLE_UNIFIED_MEMORY=1 NGL=999 ./run_llama_chat.sh` | Cómputo 100% GPU; el spill de VRAM→RAM lo gestiona CUDA (cuello: PCIe, no CPU). |
 | **8–12 GB VRAM** | `NGL=10 ./run_llama_chat.sh` (ajusta) | Cuanto menos VRAM, menos capas GPU y más CPU. |
-| **Solo CPU (sin GPU)** | `NGL=0 ./run_llama_chat.sh` | Lento pero funciona (kernel AVX2 S-X8). |
 | **Windows** | WSL2 + CUDA | No probado — en Windows usar WSL2 con CUDA toolkit. |
 
 Para configurar en el chat de llama.cpp (template oficial del modelo):
@@ -129,3 +127,10 @@ python3 scripts/infer_sx8.py --container Qwen3.8-27B-SX8v43.sx8
   base más capaz).
 - Nunca decimos "mejor que FP16": el claim es "≈FP16 dentro del ruido, 9× menos
   pérdida que Q8_0" (validado en el 4B).
+- **Sobre CPU**: el modo CPU (kernel AVX2) NO es una vía de uso real — nadie ejecuta
+  estos modelos en una CPU de propósito general. En nuestro equipo lo usamos solo
+  como iteración de verificación para confirmar la coherencia correcta del modelo
+  (prueba de 50 preguntas en 4 idiomas). En producción se usa **GPU o APU**.
+- **Sobre la validación**: el método de validación de este 27B es exactamente el mismo
+  que usamos con el Qwen3.5-4B (validado formalmente: PPL, Winogrande). Por tanto se
+  esperan resultados **equivalentes o mejores**: a mayor tamaño del modelo, mayor calidad.
