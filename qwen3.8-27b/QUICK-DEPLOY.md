@@ -24,6 +24,28 @@ sobre 666 tensores) y está validado funcionalmente en una prueba local.
 - CUDA toolkit (nvcc) · cmake · gcc · git · python3 ≥ 3.10
 - RAM: 32 GB recomendada (el 27B cuantizado son ~26 GB en memoria al cargar)
 
+## 1b. REQUISITOS DE HARDWARE RELATIVOS
+
+Orientación relativa (sin benchmarks formales del 27B todavía — ver §8 NOTAS DE HONESTIDAD):
+la experiencia depende de la relación entre el modelo (~24.3 GiB) y tu hardware.
+
+| Perfil de máquina | Cómo corre | Experiencia relativa |
+|---|---|---|
+| **GPU ≥ 32 GB VRAM** (RTX 5080 Ti, 5090...) | `NGL=999` — modelo entero en VRAM | **Óptima**: máxima velocidad, sin spill |
+| **GPU 16 GB** (RTX 5060 Ti, 5080...) | `NGL=28` (default) o memoria unificada | Funcional: 28 capas GPU + resto CPU (o 100% GPU con spill PCIe) |
+| **APU / iGPU con ≥ 32 GB RAM unificada** | `NGL=0` (CPU) o iGPU vía Vulkan | Lenta pero funcional: responde, no es fluido |
+| **GPU 8–12 GB** | `NGL=10` (ajustar) | Básica: la mayor parte computa en CPU |
+| **Solo CPU (sin GPU)** | `NGL=0` | Muy lenta — solo para probar que carga y responde |
+| **Windows** | WSL2 + CUDA | No probado nativamente |
+
+- **Punto de referencia (4B validado)**: con una RTX 5060 Ti (16 GB), el Qwen3.5-4B-SX8
+  hace decode 63.79 tok/s con solo 3.720 GB de VRAM (ver repo del 4B). El 27B es el
+  MISMO formato con una base más grande: esperablemente más lento por tamaño, con la
+  misma calidad por bit.
+- **Con conocimientos medios**: `./run_llama_chat.sh build` + `./run_llama_chat.sh`
+  cubren todo el despliegue; y `DEPLOY-AI.md` permite que otra IA lo haga por ti
+  (detecta tu hardware, instala, descarga y verifica).
+
 ## 2. DESCARGAR
 
 ```bash
