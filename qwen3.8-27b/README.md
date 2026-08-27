@@ -103,6 +103,43 @@ Full case-by-case guide: [`QUICK-DEPLOY.md`](QUICK-DEPLOY.md) (GPUs 8–32+ GB, 
 └── CHANGELOG.md
 ```
 
+## Transparency
+
+The conceptual seeds of S-X8 come from an independent mathematical analysis of the image of the
+Shroud of Turin; the full study is published in the project repo with its own re-verification:
+[github.com/MarlaLabsAI/sx8-quantization → shroud-turin-study/](https://github.com/MarlaLabsAI/sx8-quantization/tree/main/shroud-turin-study).
+See the paper's Appendix A and [IDEA-PROVENANCE.md](IDEA-PROVENANCE.md). The format itself is
+validated empirically in this repository; the study is disclosed only as the source of inspiration,
+with full honesty about what can and cannot be corroborated.
+
+## License and attribution
+
+Apache-2.0. The S-X8 format, kernels and scripts in this repository are **original work**
+(Copyright (C) 2026 Martí Vidal Leandro), not a Qwen work. The quantized model uses
+**Qwen3.8-27B by the Qwen Team** (Alibaba Group), Apache-2.0 (model card) as the base model;
+only the weights were quantized to the S-X8 v4.3 format (see [NOTICE](NOTICE)), no other modifications.
+
+## How to cite
+
+If you use this work, please cite:
+
+> Vidal Leandro, M. (2026). **S-X8 v4.3: A 7.50-Bits-Per-Weight Quantization Format with
+> FP16-Level Quality and Portable Decoding.** Zenodo. https://doi.org/10.5281/zenodo.21922640
+
+## Contact
+
+Looking for collaborations, integration help or opportunities? Reach out:
+
+- **LinkedIn (profile):** https://www.linkedin.com/in/vidalmarti/
+- **LinkedIn (company):** https://www.linkedin.com/company/marlalabs/
+- **X / Twitter:** https://x.com/MarlaLabsAI
+- **Email:** info@marlalabs.com
+- **Web:** https://marlalabs.com
+
+## Support
+
+If this work helps you, consider a donation: [Ko-fi](https://ko-fi.com/) · [GitHub Sponsors](https://github.com/sponsors) — details in FUNDING.yml.
+
 ## Deploy with an AI agent
 
 Want another AI (Claude Code, opencode, aider...) to handle the whole deployment
@@ -117,7 +154,3 @@ on its own.
 Apache-2.0. The S-X8 format is original work of the author; this model is a **quantized variant of
 Qwen3.8-27B** (Qwen Team, Alibaba Group, Apache-2.0) — only the weights were quantized to S-X8 v4.3,
 no other modifications. See [NOTICE](NOTICE).
-
-## Support
-
-If this work helps you, consider a donation: [Ko-fi](https://ko-fi.com/) · [GitHub Sponsors](https://github.com/sponsors) — details in FUNDING.yml.
