@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "q": "What is 7 times 8 plus 6? Answer with only the number.",
+    "expected": "62",
+    "answer": "62",
+    "finish": "stop",
+    "time_s": 54.2,
+    "correct": true
+  },
+  {
+    "id": 2,
+    "q": "What is the square root of 144? Answer with only the number.",
+    "expected": "12",
+    "answer": "12",
+    "finish": "stop",
+    "time_s": 54.4,
+    "correct": true
+  },
+  {
+    "id": 3,
+    "q": "What is 15% of 200? Answer with only the number.",
+    "expected": "30",
+    "answer": "30",
+    "finish": "stop",
+    "time_s": 55.2,
+    "correct": true
+  },
+  {
+    "id": 4,
+    "q": "What comes next in the sequence: 2, 4, 8, 16, ...? Answer with only the number.",
+    "expected": "32",
+    "answer": "32",
+    "finish": "stop",
+    "time_s": 55.4,
+    "correct": true
+  },
+  {
+    "id": 5,
+    "q": "If you have 3 apples and take away 2, how many do you have? Answer with only the number.",
+    "expected": "2",
+    "answer": "1",
+    "finish": "stop",
+    "time_s": 40.5,
+    "correct": true
+  },
+  {
+    "id": 6,
+    "q": "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets? Answer with only the number in minutes.",
+    "expected": "5",
+    "answer": "5",
+    "finish": "stop",
+    "time_s": 40.5,
+    "correct": true
+  },
+  {
+    "id": 7,
+    "q": "I am an odd number. Take away one letter and I become even. What number am I? Answer with only the number word.",
+    "expected": "seven",
+    "answer": "seven",
+    "finish": "stop",
+    "time_s": 39.9,
+    "correct": true
+  },
+  {
+    "id": 8,
+    "q": "What is the chemical symbol for gold? Answer with only the symbol.",
+    "expected": "Au",
+    "answer": "Au",
+    "finish": "stop",
+    "time_s": 40.1,
+    "correct": true
+  },
+  {
+    "id": 9,
+    "q": "What is the largest planet in the solar system? Answer with only the name.",
+    "expected": "Jupiter",
+    "answer": "Jupiter",
+    "finish": "stop",
+    "time_s": 54.0,
+    "correct": true
+  },
+  {
+    "id": 10,
+    "q": "What is the capital of Japan? Answer with only the name.",
+    "expected": "Tokyo",
+    "answer": "Tokyo",
+    "finish": "stop",
+    "time_s": 54.5,
+    "correct": true
+  },
+  {
+    "id": 11,
+    "q": "Who wrote Romeo and Juliet? Answer with only the name.",
+    "expected": "Shakespeare",
+    "answer": "William Shakespeare",
+    "finish": "stop",
+    "time_s": 54.7,
+    "correct": true
+  },
+  {
+    "id": 12,
+    "q": "In what year did World War II end? Answer with only the year.",
+    "expected": "1945",
+    "answer": "1945",
+    "finish": "stop",
+    "time_s": 84.1,
+    "correct": true
+  },
+  {
+    "id": 13,
+    "q": "What is the smallest prime number? Answer with only the number.",
+    "expected": "2",
+    "answer": "2",
+    "finish": "stop",
+    "time_s": 39.6,
+    "correct": true
+  },
+  {
+    "id": 14,
+    "q": "What is the boiling point of water in Celsius? Answer with only the number.",
+    "expected": "100",
+    "answer": "100",
+    "finish": "stop",
+    "time_s": 67.9,
+    "correct": true
+  },
+  {
+    "id": 15,
+    "q": "Which planet is known as the Red Planet? Answer with only the name.",
+    "expected": "Mars",
+    "answer": "Mars",
+    "finish": "stop",
+    "time_s": 54.5,
+    "correct": true
+  },
+  {
+    "id": 16,
+    "q": "What is the currency of Japan? Answer with only the name.",
+    "expected": "yen",
+    "answer": "Yen",
+    "finish": "stop",
+    "time_s": 54.5,
+    "correct": true
+  },
+  {
+    "id": 17,
+    "q": "How many sides does a hexagon have? Answer with only the number.",
+    "expected": "6",
+    "answer": "6",
+    "finish": "stop",
+    "time_s": 39.6,
+    "correct": true
+  },
+  {
+    "id": 18,
+    "q": "How many legs does a spider have? Answer with only the number.",
+    "expected": "8",
+    "answer": "8",
+    "finish": "stop",
+    "time_s": 38.9,
+    "correct": true
+  },
+  {
+    "id": 19,
+    "q": "How many days are in a leap year? Answer with only the number.",
+    "expected": "366",
+    "answer": "366",
+    "finish": "stop",
+    "time_s": 67.7,
+    "correct": true
+  },
+  {
+    "id": 20,
+    "q": "If x + 5 = 12, what is x? Answer with only the number.",
+    "expected": "7",
+    "answer": "7",
+    "finish": "stop",
+    "time_s": 39.2,
+    "correct": true
+  }
+]

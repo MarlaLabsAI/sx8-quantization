@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "lang": "EN",
+    "q": "What is 9 times 7? Answer with only the number.",
+    "expected": "63",
+    "answer": "63",
+    "finish": "stop",
+    "time_s": 52.2,
+    "correct": true
+  },
+  {
+    "id": 2,
+    "lang": "EN",
+    "q": "What is the capital of Canada? Answer with only the name.",
+    "expected": "Ottawa",
+    "answer": "Ottawa",
+    "finish": "stop",
+    "time_s": 65.5,
+    "correct": true
+  },
+  {
+    "id": 3,
+    "lang": "EN",
+    "q": "A book costs 40 dollars and you get a 10% discount. What is the price? Answer with only the number.",
+    "expected": "36",
+    "answer": "36",
+    "finish": "stop",
+    "time_s": 52.0,
+    "correct": true
+  },
+  {
+    "id": 4,
+    "lang": "EN",
+    "q": "How many continents are there? Answer with only the number.",
+    "expected": "7",
+    "answer": "7",
+    "finish": "stop",
+    "time_s": 38.8,
+    "correct": true
+  },
+  {
+    "id": 5,
+    "lang": "EN",
+    "q": "What is the chemical symbol for silver? Answer with only the symbol.",
+    "expected": "Ag",
+    "answer": "Ag",
+    "finish": "stop",
+    "time_s": 39.5,
+    "correct": true
+  },
+  {
+    "id": 6,
+    "lang": "ES",
+    "q": "¿Cuánto es 8 por 6? Responde solo con el número.",
+    "expected": "48",
+    "answer": "48",
+    "finish": "stop",
+    "time_s": 53.2,
+    "correct": true
+  },
+  {
+    "id": 7,
+    "lang": "ES",
+    "q": "¿Cuál es la capital de Argentina? Responde solo con el nombre.",
+    "expected": "Buenos Aires",
+    "answer": "Buenos Aires",
+    "finish": "stop",
+    "time_s": 81.9,
+    "correct": true
+  },
+  {
+    "id": 8,
+    "lang": "ES",
+    "q": "¿Cuántos lados tiene un cuadrado? Responde solo con el número.",
+    "expected": "4",
+    "answer": "4",
+    "finish": "stop",
+    "time_s": 38.1,
+    "correct": true
+  },
+  {
+    "id": 9,
+    "lang": "ES",
+    "q": "¿Cuál es el planeta más cercano al Sol? Responde solo con el nombre.",
+    "expected": "Mercurio",
+    "answer": "Mercurio",
+    "finish": "stop",
+    "time_s": 66.5,
+    "correct": true
+  },
+  {
+    "id": 10,
+    "lang": "ES",
+    "q": "¿Qué número sigue en la secuencia 1, 1, 2, 3, 5, 8, ...? Responde solo con el número.",
+    "expected": "13",
+    "answer": "13",
+    "finish": "stop",
+    "time_s": 53.4,
+    "correct": true
+  },
+  {
+    "id": 11,
+    "lang": "IT",
+    "q": "Quanto fa 6 per 7? Rispondi solo con il numero.",
+    "expected": "42",
+    "answer": "42",
+    "finish": "stop",
+    "time_s": 53.0,
+    "correct": true
+  },
+  {
+    "id": 12,
+    "lang": "IT",
+    "q": "Qual è la capitale dell'Italia? Rispondi solo con il nome.",
+    "expected": "Roma",
+    "answer": "Roma",
+    "finish": "stop",
+    "time_s": 39.3,
+    "correct": true
+  },
+  {
+    "id": 13,
+    "lang": "IT",
+    "q": "Quante ore ci sono in un giorno? Rispondi solo con il numero.",
+    "expected": "24",
+    "answer": "24",
+    "finish": "stop",
+    "time_s": 56.0,
+    "correct": true
+  },
+  {
+    "id": 14,
+    "lang": "IT",
+    "q": "Qual è la capitale del Giappone? Rispondi solo con il nome.",
+    "expected": "Tokyo",
+    "answer": "Tokyo",
+    "finish": "stop",
+    "time_s": 54.5,
+    "correct": true
+  },
+  {
+    "id": 15,
+    "lang": "IT",
+    "q": "Qual è il numero primo più piccolo? Rispondi solo con il numero.",
+    "expected": "2",
+    "answer": "2",
+    "finish": "stop",
+    "time_s": 41.5,
+    "correct": true
+  },
+  {
+    "id": 16,
+    "lang": "FR",
+    "q": "Combien font 5 fois 9 ? Réponds uniquement avec le nombre.",
+    "expected": "45",
+    "answer": "45",
+    "finish": "stop",
+    "time_s": 54.5,
+    "correct": true
+  },
+  {
+    "id": 17,
+    "lang": "FR",
+    "q": "Quelle est la capitale de la France ? Réponds uniquement avec le nom.",
+    "expected": "Paris",
+    "answer": "Paris",
+    "finish": "stop",
+    "time_s": 39.6,
+    "correct": true
+  },
+  {
+    "id": 18,
+    "lang": "FR",
+    "q": "Combien de côtés a un triangle ? Réponds uniquement avec le nombre.",
+    "expected": "3",
+    "answer": "3",
+    "finish": "stop",
+    "time_s": 40.8,
+    "correct": true
+  },
+  {
+    "id": 19,
+    "lang": "FR",
+    "q": "Quelle est la plus grande planète du système solaire ? Réponds uniquement avec le nom.",
+    "expected": "Jupiter",
+    "answer": "Jupiter",
+    "finish": "stop",
+    "time_s": 55.8,
+    "correct": true
+  },
+  {
+    "id": 20,
+    "lang": "FR",
+    "q": "Combien de minutes y a-t-il dans une heure ? Réponds uniquement avec le nombre.",
+    "expected": "60",
+    "answer": "60",
+    "finish": "stop",
+    "time_s": 56.0,
+    "correct": true
+  }
+]

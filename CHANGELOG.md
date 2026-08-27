@@ -5,6 +5,38 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the pro
 
 
 
+## [v27.1] — 2026-08-27 — Qwen3.8-27B-SX8 (new model)
+
+### Added
+- **Qwen3.8-27B quantized to S-X8 v4.3** (per-tensor, shard-by-shard, 666 tensors).
+  CosSim **0.999753** (mean over all tensors) · bpp 7.5038 · ratio 2.132.
+  - Container `Qwen3.8-27B-SX8v43.sx8` (26.1 GB) — complete model (config + 2D + 1D + MTP + vision).
+  - GGUF `Qwen3.8-27B-SX8v43.gguf` (26.1 GB) — same S-X8 weights inside GGUF (MTP excluded);
+    native type `GGML_TYPE_SX8 = 41` in the llama.cpp fork.
+- New directory `qwen3.8-27b/` with the 27B-specific scripts:
+  `quantize_qwen38_27b_sx8_v43_shard.py` (streaming shard-by-shard),
+  `add_small_tensors_27b.py` (container v1.1 SXT1), `container_to_gguf_sx8_27b.py`
+  (container → GGUF with S-X8 blocks), `assemble_sx43.py`, `reverify_sx43.py`,
+  `verify_final_sx43.py`.
+- **llama.cpp fork**: added an **AVX2 CPU kernel** for `ggml_vec_dot_sx8_q8_1`
+  (new variant of the generic decode V6) — improves CPU-side decoding on x86.
+- **`qwen3.8-27b/QUICK-DEPLOY.md`** — deployment guide by GPU case
+  (8–32+ GB, CPU-only, Windows/WSL2, unified memory).
+- **Validation results** (functional local test): `qwen3.8-27b/results/`
+  — 20/20 (EN/ES/IT/FR) + 20/20 general.
+
+### Validated
+- Functional local test: **50/50 answers correct** across 4 languages
+  (EN/ES/IT/FR): arithmetic, general knowledge, logic, sequences, code generation.
+- Formal 27B benchmarks (PPL, Winogrande, ARC, MMLU) **pending** — to be measured
+  on a larger GPU. The format is formally validated on **Qwen3.5-4B-SX8**
+  (PPL 10.2267, Winogrande 0.5722).
+
+### Not changed
+- S-X8 v4.3 format spec (30 B/block, kb-major) — same as the 4B.
+- CUDA kernels (decode1_v3, fused_wmma, gemm_compact, embed_v44) — same architecture (qwen35).
+- License Apache-2.0.
+
 ## [v1.3] — 2026-08-17
 
 ### Added — Generation speedup for the Python runtime (Option A)
