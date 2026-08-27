@@ -103,7 +103,16 @@ Full case-by-case guide: [`QUICK-DEPLOY.md`](QUICK-DEPLOY.md) (GPUs 8–32+ GB, 
 └── CHANGELOG.md
 ```
 
+## Deploy with an AI agent
+
+Want another AI (Claude Code, opencode, aider...) to handle the whole deployment
+for you — on any OS and hardware, within physical limits? Copy the prompt from
+[`DEPLOY-AI.md`](DEPLOY-AI.md) and give it to the agent: it will detect your
+system (OS, GPU, RAM), install what's needed, download, run and verify the model
+on its own.
+
 ## License / NOTICE
+
 
 Apache-2.0. The S-X8 format is original work of the author; this model is a **quantized variant of
 Qwen3.8-27B** (Qwen Team, Alibaba Group, Apache-2.0) — only the weights were quantized to S-X8 v4.3,
