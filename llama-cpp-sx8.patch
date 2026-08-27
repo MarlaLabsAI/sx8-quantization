@@ -147,7 +147,7 @@ index 92cf739e7..743118832 100644
  typedef struct {
      GGML_EXTENSION union {
 diff --git a/ggml/src/ggml-cpu/arch-fallback.h b/ggml/src/ggml-cpu/arch-fallback.h
-index 41da82931..5530fac0c 100644
+index 41da82931..67138c94f 100644
 --- a/ggml/src/ggml-cpu/arch-fallback.h
 +++ b/ggml/src/ggml-cpu/arch-fallback.h
 @@ -14,6 +14,7 @@
@@ -158,14 +158,106 @@ index 41da82931..5530fac0c 100644
  #define ggml_vec_dot_mxfp4_q8_0_generic ggml_vec_dot_mxfp4_q8_0
  #define ggml_vec_dot_nvfp4_q8_0_generic ggml_vec_dot_nvfp4_q8_0
  #define ggml_vec_dot_tq1_0_q8_K_generic ggml_vec_dot_tq1_0_q8_K
-@@ -81,6 +82,7 @@
- #define ggml_gemm_q2_K_8x8_q8_K_generic ggml_gemm_q2_K_8x8_q8_K
- #elif defined(__x86_64__) || defined(__i386__) || defined(_M_IX86) || defined(_M_X64)
- // quants.c
-+#define ggml_vec_dot_sx8_q8_1_generic ggml_vec_dot_sx8_q8_1
- #define ggml_vec_dot_nvfp4_q8_0_generic ggml_vec_dot_nvfp4_q8_0
- // repack.cpp
- #define ggml_quantize_mat_q8_0_4x4_generic ggml_quantize_mat_q8_0_4x4
+diff --git a/ggml/src/ggml-cpu/arch/x86/quants.c b/ggml/src/ggml-cpu/arch/x86/quants.c
+index 74d699f63..1a5623c8c 100644
+--- a/ggml/src/ggml-cpu/arch/x86/quants.c
++++ b/ggml/src/ggml-cpu/arch/x86/quants.c
+@@ -3818,3 +3818,95 @@ void ggml_vec_dot_iq4_xs_q8_K(int n, float * GGML_RESTRICT s, size_t bs, const v
+     ggml_vec_dot_iq4_xs_q8_K_generic(n, s, bs, vx, bx, vy, by, nrc);
+ #endif
+ }
++
++
++// S-X8 v4.3 (Marla Labs) x Q8_1 — variante AVX2 del decode V6
++// Mismo algoritmo que ggml_vec_dot_sx8_q8_1_generic (ggml-cpu/quants.c) pero
++// vectorizado por sub-bloque de 8 pesos: se desempaquetan los niveles 6-bit
++// (hi=4 bits, lo=2 bits) y la estrategia (config 2 bits x 4) se resuelve con
++// selects SIMD. Cada __m256 procesa 8 floats (un sub-bloque).
++void ggml_vec_dot_sx8_q8_1(int n, float * GGML_RESTRICT s, size_t bs, const void * GGML_RESTRICT vx, size_t bx, const void * GGML_RESTRICT vy, size_t by, int nrc) {
++    const int qk = QKSX8;  // 32
++    const int nb = n / qk;
++
++    assert(n % qk == 0);
++    assert(nrc == 1);
++    UNUSED(nrc);
++    UNUSED(bx);
++    UNUSED(by);
++    UNUSED(bs);
++
++    const block_sx8 * GGML_RESTRICT x = vx;
++    const block_q8_1 * GGML_RESTRICT y = vy;
++
++    int ib = 0;
++    float sumf = 0;
++
++#if defined(__AVX2__)
++    // máscaras para desempaquetar los niveles
++    // qh[16]: cada byte tiene 2 nibbles -> 32 nibbles (hi[0..31])
++    // ql[8]:  cada byte tiene 4 quads -> 32 quads (lo[0..31])
++    const __m256i low4 = _mm256_set1_epi8(0x0F);
++    const __m256i low2 = _mm256_set1_epi8(0x03);
++
++    __m256 acc = _mm256_setzero_ps();
++
++    for (; ib < nb; ++ib) {
++        const float lo_f = GGML_CPU_FP16_TO_FP32(x[ib].dmin);
++        const float hi_f = GGML_CPU_FP16_TO_FP32(x[ib].dmax);
++        const float q   = (hi_f - lo_f) * 0.25f;
++        const uint8_t cfg = x[ib].config;
++
++        const float yd = GGML_CPU_FP16_TO_FP32(y[ib].d);
++        const float ys = GGML_CPU_FP16_TO_FP32(y[ib].s);
++        const float ym = ys / (float)QK8_1;
++
++        // --- desempaquetar niveles 6-bit (32 pesos) ---
++        const __m128i qh0 = _mm_loadu_si128((const __m128i *)x[ib].qh);   // 16 bytes nibbles
++        const __m128i ql0 = _mm_loadu_si128((const __m128i *)x[ib].ql);   // 8 bytes quads
++
++        // hi: 16 nibbles -> 16 bytes [0..15]; lo: 8 bytes -> 32 valores de 2 bits
++        // Nivel completo lv = hi<<2 | lo ; hi llega en nibbles (ya 0..15),
++        // lo hay que sacarlo: cada byte ql[j] = lo[4j]|lo[4j+1]<<2|lo[4j+2]<<4|lo[4j+3]<<6
++        // Para los 32 pesos: sub-bloque i (0..3), peso j (0..7) -> lv[(i*8)+j]
++        //   hi: qh[(i*8+j)>>1] >> (((i*8+j)&1)*4) & 0xF
++        //   lo: ql[(i*8+j)>>2] >> ((3-((i*8+j)&3))*2) & 0x3
++        // En SIMD: primer desempaquetamos ql a 32 valores de 2 bits por shuffle...
++        // (enfoque pragmático: extraer por sub-bloque con loads escalares de 4+1)
++        __m256 v = _mm256_setzero_ps();
++        const int8_t * qs = y[ib].qs;
++        for (int sb = 0; sb < 4; ++sb) {
++            const int s_ = (cfg >> (sb * 2)) & 3;
++            // rlo/rhi del sub-bloque (igual que el genérico)
++            const float rlo = lo_f + q * (float)(3 * (s_ == 2) + (s_ == 3));
++            const float rhi = hi_f - q * (float)(3 * (s_ == 1) + (s_ == 3));
++            float step = (rhi - rlo) * 0.015873f;
++            if (step < 1e-10f) step = 1e-10f;
++
++            // niveles de los 8 pesos del sub-bloque: lv[0..7]
++            float lv[8];
++            for (int j = 0; j < 8; ++j) {
++                const int jj = sb * 8 + j;
++                const int hi = (x[ib].qh[jj >> 1] >> ((jj & 1) * 4)) & 0xF;
++                const int lo = (x[ib].ql[jj >> 2] >> ((3 - (jj & 3)) * 2)) & 0x3;
++                lv[j] = (float)((hi << 2) | lo);
++            }
++            __m256 w = _mm256_mul_ps(_mm256_set1_ps(step), _mm256_loadu_ps(lv));
++            w = _mm256_add_ps(w, _mm256_set1_ps(rlo));
++            // y = d*qs + m   (qs: int8 -> int32 via SSE4.1 _mm_cvtepi8_epi32)
++            const __m128i q8 = _mm_loadl_epi64((const __m128i *)(y[ib].qs + sb * 8));
++            const __m128i q8d = _mm_unpacklo_epi64(q8, q8);
++            const __m256i qs32 = MM256_SET_M128I(_mm_cvtepi8_epi32(q8d), _mm_cvtepi8_epi32(q8));
++            __m256 yv = _mm256_mul_ps(_mm256_set1_ps(yd), _mm256_cvtepi32_ps(qs32));
++            yv = _mm256_add_ps(yv, _mm256_set1_ps(ym));
++            acc = _mm256_fmadd_ps(w, yv, acc);
++        }
++    }
++    sumf = hsum_float_8(acc);
++#else
++    ggml_vec_dot_sx8_q8_1_generic(n, s, bs, vx, bx, vy, by, nrc);
++    return;
++#endif
++
++    *s = sumf;
++}
 diff --git a/ggml/src/ggml-cpu/ggml-cpu.c b/ggml/src/ggml-cpu/ggml-cpu.c
 index df17cc553..64504c14b 100644
 --- a/ggml/src/ggml-cpu/ggml-cpu.c
