@@ -113,5 +113,7 @@ python3 scripts/infer_sx8.py --container Qwen3.5-4B-SX8v43.sx8
 - **Sobre CPU**: el modo CPU (kernel AVX2) NO es una vía de uso real — nadie ejecuta
   estos modelos en una CPU de propósito general. En nuestro equipo lo usamos solo como
   iteración de verificación para confirmar la coherencia correcta del modelo
-  (prueba de 50 preguntas en 4 idiomas, mismo método que este 4B). En producción se
-  usa **GPU o APU**; y a mayor tamaño del modelo, mayor calidad (mismo método).
+  (prueba de 50 preguntas en 4 idiomas). En producción se usa **GPU o APU**;
+  y el método de creación del 27B es exactamente el mismo que el de este 4B
+  (validado formalmente), por lo que se esperan resultados equivalentes o mejores:
+  a mayor tamaño del modelo, mayor calidad.

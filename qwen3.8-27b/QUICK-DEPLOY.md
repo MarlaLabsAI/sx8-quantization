@@ -131,6 +131,7 @@ python3 scripts/infer_sx8.py --container Qwen3.8-27B-SX8v43.sx8
   estos modelos en una CPU de propósito general. En nuestro equipo lo usamos solo
   como iteración de verificación para confirmar la coherencia correcta del modelo
   (prueba de 50 preguntas en 4 idiomas). En producción se usa **GPU o APU**.
-- **Sobre la validación**: el método de validación de este 27B es exactamente el mismo
-  que usamos con el Qwen3.5-4B (validado formalmente: PPL, Winogrande). Por tanto se
-  esperan resultados **equivalentes o mejores**: a mayor tamaño del modelo, mayor calidad.
+- **Sobre el método**: el método de CREACIÓN de este 27B es exactamente el mismo que
+  el del Qwen3.5-4B (cuyo formato está validado formalmente: PPL, Winogrande, ARC, MMLU).
+  Por tanto se esperan resultados **equivalentes o mejores**: a mayor tamaño del modelo,
+  mayor calidad.
