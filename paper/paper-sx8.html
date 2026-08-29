@@ -244,8 +244,9 @@ Q8_0 is the widely used 8-bit reference. IQ-quants push bit-rate below 4 bpp wit
 AWQ and its successors select sensitive channels/layers by calibration. Hardware formats (NVFP4, MXFP4)
 quantize with tensor-core support but are tied to datacenter GPUs; notably, Blackwell consumer silicon
 (SM120) does not expose FP4/FP8 matmul paths to cuBLAS/PyTorch, which motivated a portable ALU-only decoder.
-S-Quant (ICML 2026) showed that per-sub-block adaptive ranges improve quality-per-bit, a direction extended here
-with an exact accounting of bytes, PCA correction at the output, and full engine integration. Quantization
+S-Quant (ICML 2026) explores per-sub-block adaptive ranges for quality-per-bit. This work develops its own
+mechanisms &mdash; exact byte accounting, output-side PCA correction, and full engine integration &mdash; and
+evaluates them against the state of the art on a shared protocol. Quantization
 is occasionally observed to act as a regularizer (perplexity below FP16 on small models); in the full-corpus
 measurements on Qwen3.5-4B the effect is absent and no claim is made of it.
 </p>

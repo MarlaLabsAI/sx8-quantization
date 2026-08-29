@@ -19,21 +19,7 @@ El formato S-X8 en sí ha sido verificado empíricamente (perplexity y benchmark
 extrapolación de ideas, en un espíritu de transparencia total. La declaración de transparencia completa
 está en el paper (Apéndice A) y en la carpeta del estudio (NOTA_TRANSPARENCIA.md).
 
-## 2. Influencias del campo (conocimiento público)
-
-El formato se apoya en trabajo bien establecido y documentado públicamente:
-
-- **GGUF k-quants (llama.cpp)** — cuantización por bloques con escala/punto cero; Q8_0 es la referencia
-  de 8 bits usada en toda nuestra evaluación.
-- **IQ-quants** — tasas de bits por debajo de 4 bpp con codebooks sensibles a la importancia.
-- **AWQ y sucesores** — selección de canales/capas sensibles por calibración.
-- **NVFP4 / MXFP4** — formatos de hardware de 4 bits para tensor cores de datacenter; el decodificador
-  es deliberadamente solo-ALU y portable, y el silicio Blackwell de consumo (SM120) no expone rutas de
-  matmul FP4/FP8 a cuBLAS/PyTorch.
-- **S-Quant (ICML 2026)** — los rangos adaptativos por sub-bloque mejoran la calidad por bit; extendemos
-  esta dirección con recuento exacto de bytes, corrección PCA a la salida e integración completa en el motor.
-
-## 3. Qué es original en este trabajo
+## 2. Qué es original en este trabajo
 
 - Recuento de bits exacto y completo: 30 bytes/bloque = 7,50 bpp (cada byte justificado).
 - Corrección PCA aplicada a la *salida* de la multiplicación de matrices (reformulación Z0/Z1), que reduce
@@ -45,7 +31,7 @@ El formato se apoya en trabajo bien establecido y documentado públicamente:
 - Protocolo de evaluación honesto (prompts compartidos entre motores, validación del método ARC) y
   reporte transparente de limitaciones.
 
-## 4. Resumen de validación (todos los números en `results/` y `PROTOCOLO.md`)
+## 3. Resumen de validación (todos los números en `results/` y `PROTOCOLO.md`)
 
 | Métrica | FP16 | S-X8 v4.3 | Q8_0 |
 |---|---|---|---|

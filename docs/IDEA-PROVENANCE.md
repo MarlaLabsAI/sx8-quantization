@@ -20,22 +20,7 @@ Section 4 and PROTOCOLO.md); the Shroud study is mentioned only to show where th
 came from, in the spirit of full transparency. A complete transparency statement is included in the paper
 (Appendix A) and in the study folder (NOTA_TRANSPARENCIA.md).
 
-## 2. Influences from the field (public knowledge)
-
-The format builds on well-established, publicly documented work:
-
-- **GGUF k-quants (llama.cpp)** — block-wise quantization with scale/zero-point handling;
-  Q8_0 is the 8-bit reference used throughout the evaluation.
-- **IQ-quants** — bit-rates below 4 bpp with importance-aware codebooks.
-- **AWQ and successors** — calibration-based selection of sensitive channels/layers.
-- **NVFP4 / MXFP4** — hardware 4-bit formats for datacenter tensor cores; the decoder is
-  deliberately ALU-only and portable, and Blackwell consumer silicon (SM120) does not expose
-  FP4/FP8 matmul paths to cuBLAS/PyTorch.
-- **S-Quant (ICML 2026)** — per-sub-block adaptive ranges improve quality-per-bit; this work extends
-  this direction with exact byte accounting, output-side PCA correction and full engine
-  integration.
-
-## 3. What is original in this work
+## 2. What is original in this work
 
 - Exact, fully accounted bit count: 30 bytes/block = 7.50 bpp (every byte justified).
 - PCA correction applied at the *output* of the matrix multiply (Z0/Z1 reformulation),
@@ -47,7 +32,7 @@ The format builds on well-established, publicly documented work:
 - Honest evaluation protocol (shared prompts across engines, ARC-method validation) and
   transparent reporting of limitations.
 
-## 4. Validation summary (all numbers in `results/` and `PROTOCOLO.md`)
+## 3. Validation summary (all numbers in `results/` and `PROTOCOLO.md`)
 
 | Metric | FP16 | S-X8 v4.3 | Q8_0 |
 |---|---|---|---|

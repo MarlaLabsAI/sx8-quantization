@@ -259,9 +259,9 @@ punto cero; Q8_0 es la referencia de 8 bits más usada. Los IQ-quants empujan la
 4 bpp con codebooks sensibles a la importancia. AWQ y sus sucesores seleccionan canales/capas sensibles
 mediante calibración. Los formatos de hardware (NVFP4, MXFP4) cuantizan con soporte de tensor cores pero
 están ligados a GPUs de datacenter; notablemente, el silicio Blackwell de consumo (SM120) no expone rutas de
-matmul FP4/FP8 a cuBLAS/PyTorch, lo que motivó un decodificador portable solo-ALU. S-Quant (ICML 2026)
-demostró que los rangos adaptativos por sub-bloque mejoran la calidad por bit, una dirección que extendemos
-con un recuento exacto de bytes, corrección PCA a la salida e integración completa en el motor. Ocasionalmente
+matmul FP4/FP8 a cuBLAS/PyTorch, lo que motivó un decodificador portable solo-ALU. S-Quant (ICML 2026) explora los rangos adaptativos por sub-bloque para la calidad por bit. Este trabajo
+desarrolla sus propios mecanismos &mdash; recuento exacto de bytes, corrección PCA a la salida e integración
+completa en el motor &mdash; y los evalúa frente al estado del arte con un protocolo compartido. Ocasionalmente
 se observa que la cuantización actúa como regularizador (perplexity por debajo de FP16 en modelos pequeños);
 en las mediciones con corpus completo en Qwen3.5-4B el efecto está ausente y no se reclama.
 </p>
